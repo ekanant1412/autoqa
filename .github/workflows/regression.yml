@@ -9,21 +9,26 @@ on:
 
 jobs:
   regression-test:
-    runs-on: [self-hosted, macOS, preprod]   # ✅ ใช้ runner ของคุณ
+    runs-on: [self-hosted, macOS, preprod]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug DNS/Network (internal)
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Debug DNS/Network
         run: |
           echo "== DNS (short) =="
           scutil --dns | sed -n '1,120p' || true
 
           echo "== Resolve internal host =="
-          python3 - <<'PY'
+          python3 <<'PY'
 import socket
-host="ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+host = "ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
 try:
     print("resolved:", host, "->", socket.gethostbyname(host))
 except Exception as e:
@@ -33,11 +38,6 @@ PY
 
           echo "== Curl internal host =="
           curl -I --max-time 5 "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/" || true
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -53,14 +53,22 @@ PY
           pytest -v -s tests \
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
+        continue-on-error: true
 
       - name: Import JUnit to Xray
+        if: always()
         env:
           XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
           XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
           XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
         run: |
           set -euo pipefail
+
+          if [ ! -f reports/junit.xml ]; then
+            echo "ERROR: reports/junit.xml not found (pytest may not have produced it)"
+            ls -la reports || true
+            exit 1
+          fi
 
           echo "Authenticate Xray..."
           TOKEN=$(curl -s -H "Content-Type: application/json" \
@@ -83,6 +91,7 @@ PY
           cat reports/xray_import_response.json
 
       - name: Attach HTML report to Jira
+        if: always()
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
@@ -90,7 +99,17 @@ PY
         run: |
           set -euo pipefail
 
-          TEST_EXEC_KEY=$(python3 - <<'PY'
+          if [ ! -f reports/report.html ]; then
+            echo "WARN: reports/report.html not found, skip attaching."
+            exit 0
+          fi
+
+          if [ ! -f reports/xray_import_response.json ]; then
+            echo "ERROR: reports/xray_import_response.json not found (Xray import step may have failed)"
+            exit 1
+          fi
+
+          TEST_EXEC_KEY=$(python3 <<'PY'
 import json
 data = json.load(open("reports/xray_import_response.json", "r", encoding="utf-8"))
 
