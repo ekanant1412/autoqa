@@ -1,9 +1,12 @@
 # Python
 __pycache__/
 *.pyc
+
+# venv
+.venv/
 venv/
 
-# Test reports
+# reports/artifacts
 reports/
 *.xml
 *.html
