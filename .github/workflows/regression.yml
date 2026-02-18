@@ -87,3 +87,28 @@ jobs:
           echo "Xray response:"
           cat reports/xray_import_response.json
 
+      - name: Attach HTML report to Jira
+        if: always()
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          echo "Extract Test Execution key..."
+
+          TEST_EXEC_KEY=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('key',''))")
+
+          if [ -z "$TEST_EXEC_KEY" ]; then
+            echo "ERROR: Cannot find Test Execution key"
+            cat reports/xray_import_response.json
+            exit 1
+          fi
+
+          echo "Attach report to $TEST_EXEC_KEY"
+
+          curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+            -H "X-Atlassian-Token: no-check" \
+            -F "file=@reports/report.html" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
