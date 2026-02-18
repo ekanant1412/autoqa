@@ -1,0 +1,911 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'sfv' by search_type is 'sfv'",
+  "expected": "sfv",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=sfv&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=jRXowYY9VrB7&content_type_filtering=sfv&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/sfv",
+  "total_ids": 100,
+  "missing": [],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "pD5wgkM7Wo0b",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "oOJQgygbnDjR",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "8rzkmA7doEZP",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "QRwVpq1NQ9rD",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "o5kPMomVXLd3",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "Kbwk4x2Zg9lb",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "rYzrDWgeepgY",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "zoQwd61Yq0mr",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "alnJ03gxqD7l",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "JLObN0aO4QEe",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "6LYezv3ONWaL",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "eOWyDg4yM9na",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "3GnxgBkQzkdN",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "8mwMznlXgldW",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "ybLPAeAqA8Ab",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "mqgxmw5YxW72",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "17jq1N93LjgG",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "9pVvGJW09NAp",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "9B8bNK4vpx43",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "O7bvQxm00WB7",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "e2Kv53WmPqe6",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "wKlP7ldBAmRK",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "9aAr849bDkxw",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "K3KL9z94oOBE",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "0BXDMYKOZzVB",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "bPYnvD7jJpwW",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "o82VbddxP6G8",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "PNn9GGz0wr2q",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "EXEgwdp9MMw8",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "3ALR2vX56XeE",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "8Y4Z8jp3vxpG",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "pOjw6ajo5Wp8",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 33,
+      "item_id": "MxagLVEj5Lb3",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 34,
+      "item_id": "GnD7ygGjKVEv",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 35,
+      "item_id": "eNE3mv5b1nR6",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 36,
+      "item_id": "e9DR00ZnyMNa",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 37,
+      "item_id": "Y5DVleQnZ4Qa",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 38,
+      "item_id": "m6Bxmnvm7b3R",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 39,
+      "item_id": "0MDWPgO5qr3x",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 40,
+      "item_id": "d96BQPKmDy29",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 41,
+      "item_id": "L6Kdja1QWo50",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 42,
+      "item_id": "PN2y3bn70xxV",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 43,
+      "item_id": "OQWeLbLkO7kB",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 44,
+      "item_id": "4xdd4EMamNkx",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 45,
+      "item_id": "7Z4N7wDK9kjq",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 46,
+      "item_id": "mn9Gj4zE6ezB",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 47,
+      "item_id": "OjelBkKoKn2a",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 48,
+      "item_id": "QMmLQazlvpwy",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 49,
+      "item_id": "8ZpVjg9oMlYX",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 50,
+      "item_id": "RkXXVR1vxrbk",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 51,
+      "item_id": "Kd4QgXnKaaPY",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 52,
+      "item_id": "o0g6g1gQ82GK",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 53,
+      "item_id": "wGQNbeQoWdQ6",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 54,
+      "item_id": "aqwWK2w39R2q",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 55,
+      "item_id": "ZdGLDBkyY4qR",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 56,
+      "item_id": "8V8gyXZYBj9J",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 57,
+      "item_id": "yrY2Aq0W2G24",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 58,
+      "item_id": "r4XoxORQ2q7Y",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 59,
+      "item_id": "pGBwxnP44Xjm",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 60,
+      "item_id": "qQLDXdaDaW5Q",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 61,
+      "item_id": "5dbRxl7GAozd",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 62,
+      "item_id": "KQnKLKy3wJME",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 63,
+      "item_id": "WrvVmyVKEy6r",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 64,
+      "item_id": "Vp64mlqqa06B",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 65,
+      "item_id": "PzKa8BqNPqMD",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 66,
+      "item_id": "Plb6reNQQ0Ll",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 67,
+      "item_id": "bnPy7Dj9MowK",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 68,
+      "item_id": "Xl8VwQ15Ag59",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 69,
+      "item_id": "DweoZM2akE30",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 70,
+      "item_id": "eYQMz6JX64aY",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 71,
+      "item_id": "adJ5y79ENGkr",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 72,
+      "item_id": "rJkadGrrg5vB",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 73,
+      "item_id": "5YR9OdQwjovG",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 74,
+      "item_id": "bmpXbL75D0Qm",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 75,
+      "item_id": "15LvgXprbOR9",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 76,
+      "item_id": "lgobJb9dvJa8",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 77,
+      "item_id": "02Bk14yOyYEj",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 78,
+      "item_id": "kmXnWGKOq5J7",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 79,
+      "item_id": "z2DMLjvoXoJN",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 80,
+      "item_id": "8l1VE1a05QV2",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 81,
+      "item_id": "WvnYdk3Y19NV",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 82,
+      "item_id": "okz8deZW21Zb",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 83,
+      "item_id": "zEVx1DvamYJr",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 84,
+      "item_id": "KAy32bqJ7GXE",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 85,
+      "item_id": "qeZJg6mY80Ge",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 86,
+      "item_id": "PRqrNmZYMgPa",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 87,
+      "item_id": "WLxX5PPM3dAL",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 88,
+      "item_id": "jknEXXKQpgzM",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 89,
+      "item_id": "QONPG6eAQlEM",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 90,
+      "item_id": "Vz5Q1qG65nYz",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 91,
+      "item_id": "3N0d56P41vgN",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 92,
+      "item_id": "wB5aZwxDzzgB",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 93,
+      "item_id": "Apel8NQ2wY8E",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 94,
+      "item_id": "EvObaeD43ALY",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 95,
+      "item_id": "pP7e6knq97M3",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 96,
+      "item_id": "mDEJ5g0Pe3Nn",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 97,
+      "item_id": "q7823kYBer41",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 98,
+      "item_id": "WNevEdpA4Q5P",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 99,
+      "item_id": "eqJWlrLAYY67",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 100,
+      "item_id": "WK3jPBLDdZR4",
+      "expected_content_type": "sfv",
+      "actual_content_type": "sfv",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

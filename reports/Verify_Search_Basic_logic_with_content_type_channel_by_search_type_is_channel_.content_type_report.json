@@ -1,0 +1,752 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'channel' by search_type is 'channel''",
+  "expected": "channel",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=channel&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=23Pmn7w4xlQG&content_type_filtering=channel&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fchannel&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fchannel",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/channel",
+  "total_ids": 74,
+  "missing": [
+    "7P69RXLj27E3",
+    "6kXd6qLowj3k",
+    "Pp8m6lJXQnLw",
+    "WEb3VBlkvemZ",
+    "kbyE7M4X3Rlb",
+    "L5DlJbWOOp15",
+    "jzxemAEe4jkJ",
+    "r1VRLAwNrGp1",
+    "XZEbl1EPDlYv",
+    "J6z35e0nej97",
+    "yg4dwxDazPdg",
+    "27kVyPDR1DkJ",
+    "6l2KdGdqJWaQ",
+    "3J4wp3BmdNbM",
+    "VMlwLoLE4Wg1",
+    "o5qdmzyJ2eXG",
+    "V0EeZXaVV3K0",
+    "PkAmEbE1XARk",
+    "2GLk4W4oPojb",
+    "VjOPQeQDAeo7",
+    "3Md3yoLb3R92",
+    "71rKGgNxjepA",
+    "pgWG8OmMW9xg",
+    "j5lWA901Rvra",
+    "74mwQ9QnGAZa",
+    "ZALEGJXllXdx",
+    "X5ERrmwXVPnD",
+    "YJXYmNDO1GZw",
+    "xlVgw0m4XdbP",
+    "wyXxwKDNN5by",
+    "lLRaxQkdNZJv",
+    "o5q3B4LYWZWr",
+    "q8aqXGXGdMn8",
+    "pmLBMbWaZZXR",
+    "VxlnRG2Gp7yL",
+    "A46zAP08EnN4",
+    "LWvp4rXZaoYK",
+    "3Q3Aw8G0OoYn",
+    "galEQgpVwVKo",
+    "DBwGEN4mkvxB",
+    "dmE6bEVDlKlg",
+    "A69rZYZXY8Yj",
+    "WM7ElrXnrDo3",
+    "O3YXAJraJnqx",
+    "DKl91y1OkpoB",
+    "4GKjJlpK2VyA",
+    "k3E1nz4wVyw3",
+    "BvMREay42Y19",
+    "KrpzxJEkGew2",
+    "EMN8LNgOm2lZ",
+    "2wkLoDoW4pLR",
+    "grQo9g2KMoR4",
+    "k5LVa2a0x8rb",
+    "wbzBOKwqknYb",
+    "zLpMqyQDaZD7",
+    "VLEkxYdYzyqZ",
+    "2M9GBXz8v5m7",
+    "6r5GM9YXpKkW",
+    "kmBgR8LW7a3v",
+    "O3Lj42VZY8GD",
+    "QDke4opazM98",
+    "ZPLr72b8erZY",
+    "px9El0bJaOkx",
+    "ra7n8RGlqnDd",
+    "mQ4L3EJbmVjQ",
+    "2RBn0gdxYoaR",
+    "GLrwKvW2k465",
+    "kyGow7XY99ry",
+    "ke6Evwl1P6q3",
+    "A4QbK2l6Gb07",
+    "wXD1B8R7vvkq",
+    "5QK0DXqK2rvL",
+    "KVObzEP3bgLm",
+    "M2qq9ePWzap2"
+  ],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "7P69RXLj27E3",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "6kXd6qLowj3k",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "Pp8m6lJXQnLw",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "WEb3VBlkvemZ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "kbyE7M4X3Rlb",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "L5DlJbWOOp15",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "jzxemAEe4jkJ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "r1VRLAwNrGp1",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "XZEbl1EPDlYv",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "J6z35e0nej97",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "yg4dwxDazPdg",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "27kVyPDR1DkJ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "6l2KdGdqJWaQ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "3J4wp3BmdNbM",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "VMlwLoLE4Wg1",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "o5qdmzyJ2eXG",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "V0EeZXaVV3K0",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "PkAmEbE1XARk",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "2GLk4W4oPojb",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "VjOPQeQDAeo7",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "3Md3yoLb3R92",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "71rKGgNxjepA",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "pgWG8OmMW9xg",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "j5lWA901Rvra",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "74mwQ9QnGAZa",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "ZALEGJXllXdx",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "X5ERrmwXVPnD",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "YJXYmNDO1GZw",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "xlVgw0m4XdbP",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "wyXxwKDNN5by",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "lLRaxQkdNZJv",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "o5q3B4LYWZWr",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 33,
+      "item_id": "q8aqXGXGdMn8",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 34,
+      "item_id": "pmLBMbWaZZXR",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 35,
+      "item_id": "VxlnRG2Gp7yL",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 36,
+      "item_id": "A46zAP08EnN4",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 37,
+      "item_id": "LWvp4rXZaoYK",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 38,
+      "item_id": "3Q3Aw8G0OoYn",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 39,
+      "item_id": "galEQgpVwVKo",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 40,
+      "item_id": "DBwGEN4mkvxB",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 41,
+      "item_id": "dmE6bEVDlKlg",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 42,
+      "item_id": "A69rZYZXY8Yj",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 43,
+      "item_id": "WM7ElrXnrDo3",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 44,
+      "item_id": "O3YXAJraJnqx",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 45,
+      "item_id": "DKl91y1OkpoB",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 46,
+      "item_id": "4GKjJlpK2VyA",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 47,
+      "item_id": "k3E1nz4wVyw3",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 48,
+      "item_id": "BvMREay42Y19",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 49,
+      "item_id": "KrpzxJEkGew2",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 50,
+      "item_id": "EMN8LNgOm2lZ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 51,
+      "item_id": "2wkLoDoW4pLR",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 52,
+      "item_id": "grQo9g2KMoR4",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 53,
+      "item_id": "k5LVa2a0x8rb",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 54,
+      "item_id": "wbzBOKwqknYb",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 55,
+      "item_id": "zLpMqyQDaZD7",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 56,
+      "item_id": "VLEkxYdYzyqZ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 57,
+      "item_id": "2M9GBXz8v5m7",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 58,
+      "item_id": "6r5GM9YXpKkW",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 59,
+      "item_id": "kmBgR8LW7a3v",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 60,
+      "item_id": "O3Lj42VZY8GD",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 61,
+      "item_id": "QDke4opazM98",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 62,
+      "item_id": "ZPLr72b8erZY",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 63,
+      "item_id": "px9El0bJaOkx",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 64,
+      "item_id": "ra7n8RGlqnDd",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 65,
+      "item_id": "mQ4L3EJbmVjQ",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 66,
+      "item_id": "2RBn0gdxYoaR",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 67,
+      "item_id": "GLrwKvW2k465",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 68,
+      "item_id": "kyGow7XY99ry",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 69,
+      "item_id": "ke6Evwl1P6q3",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 70,
+      "item_id": "A4QbK2l6Gb07",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 71,
+      "item_id": "wXD1B8R7vvkq",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 72,
+      "item_id": "5QK0DXqK2rvL",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 73,
+      "item_id": "KVObzEP3bgLm",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 74,
+      "item_id": "M2qq9ePWzap2",
+      "expected_content_type": "channel",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

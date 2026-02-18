@@ -1,0 +1,299 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'ecommerce' by search_type is 'ecommerce'",
+  "expected": "ecommerce",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=ecommerce&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=8E5jey9KkD3n&content_type_filtering=ecommerce&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fecommerce&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fecommerce",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/ecommerce",
+  "total_ids": 32,
+  "missing": [],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "5Pb4JLp5jKL7",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "E4QbAVKXDe51",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "avW4OKnJZp4V",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "bad3pmb3y4Yz",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "5DoWYzLj9XGD",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "o6ZLgk1vDv5n",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "VXk7Kj28995X",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "2a63JdA1LGbg",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "eX53ZAKypezx",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "jz8ek4G6o82K",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "rOay9qa705BO",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "EJ1kqNEy9x2K",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "xGaLrY5bJpOe",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "BRj7LgbyKePJ",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "Y0n72OEmdO23",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "y5rekKO0ePQl",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "q8gnwJampD1P",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "1GdlkRN4jV6G",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "OLDnylYp63b1",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "Jybz5Pq6zV6y",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "Z8Qg5PPGZVwK",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "YmWDYJEn7gG8",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "RXwbm17j6A7g",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "Jra1gRZk60ar",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "0jWwNBB4Yyqj",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "r0Z1nMM9RQRX",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "kJ2w7XXxKvPO",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "olkoZKpVGn4l",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "QP8VKaLpO471",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "aGDkX1qYL6v8",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "nZObp1zeOeED",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "NDgqAe824aMW",
+      "expected_content_type": "ecommerce",
+      "actual_content_type": "ecommerce",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

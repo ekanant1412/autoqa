@@ -1,0 +1,911 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'gameitem' by search_type is 'top_results''",
+  "expected": "gameitem",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=0Ge4ERr9edO5&content_type_filtering=game_item&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_item&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_item",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/game_item",
+  "total_ids": 100,
+  "missing": [],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "Jepp85pE4XGe",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "YKLG2oYNr67v",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "qNbG5aAMpepr",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "bwLVRQk5R3va",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "N18lXoxOYy71",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "JAYa0qkV3rZA",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "AY4VkW3zRvvj",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "LnQzB0rqKvqj",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "ljO0LmbZvD6K",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "8YQ6PLvlroD2",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "497b7e6xKr3X",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "8gNEGjKL7Bal",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "AWAn8vYGbXdm",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "7xWWqEe0Mzox",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "EBmg8jNJbMno",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "r4yqr08wwLy4",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "wjeYzn5a7Orj",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "Av1lqGAb0A9X",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "ZaozGyvKEvGq",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "RzDyKRdj4ldr",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "nmG5GB37Y49V",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "4oY6wDn11XMA",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "92m0y8dgoBNA",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "vg5w7DZb60pl",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "RzB9XZqqPM84",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "Vr8v3qb3PDNO",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "4JayZ67rPn1J",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "ODnLeEYYLdpN",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "EV6YJApeR7Xw",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "OW6J2gbMdDPW",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "owQKDjOJLWvg",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "pKZxjQDDok79",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 33,
+      "item_id": "d2RMobyOoPOg",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 34,
+      "item_id": "9qMMAbVN2onq",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 35,
+      "item_id": "3z5pKAwglWEb",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 36,
+      "item_id": "VOvmQakLrN83",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 37,
+      "item_id": "L1NJozOoEOd1",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 38,
+      "item_id": "vVv014K2dOyB",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 39,
+      "item_id": "bz7mEQa09nbL",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 40,
+      "item_id": "BNe5XJnQjRoN",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 41,
+      "item_id": "DVPDzGyL0NmV",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 42,
+      "item_id": "4AZ2eQl06elA",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 43,
+      "item_id": "LXEzKxYq3End",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 44,
+      "item_id": "Eg3rMZqAm3EP",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 45,
+      "item_id": "W43wo2RMzqN4",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 46,
+      "item_id": "yq6vB0gW8ZXq",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 47,
+      "item_id": "58wBAVjVb5oQ",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 48,
+      "item_id": "5EJMWNwqmwx6",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 49,
+      "item_id": "4y2nNv8rg3vy",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 50,
+      "item_id": "pV5EGryorAdV",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 51,
+      "item_id": "Z7joMgjb5Wml",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 52,
+      "item_id": "d4vmLRyjlBan",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 53,
+      "item_id": "ApgbgLPXKBqn",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 54,
+      "item_id": "vy5Kgl1PpZ13",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 55,
+      "item_id": "AdV06o1YMgkW",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 56,
+      "item_id": "xLAe3X48kknL",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 57,
+      "item_id": "Exwr29onjQe3",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 58,
+      "item_id": "Xjo4ay6nmaaK",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 59,
+      "item_id": "316BDJnvlVj1",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 60,
+      "item_id": "3m3qy5GPk3ej",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 61,
+      "item_id": "XqkaW1LRQzEO",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 62,
+      "item_id": "g4Wkg5dJZDQ4",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 63,
+      "item_id": "VJeZzplxqEyG",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 64,
+      "item_id": "W21z0VKPYPq6",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 65,
+      "item_id": "eZQXnN43akd9",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 66,
+      "item_id": "wR5on8XExj74",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 67,
+      "item_id": "5Lzz4lv0QzwL",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 68,
+      "item_id": "e7ow16MYLle7",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 69,
+      "item_id": "pdR3kP0r12yW",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 70,
+      "item_id": "8283onEpjp4a",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 71,
+      "item_id": "dyrXPkllve5G",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 72,
+      "item_id": "O1x0oJ5yOdp1",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 73,
+      "item_id": "xZn4v5AzBvdb",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 74,
+      "item_id": "2wP49Y42ZpGw",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 75,
+      "item_id": "mRDXE0XVMeXR",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 76,
+      "item_id": "wRnxbV3kZ2W9",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 77,
+      "item_id": "aY1ykaoPpr0Y",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 78,
+      "item_id": "r2a1NO0NGa42",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 79,
+      "item_id": "VGgYbyNbKdM7",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 80,
+      "item_id": "LDbl4JqXzzWQ",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 81,
+      "item_id": "AEw1XxK99zlm",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 82,
+      "item_id": "e0VKR4A9MQKL",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 83,
+      "item_id": "Xo1Kb16dDpRq",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 84,
+      "item_id": "vr3aR61BnMxN",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 85,
+      "item_id": "ZWdLwbkkyz7W",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 86,
+      "item_id": "Qg0z4lrYqvzW",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 87,
+      "item_id": "rqXmkdaenkZ0",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 88,
+      "item_id": "Z52jaZDv4gp5",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 89,
+      "item_id": "JovLbkdRv1B9",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 90,
+      "item_id": "qy24pqjB7aEw",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 91,
+      "item_id": "d2llGkLwGRP2",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 92,
+      "item_id": "NG87EvNnOYlz",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 93,
+      "item_id": "Mw2QmL8MVolk",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 94,
+      "item_id": "ywJGrAyxajXL",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 95,
+      "item_id": "eERyRwexXxlr",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 96,
+      "item_id": "Wj7Yygma77Rl",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 97,
+      "item_id": "3Rj7Wd3wrpyN",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 98,
+      "item_id": "64NWlyLwanZB",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 99,
+      "item_id": "7EzN5RzQ6V9E",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 100,
+      "item_id": "VODDjN4xxRGO",
+      "expected_content_type": "gameitem",
+      "actual_content_type": "gameitem",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

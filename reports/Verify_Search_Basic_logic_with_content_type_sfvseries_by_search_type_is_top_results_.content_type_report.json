@@ -1,0 +1,218 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'sfvseries' by search_type is 'top_results''",
+  "expected": "sfvseries",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=sfv&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=3gW061oEqejx&content_type_filtering=sfv_series&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv_series&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv_series",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/sfv_series",
+  "total_ids": 23,
+  "missing": [],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "Ay0XRxN9gZAy",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "njvQLKvoYazr",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "KpvbVM9x89gp",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "R7xjmJEAWdaV",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "Qw0VKpJygJBM",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "Ma3jgz8mGGkW",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "dapDlbyeLV9a",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "dVMNAdGN0bzP",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "pZX7aW6dVdKR",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "2Po09qL72V3A",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "bVWwl27bAQZV",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "EwBDAMj2zv1G",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "7JOjdL067Yev",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "YDygz4gOBk5E",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "NMWpNB3EXjJ6",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "71W96aDdnOAM",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "JPgmJ9zAYLWZ",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "4WkVvn76dbZQ",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "nXnynoYv3LBJ",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "VA3lK624bk29",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "oQ0N7x4Wzo7a",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "a1M3m8DYMO42",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "YaMgEJWJ1Wkz",
+      "expected_content_type": "sfvseries",
+      "actual_content_type": "sfvseries",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

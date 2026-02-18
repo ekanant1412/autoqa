@@ -1,0 +1,74 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'gamearticle' by search_type is 'read'",
+  "expected": "gamearticle",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=read&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=2gr1X4XWvmxq&content_type_filtering=game_article&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_article&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_article",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/game_article",
+  "total_ids": 7,
+  "missing": [],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "7ao7r42eMGDa",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "Zdqw9jvbxMbp",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "ZrEpkOYVjoO3",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "oGwBy02r0J6O",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "Jvn7l407ly72",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "K75O3W6LZr1v",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "nRnYlknzJgjy",
+      "expected_content_type": "gamearticle",
+      "actual_content_type": "gamearticle",
+      "status": "PASS",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

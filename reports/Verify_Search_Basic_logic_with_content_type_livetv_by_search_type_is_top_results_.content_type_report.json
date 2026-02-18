@@ -1,0 +1,1012 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'livetv' by search_type is 'top_results''",
+  "expected": "livetv",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=2APVEbbo4zmX&content_type_filtering=livetv&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Flivetv&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Flivetv",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/livetv",
+  "total_ids": 100,
+  "missing": [
+    "GDna51EdVk4",
+    "wQZrKd3mo65",
+    "3JYow6Dx7zx0",
+    "5XaDjQd1JJgw",
+    "MG60o1KjmzNP",
+    "eyEPa8A2WaJN",
+    "7OBlr4RJZDR5",
+    "2Yyb9xXEgeOJ",
+    "OzKE5d4pdNwy",
+    "qkrdgooa4no8",
+    "eZbmYRvMvylj",
+    "r9ombkk8M7n4",
+    "3xyaeKOdaZEx",
+    "k3B64mk9ELl3",
+    "zmvD0RO72nL",
+    "Q7vaEm8O9e4",
+    "4QGmlkkeqBd1",
+    "xDYqbGEY4lK",
+    "GDwwA11rPBgD",
+    "zyab4aWZ0OWx",
+    "EnWNeavOdeVq",
+    "YmaygkwgE6Lm",
+    "v2M0K4kgbrN",
+    "3wLvyKyryPAD",
+    "OZeq8ZLPldY",
+    "pQNm6nA20a6e",
+    "g9ONWXWJV5pq",
+    "E9k68z9aKDp",
+    "wkOEnAR062w",
+    "YZzDXGM1Yd68",
+    "18bXErKy2Am",
+    "DpZV0741AWz",
+    "NPDG7knzdgN",
+    "NWY5K7ZELP2",
+    "eXlvvZ4EA5aY",
+    "rVWJGN1VLOB",
+    "KEN52vz3o6M",
+    "xkZ7M890k1z",
+    "n8OW8d0x0qA",
+    "bN8M16MRd20",
+    "QYvlo1DEA0Zb",
+    "D9a3Kl4ZWZBb",
+    "PdOXKN4O1vDr",
+    "jqepWV3ka8j",
+    "yvjQWlnQqkzL",
+    "pmXrb1NjLeP0",
+    "r71LNbqjaKe",
+    "KlW9OymBRqrD",
+    "5KYLwQAL6aXe",
+    "Vwz1j7XVRkdn",
+    "M34YDGLk2wVj",
+    "pK4nxR53lEbJ",
+    "2KyzkV6AyPZ",
+    "JkpG4LeljXJ0",
+    "1ZrGkEk3qP7L",
+    "lQm56Ow0wjl",
+    "RN8ALdyRovrj",
+    "wkrQgY603zM",
+    "J2LMzNN8k4K",
+    "q9zDawRRd44L",
+    "OX4KG1R3W8O",
+    "NopZ5gjkGmE",
+    "Yb4p39lbgvN",
+    "L3Jbvn0BnbA",
+    "5YQaWExRqD5",
+    "GdgqaeMewGp4",
+    "Kz5zjkGyDVA",
+    "NOed9VVgV2K",
+    "G91q58rrakG",
+    "nYvz5QLWjyD",
+    "bDKPPGOdyAmn",
+    "vmDMJ9qmJxg",
+    "MDDoq1pvaVM",
+    "NB2d2A9Zd94z",
+    "jbzlQpWG6nj",
+    "EGvbeMNZOwq",
+    "B9alY9gp0vB",
+    "eM73Dj2x6pk",
+    "dyZWzDo7b0q",
+    "xR0n6ePG7wL",
+    "pQ6ok8M72AD",
+    "R4WyxL6Mp8b",
+    "glmE5eNRz47l",
+    "P83vkq1M1Lp",
+    "xVW7oVd8Gen",
+    "GPVMYwpnzKv",
+    "JeQ5L9PpVBJ",
+    "GOPVJMln56Y",
+    "9O54lyP5Rqx",
+    "2L1ZZdJGxPej",
+    "GNd67OBJ6pv",
+    "6Qna2oVjq3P",
+    "JGAQ7VZpX9Y",
+    "Kwj7W2nmmjoO",
+    "Ay93Q8zlOeA",
+    "rO7WMREyepr",
+    "mXQoNYKda2L9",
+    "gqVn9n7MeYXq",
+    "nbyAVeb1jpN",
+    "dQ9rmrAZjrXv"
+  ],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "GDna51EdVk4",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "wQZrKd3mo65",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "3JYow6Dx7zx0",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "5XaDjQd1JJgw",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "MG60o1KjmzNP",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "eyEPa8A2WaJN",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "7OBlr4RJZDR5",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "2Yyb9xXEgeOJ",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "OzKE5d4pdNwy",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "qkrdgooa4no8",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "eZbmYRvMvylj",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "r9ombkk8M7n4",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "3xyaeKOdaZEx",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "k3B64mk9ELl3",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "zmvD0RO72nL",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "Q7vaEm8O9e4",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "4QGmlkkeqBd1",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "xDYqbGEY4lK",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "GDwwA11rPBgD",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "zyab4aWZ0OWx",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "EnWNeavOdeVq",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "YmaygkwgE6Lm",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "v2M0K4kgbrN",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "3wLvyKyryPAD",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "OZeq8ZLPldY",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "pQNm6nA20a6e",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "g9ONWXWJV5pq",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "E9k68z9aKDp",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "wkOEnAR062w",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "YZzDXGM1Yd68",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "18bXErKy2Am",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "DpZV0741AWz",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 33,
+      "item_id": "NPDG7knzdgN",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 34,
+      "item_id": "NWY5K7ZELP2",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 35,
+      "item_id": "eXlvvZ4EA5aY",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 36,
+      "item_id": "rVWJGN1VLOB",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 37,
+      "item_id": "KEN52vz3o6M",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 38,
+      "item_id": "xkZ7M890k1z",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 39,
+      "item_id": "n8OW8d0x0qA",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 40,
+      "item_id": "bN8M16MRd20",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 41,
+      "item_id": "QYvlo1DEA0Zb",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 42,
+      "item_id": "D9a3Kl4ZWZBb",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 43,
+      "item_id": "PdOXKN4O1vDr",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 44,
+      "item_id": "jqepWV3ka8j",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 45,
+      "item_id": "yvjQWlnQqkzL",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 46,
+      "item_id": "pmXrb1NjLeP0",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 47,
+      "item_id": "r71LNbqjaKe",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 48,
+      "item_id": "KlW9OymBRqrD",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 49,
+      "item_id": "5KYLwQAL6aXe",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 50,
+      "item_id": "Vwz1j7XVRkdn",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 51,
+      "item_id": "M34YDGLk2wVj",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 52,
+      "item_id": "pK4nxR53lEbJ",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 53,
+      "item_id": "2KyzkV6AyPZ",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 54,
+      "item_id": "JkpG4LeljXJ0",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 55,
+      "item_id": "1ZrGkEk3qP7L",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 56,
+      "item_id": "lQm56Ow0wjl",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 57,
+      "item_id": "RN8ALdyRovrj",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 58,
+      "item_id": "wkrQgY603zM",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 59,
+      "item_id": "J2LMzNN8k4K",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 60,
+      "item_id": "q9zDawRRd44L",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 61,
+      "item_id": "OX4KG1R3W8O",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 62,
+      "item_id": "NopZ5gjkGmE",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 63,
+      "item_id": "Yb4p39lbgvN",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 64,
+      "item_id": "L3Jbvn0BnbA",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 65,
+      "item_id": "5YQaWExRqD5",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 66,
+      "item_id": "GdgqaeMewGp4",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 67,
+      "item_id": "Kz5zjkGyDVA",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 68,
+      "item_id": "NOed9VVgV2K",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 69,
+      "item_id": "G91q58rrakG",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 70,
+      "item_id": "nYvz5QLWjyD",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 71,
+      "item_id": "bDKPPGOdyAmn",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 72,
+      "item_id": "vmDMJ9qmJxg",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 73,
+      "item_id": "MDDoq1pvaVM",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 74,
+      "item_id": "NB2d2A9Zd94z",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 75,
+      "item_id": "jbzlQpWG6nj",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 76,
+      "item_id": "EGvbeMNZOwq",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 77,
+      "item_id": "B9alY9gp0vB",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 78,
+      "item_id": "eM73Dj2x6pk",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 79,
+      "item_id": "dyZWzDo7b0q",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 80,
+      "item_id": "xR0n6ePG7wL",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 81,
+      "item_id": "pQ6ok8M72AD",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 82,
+      "item_id": "R4WyxL6Mp8b",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 83,
+      "item_id": "glmE5eNRz47l",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 84,
+      "item_id": "P83vkq1M1Lp",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 85,
+      "item_id": "xVW7oVd8Gen",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 86,
+      "item_id": "GPVMYwpnzKv",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 87,
+      "item_id": "JeQ5L9PpVBJ",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 88,
+      "item_id": "GOPVJMln56Y",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 89,
+      "item_id": "9O54lyP5Rqx",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 90,
+      "item_id": "2L1ZZdJGxPej",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 91,
+      "item_id": "GNd67OBJ6pv",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 92,
+      "item_id": "6Qna2oVjq3P",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 93,
+      "item_id": "JGAQ7VZpX9Y",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 94,
+      "item_id": "Kwj7W2nmmjoO",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 95,
+      "item_id": "Ay93Q8zlOeA",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 96,
+      "item_id": "rO7WMREyepr",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 97,
+      "item_id": "mXQoNYKda2L9",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 98,
+      "item_id": "gqVn9n7MeYXq",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 99,
+      "item_id": "nbyAVeb1jpN",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 100,
+      "item_id": "dQ9rmrAZjrXv",
+      "expected_content_type": "livetv",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "case_name": "Verify Search Basic logic with content_type: 'privilege' by search_type is 'privilege'",
+  "expected": "privilege",
+  "universal_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=privilege&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=YmNGN1dP78G3&content_type_filtering=privilege&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fprivilege&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fprivilege",
+  "metadata_url": "http://ai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th/metadata/privilege",
+  "total_ids": 36,
+  "missing": [
+    "JPr7wRJxY5Me",
+    "YK8NlZw9mR6E",
+    "M2xnNK6da8A0",
+    "Zyr80dQ8RXlD",
+    "ybOx1GgyPO1E",
+    "E4MkdVBbYAEe",
+    "087WmwDJAAM8",
+    "qXVk4e5go3QK",
+    "qGWe45dqD9pb",
+    "kJDoNBDvxmlK",
+    "EdxER5mM628v",
+    "92gD9Xk1x9YR",
+    "zkn470pVa0BG",
+    "VX6xBzwwrnxj",
+    "YXoe6o9BxEQP",
+    "ozRJ9kXE0YKz",
+    "nWmOoE1gVjV5",
+    "N6jKk78glRK1",
+    "yx2joQoXQqYx",
+    "qrgvRWv8KmKM",
+    "egGM1AmD3YP9",
+    "q2YaWdg4qrE2",
+    "VOKJDKyy9o1v",
+    "MzvZxEx9L9Gz",
+    "67WMxLx5nrVR",
+    "9vW6Jmk8d1Bj",
+    "B8PpBZ5B56Q8",
+    "nOkNYrEWdkz0",
+    "OaovZGx42L2M",
+    "8P70zg7Mwnek",
+    "xGBAxRM5d2XP",
+    "r6GxZAW4gkXm",
+    "37563Bkmyb4v",
+    "8XqLglMyjx9n",
+    "w7V6Xbevved7",
+    "Ve49vDZQyRXq"
+  ],
+  "mismatches": [],
+  "rows": [
+    {
+      "index": 1,
+      "item_id": "JPr7wRJxY5Me",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 2,
+      "item_id": "YK8NlZw9mR6E",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 3,
+      "item_id": "M2xnNK6da8A0",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 4,
+      "item_id": "Zyr80dQ8RXlD",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 5,
+      "item_id": "ybOx1GgyPO1E",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 6,
+      "item_id": "E4MkdVBbYAEe",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 7,
+      "item_id": "087WmwDJAAM8",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 8,
+      "item_id": "qXVk4e5go3QK",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 9,
+      "item_id": "qGWe45dqD9pb",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 10,
+      "item_id": "kJDoNBDvxmlK",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 11,
+      "item_id": "EdxER5mM628v",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 12,
+      "item_id": "92gD9Xk1x9YR",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 13,
+      "item_id": "zkn470pVa0BG",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 14,
+      "item_id": "VX6xBzwwrnxj",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 15,
+      "item_id": "YXoe6o9BxEQP",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 16,
+      "item_id": "ozRJ9kXE0YKz",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 17,
+      "item_id": "nWmOoE1gVjV5",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 18,
+      "item_id": "N6jKk78glRK1",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 19,
+      "item_id": "yx2joQoXQqYx",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 20,
+      "item_id": "qrgvRWv8KmKM",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 21,
+      "item_id": "egGM1AmD3YP9",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 22,
+      "item_id": "q2YaWdg4qrE2",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 23,
+      "item_id": "VOKJDKyy9o1v",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 24,
+      "item_id": "MzvZxEx9L9Gz",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 25,
+      "item_id": "67WMxLx5nrVR",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 26,
+      "item_id": "9vW6Jmk8d1Bj",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 27,
+      "item_id": "B8PpBZ5B56Q8",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 28,
+      "item_id": "nOkNYrEWdkz0",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 29,
+      "item_id": "OaovZGx42L2M",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 30,
+      "item_id": "8P70zg7Mwnek",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 31,
+      "item_id": "xGBAxRM5d2XP",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 32,
+      "item_id": "r6GxZAW4gkXm",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 33,
+      "item_id": "37563Bkmyb4v",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 34,
+      "item_id": "8XqLglMyjx9n",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 35,
+      "item_id": "w7V6Xbevved7",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    },
+    {
+      "index": 36,
+      "item_id": "Ve49vDZQyRXq",
+      "expected_content_type": "privilege",
+      "actual_content_type": "",
+      "status": "MISSING",
+      "metadata_lookup": "query",
+      "metadata_http_status": 200
+    }
+  ]
+}
