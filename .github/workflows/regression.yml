@@ -54,8 +54,17 @@ jobs:
             exit 1
           fi
 
+          # ---- Validate secrets (สำคัญมาก) ----
+          if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
+            echo "ERROR: Missing XRAY secrets. Please set XRAY_CLIENT_ID, XRAY_CLIENT_SECRET, XRAY_PROJECT_KEY in GitHub Secrets."
+            exit 1
+          fi
+
+          # Trim spaces/newlines just in case
+          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
+
           echo "Authenticate Xray..."
-          TOKEN=$(curl -s -H "Content-Type: application/json" \
+          TOKEN=$(curl -sS -H "Content-Type: application/json" \
             -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
             -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
 
@@ -64,13 +73,17 @@ jobs:
             exit 1
           fi
 
+          URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
+          echo "Import URL: $URL"
+
           echo "Import JUnit to Xray..."
-          curl -s -H "Authorization: Bearer $TOKEN" \
+          curl -sS -v --fail-with-body \
+            -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: text/xml" \
             --data-binary @reports/junit.xml \
-            "https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY" \
+            "$URL" \
             > reports/xray_import_response.json
 
           echo "Xray response:"
           cat reports/xray_import_response.json
-          
+
