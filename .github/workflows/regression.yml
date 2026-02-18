@@ -87,6 +87,27 @@ jobs:
           echo "Xray response:"
           cat reports/xray_import_response.json
 
+      - name: Check Jira can see Test Execution issue
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          JIRA_BASE_URL="$(echo "$JIRA_BASE_URL" | tr -d '\r\n' | xargs)"
+          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+
+          TEST_EXEC_ID=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('id',''))" | tr -d '\r\n' | xargs)
+          echo "TEST_EXEC_ID=$TEST_EXEC_ID"
+
+          echo "GET issue (should be 200):"
+          curl -sS -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+            -H "Accept: application/json" \
+            -w "\nHTTP=%{http_code}\n" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_ID?fields=key,project" | head -c 400; echo
+
+
       - name: Attach HTML report to Jira
         if: always()
         env:
