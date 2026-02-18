@@ -38,3 +38,39 @@ jobs:
         if: always()
         run: |
           ls -la reports || true
+
+      - name: Import JUnit to Xray
+        if: always()
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ ! -f reports/junit.xml ]; then
+            echo "ERROR: reports/junit.xml not found"
+            ls -la reports || true
+            exit 1
+          fi
+
+          echo "Authenticate Xray..."
+          TOKEN=$(curl -s -H "Content-Type: application/json" \
+            -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
+            -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
+
+          if [ -z "$TOKEN" ]; then
+            echo "ERROR: Xray token is empty"
+            exit 1
+          fi
+
+          echo "Import JUnit to Xray..."
+          curl -s -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: text/xml" \
+            --data-binary @reports/junit.xml \
+            "https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY" \
+            > reports/xray_import_response.json
+
+          echo "Xray response:"
+          cat reports/xray_import_response.json
+          
