@@ -26,11 +26,14 @@ jobs:
           pip install pytest requests pytest-html
 
       - name: Run Pytest Regression
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
           mkdir -p reports
           pytest -v -s tests \
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
+
 
 
       - name: Upload Report Artifact
