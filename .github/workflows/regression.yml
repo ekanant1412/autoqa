@@ -20,15 +20,19 @@ jobs:
       - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
-          pip3 install -r requirements.txt || true
-          pip3 install pytest requests pytest-html
+          python3 -m pip install -r requirements.txt || true
+          python3 -m pip install pytest requests pytest-html
+          python3 -m pip show pytest
+          python3 -m pytest --version
+
 
       - name: Run Pytest (generate reports)
         run: |
           mkdir -p reports
-          pytest -v -s tests \
+          python3 -m pytest -v -s tests \
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
+
 
       - name: List reports
         if: always()
