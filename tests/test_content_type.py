@@ -6,7 +6,7 @@ from urllib.parse import urlparse, parse_qs, unquote
 import requests
 import pytest
 
-COLLECTION_PATH = "Test_Search_Basic_Logic.postman_collection.json"
+COLLECTION_PATH = "Test.postman_collection.json"
 TIMEOUT = 20
 
 REPORT_DIR = "reports"
