@@ -87,22 +87,6 @@ jobs:
           echo "Xray response:"
           cat reports/xray_import_response.json
 
-      - name: Verify Jira auth
-        if: always()
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        run: |
-          set -euo pipefail
-          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
-
-          echo "Check /myself ..."
-          curl -sS -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
-            -H "Accept: application/json" \
-            "$JIRA_BASE_URL/rest/api/3/myself" | head -c 300; echo
-
-
       - name: Attach HTML report to Jira
         if: always()
         env:
@@ -112,35 +96,26 @@ jobs:
         run: |
           set -euo pipefail
 
-          # ---- Validate prereqs ----
+          JIRA_BASE_URL="$(echo "$JIRA_BASE_URL" | tr -d '\r\n' | xargs)"
+          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+
           if [ ! -f reports/report.html ]; then
             echo "ERROR: reports/report.html not found"
             ls -la reports || true
             exit 1
           fi
 
-          if [ -z "${JIRA_BASE_URL:-}" ] || [ -z "${JIRA_EMAIL:-}" ] || [ -z "${JIRA_API_TOKEN:-}" ]; then
-            echo "ERROR: Missing Jira secrets. Need JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN"
-            exit 1
-          fi
+          TEST_EXEC_ID=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('id',''))" | tr -d '\r\n' | xargs)
 
-          # Clean base url (remove trailing slash + trim)
-          JIRA_BASE_URL="$(echo "$JIRA_BASE_URL" | tr -d '\r\n' | xargs)"
-          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
-
-          TEST_EXEC_KEY=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('key',''))" | tr -d '\r\n' | xargs)
-
-          if [ -z "$TEST_EXEC_KEY" ]; then
-            echo "ERROR: Cannot find Test Execution key"
+          if [ -z "$TEST_EXEC_ID" ]; then
+            echo "ERROR: Cannot find Test Execution id"
             cat reports/xray_import_response.json
             exit 1
           fi
 
-          URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
+          URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_ID/attachments"
           echo "Attach URL: $URL"
-          echo "Attach report to $TEST_EXEC_KEY"
 
-          # ---- Upload ----
           curl -sS -v --fail-with-body \
             -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
             -H "X-Atlassian-Token: no-check" \
