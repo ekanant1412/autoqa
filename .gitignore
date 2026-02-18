@@ -1,5 +1,12 @@
-.venv/
-.pytest_cache/
+# Python
 __pycache__/
 *.pyc
-.env
+venv/
+
+# Test reports
+reports/
+*.xml
+*.html
+
+# macOS
+.DS_Store
