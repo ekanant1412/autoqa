@@ -11,15 +11,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug DNS/Network
-        shell: bash
+      - name: Debug DNS / Network
         run: |
           echo "== Resolve internal host =="
-          python3 <<'PY'
+
+          python3 -c "
 import socket
-host = "ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-print("resolved:", host, "->", socket.gethostbyname(host))
-PY
+host='ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th'
+print('resolved:', host, '->', socket.gethostbyname(host))
+"
 
           echo "== Curl internal host =="
-          curl -I --max-time 5 "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/" || true
+          curl -I --max-time 5 http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th || true
