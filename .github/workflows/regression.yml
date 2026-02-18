@@ -2,10 +2,6 @@ name: Content Type Regression
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  schedule:
-    - cron: "0 2 * * *"
 
 jobs:
   regression-test:
@@ -15,138 +11,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: Debug DNS/Network
+        shell: bash
         run: |
-          echo "== DNS (short) =="
-          scutil --dns | sed -n '1,120p' || true
-
           echo "== Resolve internal host =="
           python3 <<'PY'
 import socket
 host = "ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-try:
-    print("resolved:", host, "->", socket.gethostbyname(host))
-except Exception as e:
-    print("DNS resolve failed:", e)
-    raise
+print("resolved:", host, "->", socket.gethostbyname(host))
 PY
 
           echo "== Curl internal host =="
           curl -I --max-time 5 "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/" || true
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt || true
-          pip install pytest requests pytest-html
-
-      - name: Run Pytest Regression
-        env:
-          PYTHONPATH: ${{ github.workspace }}
-        run: |
-          mkdir -p reports
-          pytest -v -s tests \
-            --junitxml=reports/junit.xml \
-            --html=reports/report.html --self-contained-html
-        continue-on-error: true
-
-      - name: Import JUnit to Xray
-        if: always()
-        env:
-          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
-          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
-          XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
-        run: |
-          set -euo pipefail
-
-          if [ ! -f reports/junit.xml ]; then
-            echo "ERROR: reports/junit.xml not found (pytest may not have produced it)"
-            ls -la reports || true
-            exit 1
-          fi
-
-          echo "Authenticate Xray..."
-          TOKEN=$(curl -s -H "Content-Type: application/json" \
-            -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
-            -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
-
-          if [ -z "$TOKEN" ]; then
-            echo "ERROR: Xray token is empty"
-            exit 1
-          fi
-
-          echo "Import JUnit to Xray..."
-          curl -s -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: text/xml" \
-            --data-binary @reports/junit.xml \
-            "https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY" \
-            > reports/xray_import_response.json
-
-          echo "Xray response:"
-          cat reports/xray_import_response.json
-
-      - name: Attach HTML report to Jira
-        if: always()
-        env:
-          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
-          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
-          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          if [ ! -f reports/report.html ]; then
-            echo "WARN: reports/report.html not found, skip attaching."
-            exit 0
-          fi
-
-          if [ ! -f reports/xray_import_response.json ]; then
-            echo "ERROR: reports/xray_import_response.json not found (Xray import step may have failed)"
-            exit 1
-          fi
-
-          TEST_EXEC_KEY=$(python3 <<'PY'
-import json
-data = json.load(open("reports/xray_import_response.json", "r", encoding="utf-8"))
-
-candidates = [
-    ("testExecIssue","key"),
-    ("testExecutionIssue","key"),
-    ("testExecKey",),
-    ("key",),
-]
-
-key = ""
-for path in candidates:
-    cur = data
-    ok = True
-    for p in path:
-        if isinstance(cur, dict) and p in cur:
-            cur = cur[p]
-        else:
-            ok = False
-            break
-    if ok and isinstance(cur, str) and cur.strip():
-        key = cur.strip()
-        break
-
-print(key)
-PY
-          )
-
-          if [ -z "$TEST_EXEC_KEY" ]; then
-            echo "ERROR: Cannot find Test Execution key from xray_import_response.json"
-            cat reports/xray_import_response.json
-            exit 1
-          fi
-
-          echo "Attach report to: $TEST_EXEC_KEY"
-
-          curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
-            -H "X-Atlassian-Token: no-check" \
-            -F "file=@reports/report.html" \
-            "$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
