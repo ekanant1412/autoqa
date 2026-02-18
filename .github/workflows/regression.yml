@@ -96,9 +96,23 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "Extract Test Execution key..."
+          # ---- Validate prereqs ----
+          if [ ! -f reports/report.html ]; then
+            echo "ERROR: reports/report.html not found"
+            ls -la reports || true
+            exit 1
+          fi
 
-          TEST_EXEC_KEY=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('key',''))")
+          if [ -z "${JIRA_BASE_URL:-}" ] || [ -z "${JIRA_EMAIL:-}" ] || [ -z "${JIRA_API_TOKEN:-}" ]; then
+            echo "ERROR: Missing Jira secrets. Need JIRA_BASE_URL, JIRA_EMAIL, JIRA_API_TOKEN"
+            exit 1
+          fi
+
+          # Clean base url (remove trailing slash + trim)
+          JIRA_BASE_URL="$(echo "$JIRA_BASE_URL" | tr -d '\r\n' | xargs)"
+          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+
+          TEST_EXEC_KEY=$(python3 -c "import json;print(json.load(open('reports/xray_import_response.json')).get('key',''))" | tr -d '\r\n' | xargs)
 
           if [ -z "$TEST_EXEC_KEY" ]; then
             echo "ERROR: Cannot find Test Execution key"
@@ -106,9 +120,14 @@ jobs:
             exit 1
           fi
 
+          URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
+          echo "Attach URL: $URL"
           echo "Attach report to $TEST_EXEC_KEY"
 
-          curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+          # ---- Upload ----
+          curl -sS -v --fail-with-body \
+            -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
             -H "X-Atlassian-Token: no-check" \
             -F "file=@reports/report.html" \
-            "$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
+            "$URL"
+
