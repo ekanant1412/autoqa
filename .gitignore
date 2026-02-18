@@ -1,15 +1,13 @@
 # Python
 __pycache__/
 *.pyc
-
-# venv
 .venv/
 venv/
 
-# reports/artifacts
+# Reports
 reports/
 *.xml
 *.html
 
-# macOS
+# OS
 .DS_Store

@@ -1,8 +1,0 @@
-index,item_id,expected_content_type,actual_content_type,status,metadata_lookup,metadata_http_status
-1,7ao7r42eMGDa,gamearticle,gamearticle,PASS,query,200
-2,Zdqw9jvbxMbp,gamearticle,gamearticle,PASS,query,200
-3,ZrEpkOYVjoO3,gamearticle,gamearticle,PASS,query,200
-4,oGwBy02r0J6O,gamearticle,gamearticle,PASS,query,200
-5,Jvn7l407ly72,gamearticle,gamearticle,PASS,query,200
-6,K75O3W6LZr1v,gamearticle,gamearticle,PASS,query,200
-7,nRnYlknzJgjy,gamearticle,gamearticle,PASS,query,200
