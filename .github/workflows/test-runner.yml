@@ -1,0 +1,15 @@
+name: Test Self Hosted Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, preprod]
+
+    steps:
+      - name: Check runner
+        run: |
+          echo "Runner is working!"
+          uname -a
+          pwd
