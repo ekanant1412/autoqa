@@ -1,0 +1,39 @@
+name: Content Type Regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: "0 2 * * *"
+
+jobs:
+  regression-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest requests pytest-html
+
+      - name: Run Pytest Regression
+        run: |
+          mkdir -p reports
+          pytest -v -s \
+            --junitxml=reports/junit.xml \
+            --html=reports/report.html --self-contained-html
+
+      - name: Upload Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-report
+          path: reports/
