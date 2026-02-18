@@ -33,11 +33,83 @@ jobs:
           pytest -v -s tests \
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
+            
+      - name: Import JUnit to Xray
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
+        run: |
+          set -euo pipefail
+
+          echo "Authenticate Xray..."
+          TOKEN=$(curl -s -H "Content-Type: application/json" \
+            -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
+            -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" | tr -d '"')
+
+          if [ -z "$TOKEN" ]; then
+            echo "ERROR: Xray token is empty"
+            exit 1
+          fi
+
+          echo "Import JUnit to Xray..."
+          curl -s -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: text/xml" \
+            --data-binary @reports/junit.xml \
+            "https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY" \
+            > reports/xray_import_response.json
+
+          echo "Xray response:"
+          cat reports/xray_import_response.json
 
 
+      - name: Attach HTML report to Jira
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          set -euo pipefail
 
-      - name: Upload Report Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: regression-report
-          path: reports/
+          TEST_EXEC_KEY=$(python - <<'PY'
+          import json
+          data = json.load(open("reports/xray_import_response.json", "r", encoding="utf-8"))
+
+          # ลองหลาย path ที่เจอบ่อย (กัน response รูปแบบต่างกัน)
+          candidates = [
+              ("testExecIssue","key"),
+              ("testExecutionIssue","key"),
+              ("testExecKey",),
+              ("key",),
+          ]
+
+          key = ""
+          for path in candidates:
+              cur = data
+              ok = True
+              for p in path:
+                  if isinstance(cur, dict) and p in cur:
+                      cur = cur[p]
+                  else:
+                      ok = False
+                      break
+              if ok and isinstance(cur, str) and cur.strip():
+                  key = cur.strip()
+                  break
+
+          print(key)
+          PY
+          )
+
+          if [ -z "$TEST_EXEC_KEY" ]; then
+            echo "ERROR: Cannot find Test Execution key from xray_import_response.json"
+            cat reports/xray_import_response.json
+            exit 1
+          fi
+
+          echo "Attach report to: $TEST_EXEC_KEY"
+
+          curl -s -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+            -H "X-Atlassian-Token: no-check" \
+            -F "file=@reports/report.html" \
+            "$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
