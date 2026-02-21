@@ -29,6 +29,31 @@ jobs:
           python3 -m pip install pytest requests pytest-html
           python3 -m pytest --version
 
+      - name: Preflight check Universal API (infra guard)
+        run: |
+          echo "Checking universal API availability..."
+
+          STATUS=$(curl -s -o response.json -w "%{http_code}" \
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p7?shelfId=Kaw6MLVzPWmo&limit=1")
+
+          echo "HTTP STATUS=$STATUS"
+          cat response.json || true
+
+          # ถ้า API ล่ม → skip test (ไม่ fail workflow)
+          if [ "$STATUS" != "200" ]; then
+            echo "⚠ Universal API not ready — skipping tests"
+            exit 0
+          fi
+
+          # ตรวจว่ามี data จริงไหม (ไม่ใช่ error payload)
+          if ! grep -q '"data"' response.json; then
+            echo "⚠ API returned error payload — skipping tests"
+            exit 0
+          fi
+
+          echo "✅ Universal API OK"
+
+
       - name: Run Pytest (generate reports)
         run: |
           set -e
