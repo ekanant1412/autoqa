@@ -1,13 +1,12 @@
 import json
 import os
-import sys
 from typing import Any, Dict, List, Tuple
 
 import requests
 
-# =====================================================
-# 1) URL (ใช้ของคุณเป็น default แต่ override ได้ด้วย env URL)
-# =====================================================
+# ===================== CONFIG =====================
+TEST_KEY = "DMPREC-9589"
+
 DEFAULT_URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
     "/api/v1/universal/sfv-p7"
@@ -28,8 +27,15 @@ DEFAULT_URL = (
 URL = os.getenv("URL", DEFAULT_URL)
 TIMEOUT_SEC = int(os.getenv("TIMEOUT_SEC", "25"))
 
+REPORT_DIR = "reports"
+ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
+os.makedirs(ART_DIR, exist_ok=True)
+
+RAW_PATH = f"{ART_DIR}/universal_debug_response.json"
+REPORT_PATH = f"{ART_DIR}/bucketize_partner_related_report.json"
+
 # =====================================================
-# 2) Nodes ที่ต้องตรวจ (แก้เพิ่ม/ลดได้)
+# Nodes ที่ต้องตรวจ
 # =====================================================
 TARGET_NODES = [
     "bucketize_tophit_sfv",
@@ -39,13 +45,11 @@ TARGET_NODES = [
 ]
 
 # =====================================================
-# 3) partner_related allowed values
+# partner_related allowed values
 # =====================================================
 ALLOWED_PARTNER_ID = "AN9PjZR1wEol"
 
 
-# =====================================================
-# Find nodes by "name"
 # =====================================================
 def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
     found: List[Dict[str, Any]] = []
@@ -60,11 +64,6 @@ def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
     return found
 
 
-# =====================================================
-# Iterate items from node.result
-# - result can be dict: {bucket_name: [items...], ...}
-# - or list: [items...]
-# =====================================================
 def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
     out: List[Tuple[str, Dict[str, Any]]] = []
 
@@ -85,10 +84,6 @@ def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
     return out
 
 
-# =====================================================
-# Allowed check (FIX: handle list safely)
-# partner_related must be: None OR [] OR "AN9PjZR1wEol"
-# =====================================================
 def is_partner_allowed(partner_value: Any) -> bool:
     if partner_value is None:
         return True
@@ -99,9 +94,6 @@ def is_partner_allowed(partner_value: Any) -> bool:
     return False
 
 
-# =====================================================
-# Validate: partner_related must be allowed
-# =====================================================
 def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
     node_name = node.get("name", "(no_name)")
     result = node.get("result")
@@ -147,24 +139,14 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # =====================================================
-# Main
-# =====================================================
-def main():
-    print("Fetching URL:")
-    print(URL)
-    print("Timeout:", TIMEOUT_SEC, "sec")
-
+def run_check() -> Dict[str, Any]:
     r = requests.get(URL, timeout=TIMEOUT_SEC)
-    print("HTTP:", r.status_code)
     r.raise_for_status()
     data = r.json()
 
-    # Save raw response for evidence
-    os.makedirs("artifacts", exist_ok=True)
-    raw_path = "artifacts/universal_debug_response.json"
-    with open(raw_path, "w", encoding="utf-8") as f:
+    # evidence: raw response
+    with open(RAW_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print("Saved raw response:", raw_path)
 
     nodes = deep_find_nodes(data, TARGET_NODES)
     found_names = {n.get("name") for n in nodes if isinstance(n, dict)}
@@ -182,58 +164,48 @@ def main():
         failed_all += rep["failed_items"]
         all_fail_rows.extend(rep.get("fail_all", []))
 
-    print("\n========== Partner Related Check (Bucketize Nodes) ==========")
-    print("Allowed partner_related:", "null", "[]", f"'{ALLOWED_PARTNER_ID}'")
-    print("Target nodes:", ", ".join(TARGET_NODES))
-    print("")
+    result = {
+        "test_key": TEST_KEY,
+        "url": URL,
+        "target_nodes": TARGET_NODES,
+        "missing_nodes": missing_nodes,
+        "allowed_partner_related": [None, [], ALLOWED_PARTNER_ID],
+        "total_items_all": total_all,
+        "failed_all": failed_all,
+        "fail_rows_all_count": len(all_fail_rows),
+        "fail_rows_all_sample": all_fail_rows[:30],
+        "node_reports": node_reports,
+        "status": "FAIL" if failed_all > 0 else "PASS",
+    }
 
-    for rep in node_reports:
-        print(f"NODE: {rep['node']}")
-        print(f"  total_items  : {rep['total_items']}")
-        print(f"  failed_items : {rep['failed_items']}")
-        if rep["note"]:
-            print(f"  note         : {rep['note']}")
-        if rep["failed_items"] > 0:
-            print("  FAIL samples:")
-            for row in rep["fail_samples"]:
-                print(
-                    f"    - node={row['node']} bucket={row['bucket']} id={row['id']} "
-                    f"partner_related={row['partner_related']!r}"
-                )
-                print(f"      reason: {row['reason']}")
-        print("")
-
-    if missing_nodes:
-        print("⚠️ Missing nodes (not found in response JSON):", ", ".join(missing_nodes))
-        print("   (ไม่ถือว่า fail ถ้า response ไม่ได้ include node นั้นใน verbose/debug)\n")
-
-    # Save report
-    report_path = "artifacts/bucketize_partner_related_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
+    # evidence: report
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
         json.dump(
             {
-                "url": URL,
-                "target_nodes": TARGET_NODES,
-                "missing_nodes": missing_nodes,
-                "allowed_partner_related": [None, [], ALLOWED_PARTNER_ID],
-                "total_items_all": total_all,
-                "failed_all": failed_all,
-                "fail_rows_all": all_fail_rows,
-                "node_reports": node_reports,
+                **result,
+                "fail_rows_all": all_fail_rows,  # full list kept in file
             },
             f,
             ensure_ascii=False,
             indent=2,
         )
-    print("Saved report:", report_path)
 
     if failed_all > 0:
-        print(f"\n❌ FAIL: พบ item ที่ partner_related ไม่ตรงตาม allowed = {failed_all} รายการ")
-        sys.exit(1)
+        sample = []
+        for row in all_fail_rows[:10]:
+            sample.append(f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}")
+        raise AssertionError(f"{TEST_KEY} FAIL: partner_related invalid count={failed_all}. sample={sample}")
 
-    print("\n✅ PASS: ทุก item ใน bucketize nodes partner_related อยู่ใน allowed (null/[]/'AN9PjZR1wEol')")
-    sys.exit(0)
+    return result
+
+
+# =====================================================
+# ✅ PYTEST ENTRY (Xray mapping)
+# =====================================================
+def test_DMPREC_9589():
+    result = run_check()
+    print("RESULT:", result["status"], "failed_all=", result["failed_all"])
 
 
 if __name__ == "__main__":
-    main()
+    run_check()

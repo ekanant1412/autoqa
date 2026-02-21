@@ -2,14 +2,11 @@ import requests
 import json
 from datetime import datetime
 import os
-
-# ================= DEBUG =================
-print("\n=== SCRIPT STARTED ===")
-print("RUNNING FILE:", __file__)
-print("WORKDIR:", os.getcwd())
-print("================================\n")
+from typing import Any, Dict, List, Tuple
 
 # ===================== CONFIG =====================
+TEST_KEY = "DMPREC-9587"
+
 URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p7"
     "?shelfId=Kaw6MLVzPWmo"
@@ -27,10 +24,17 @@ URL = (
 )
 
 TIMEOUT_SEC = 20
-LOG_TXT = "pin_check.log"
+
+REPORT_DIR = "reports"
+ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
+os.makedirs(ART_DIR, exist_ok=True)
+
+LOG_TXT = f"{ART_DIR}/pin_check.log"
+RESULT_JSON = f"{ART_DIR}/pin_check_result.json"
+FULL_RESPONSE_JSON = f"{ART_DIR}/pin_check_full_response.json"
+
+
 # =================================================
-
-
 def tlog(msg: str):
     line = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | {msg}\n"
     with open(LOG_TXT, "a", encoding="utf-8") as f:
@@ -101,15 +105,9 @@ def check_pin_positions_until_exhausted(merge_ids, pin_ids, n=5):
         for i, mid in enumerate(block):
             if mid in pin_set:
                 pins_in_block.append(
-                    {
-                        "pin_id": mid,
-                        "pos0": i,                 # 0-4
-                        "pos1": i + 1,             # 1-5
-                        "rank": start + i + 1      # global rank
-                    }
+                    {"pin_id": mid, "pos0": i, "pos1": i + 1, "rank": start + i + 1}
                 )
 
-        # ถ้า block นี้ไม่มี pin → ถือว่าหมดแล้ว
         if not pins_in_block:
             stopped_at_block = block_index
             stopped_reason = "pin exhausted -> stop checking next blocks"
@@ -126,31 +124,19 @@ def check_pin_positions_until_exhausted(merge_ids, pin_ids, n=5):
     return found_blocks, stopped_at_block, stopped_reason
 
 
-def main():
+# =================================================
+def run_check():
     # reset log
     open(LOG_TXT, "w", encoding="utf-8").close()
 
+    tlog(f"TEST={TEST_KEY}")
     tlog(f"URL={URL}")
 
-    try:
-        r = requests.get(URL, timeout=TIMEOUT_SEC)
-    except Exception as e:
-        tlog(f"REQUEST ERROR: {repr(e)}")
-        return
-
+    r = requests.get(URL, timeout=TIMEOUT_SEC)
     tlog(f"HTTP={r.status_code}")
+    r.raise_for_status()
 
-    try:
-        j = r.json()
-    except Exception:
-        tlog("Response not JSON")
-        tlog(r.text[:1000])
-        return
-
-    if r.status_code != 200:
-        tlog(json.dumps(j, indent=2, ensure_ascii=False)[:2000])
-        return
-
+    j = r.json()
     results = get_results_root(j)
 
     pin_ids = extract_candidate_pin_global_ids(results)
@@ -163,9 +149,7 @@ def main():
     if not merge_ids:
         tlog("[WARN] merge_page_ids is empty or missing (merge_page.result.items not found)")
 
-    # ---------------------------------------------
-    # CHECK 0: if no pin in candidate_pin_global => OK (no need to insert)
-    # ---------------------------------------------
+    # CHECK 0: if no pin in candidate_pin_global => OK (skip insertion checks)
     tlog("=== TC-PIN: candidate_pin_global availability ===")
     if not pin_ids:
         tlog("PASS no pin_ids in candidate_pin_global (pin exhausted) -> SKIP insertion checks")
@@ -175,10 +159,10 @@ def main():
         stopped_at_block = None
         stopped_reason = "no pin_ids in candidate_pin_global"
 
+        status = "PASS"
+
     else:
-        # ---------------------------------------------
         # CHECK 1: pin must exist in merge_page
-        # ---------------------------------------------
         merge_set = set(merge_ids)
         missing_in_merge = [pid for pid in pin_ids if pid not in merge_set]
 
@@ -188,9 +172,7 @@ def main():
         else:
             tlog("PASS all pin_ids exist in merge_page")
 
-        # ---------------------------------------------
-        # CHECK 2: pin position per block (0-4) until exhausted
-        # ---------------------------------------------
+        # CHECK 2: pin position per block until exhausted
         tlog("=== TC-PIN-BLOCK: pin position (0-4) per block (STOP when exhausted) ===")
 
         pin_block_positions, stopped_at_block, stopped_reason = (
@@ -216,39 +198,46 @@ def main():
         else:
             tlog("DONE checked all blocks (no exhaustion detected)")
 
-    # ---------------------------------------------
-    # SAVE RESULT
-    # ---------------------------------------------
-    with open("pin_check_result.json", "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                "url": URL,
-                "pin_ids": pin_ids,
-                "merge_page_ids": merge_ids,
-                "missing_in_merge": missing_in_merge,
-                "pin_block_positions": pin_block_positions,
-                "pin_check_stopped_at_block": stopped_at_block,
-                "pin_check_stopped_reason": stopped_reason,
-            },
-            f,
-            indent=2,
-            ensure_ascii=False,
-        )
+        # define FAIL condition (สำคัญ)
+        # - ถ้ามี pin_ids แต่บางอันไม่อยู่ใน merge_page => FAIL
+        status = "FAIL" if missing_in_merge else "PASS"
 
-    with open("pin_check_full_response.json", "w", encoding="utf-8") as f:
+    # SAVE RESULT + full response (evidence)
+    result = {
+        "test_key": TEST_KEY,
+        "url": URL,
+        "pin_ids": pin_ids,
+        "merge_page_ids": merge_ids,
+        "missing_in_merge": missing_in_merge,
+        "pin_block_positions": pin_block_positions,
+        "pin_check_stopped_at_block": stopped_at_block,
+        "pin_check_stopped_reason": stopped_reason,
+        "status": status,
+    }
+
+    with open(RESULT_JSON, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, ensure_ascii=False)
+
+    with open(FULL_RESPONSE_JSON, "w", encoding="utf-8") as f:
         json.dump(j, f, indent=2, ensure_ascii=False)
 
-    tlog("Saved: pin_check_result.json")
-    tlog("Saved: pin_check_full_response.json")
+    tlog(f"Saved: {RESULT_JSON}")
+    tlog(f"Saved: {FULL_RESPONSE_JSON}")
     tlog(f"Saved: {LOG_TXT}")
+
+    if status == "FAIL":
+        raise AssertionError(f"{TEST_KEY} FAIL: missing_in_merge={missing_in_merge[:30]} (total={len(missing_in_merge)})")
+
+    return result
+
+
+# =================================================
+# ✅ PYTEST ENTRY (Xray mapping)
+# =================================================
+def test_DMPREC_9587():
+    result = run_check()
+    print("RESULT:", result["status"])
 
 
 if __name__ == "__main__":
-    try:
-        print(">>> ENTER MAIN()")
-        main()
-        print(">>> MAIN() FINISHED")
-    except Exception:
-        print("\n!!! FATAL ERROR !!!")
-        import traceback
-        traceback.print_exc()
+    run_check()

@@ -1,15 +1,14 @@
 import json
 import os
 import re
-import sys
 import unicodedata
 from typing import Any, Dict, List, Tuple
 
 import requests
 
-# =====================================================
-# 1) URL (ใช้ของคุณเป็น default แต่ override ได้ด้วย env URL)
-# =====================================================
+# ===================== CONFIG =====================
+TEST_KEY = "DMPREC-9586"
+
 DEFAULT_URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
     "/api/v1/universal/sfv-p7"
@@ -30,8 +29,15 @@ DEFAULT_URL = (
 URL = os.getenv("URL", DEFAULT_URL)
 TIMEOUT_SEC = int(os.getenv("TIMEOUT_SEC", "25"))
 
+REPORT_DIR = "reports"
+ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
+os.makedirs(ART_DIR, exist_ok=True)
+
+RAW_PATH = f"{ART_DIR}/universal_debug_response.json"
+REPORT_PATH = f"{ART_DIR}/bucketize_711_keyword_report.json"
+
 # =====================================================
-# 2) KEYWORDS: ต้องเจออย่างน้อย 1 คำใน (title/tags/article_category)
+# 1) KEYWORDS: ต้องเจออย่างน้อย 1 คำใน (title/tags/article_category)
 # =====================================================
 KEYWORDS = [
     "7-11",
@@ -50,7 +56,7 @@ KEYWORDS = [
 ]
 
 # =====================================================
-# 3) 4 Nodes ที่ต้องตรวจ
+# 2) 4 Nodes ที่ต้องตรวจ
 # =====================================================
 TARGET_NODES = [
     "bucketize_tophit_sfv",
@@ -66,16 +72,9 @@ def normalize(text: Any) -> str:
     if text is None:
         return ""
     text = str(text)
-
-    # normalize unicode (เช่น full-width)
     text = unicodedata.normalize("NFKC", text)
-
-    # normalize dash ( - / – / — / − )
     text = text.replace("–", "-").replace("—", "-").replace("−", "-")
-
-    # collapse spaces
     text = re.sub(r"\s+", " ", text).strip()
-
     return text.lower()
 
 def join_field(v: Any) -> str:
@@ -97,7 +96,7 @@ def contains_keyword(text: Any) -> Tuple[bool, str]:
 # Find nodes by "name"
 # =====================================================
 def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
-    found = []
+    found: List[Dict[str, Any]] = []
     if isinstance(obj, dict):
         if obj.get("name") in target_names:
             found.append(obj)
@@ -119,11 +118,10 @@ def validate_node(node: Dict[str, Any]) -> Dict[str, Any]:
         "node": node_name,
         "total_items": 0,
         "failed_items": 0,
-        "fail_samples": [],   # เก็บแค่บางส่วนไว้แสดง
+        "fail_samples": [],
         "note": "",
     }
 
-    # result ว่าง = OK (0 items) — ถ้าคุณอยากให้ถือว่า fail บอกได้เดี๋ยวเพิ่ม flag
     if not isinstance(result, dict) or not result:
         report["note"] = "result is empty (0 items) - treated as OK"
         return report
@@ -164,30 +162,20 @@ def validate_node(node: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 # =====================================================
-# Main
-# =====================================================
-def main():
-    print("Fetching URL:")
-    print(URL)
-    print("Timeout:", TIMEOUT_SEC, "sec")
-
+def run_check() -> Dict[str, Any]:
     r = requests.get(URL, timeout=TIMEOUT_SEC)
-    print("HTTP:", r.status_code)
     r.raise_for_status()
     data = r.json()
 
-    # Save raw response (เผื่อแนบ evidence / debug)
-    os.makedirs("artifacts", exist_ok=True)
-    raw_path = "artifacts/universal_debug_response.json"
-    with open(raw_path, "w", encoding="utf-8") as f:
+    # Save raw response (evidence)
+    with open(RAW_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print("Saved raw response:", raw_path)
 
     nodes = deep_find_nodes(data, TARGET_NODES)
     found_names = {n.get("name") for n in nodes if isinstance(n, dict)}
     missing_nodes = [n for n in TARGET_NODES if n not in found_names]
 
-    node_reports = []
+    node_reports: List[Dict[str, Any]] = []
     total_all = 0
     failed_all = 0
 
@@ -197,52 +185,44 @@ def main():
         total_all += rep["total_items"]
         failed_all += rep["failed_items"]
 
-    print("\n========== 7-11 Keyword Check (Bucketize Nodes) ==========")
-    print("Keywords:", ", ".join(KEYWORDS))
-    print("")
+    result = {
+        "test_key": TEST_KEY,
+        "url": URL,
+        "keywords": KEYWORDS,
+        "target_nodes": TARGET_NODES,
+        "missing_nodes": missing_nodes,
+        "total_items_all": total_all,
+        "failed_all": failed_all,
+        "node_reports": node_reports,
+        "status": "FAIL" if failed_all > 0 else "PASS",
+    }
 
-    for rep in node_reports:
-        print(f"NODE: {rep['node']}")
-        print(f"  total_items  : {rep['total_items']}")
-        print(f"  failed_items : {rep['failed_items']}")
-        if rep["note"]:
-            print(f"  note         : {rep['note']}")
-        if rep["failed_items"] > 0:
-            print("  FAIL samples:")
-            for row in rep["fail_samples"]:
-                print(f"    - [{row['bucket']}] id={row['id']} title={str(row['title'])[:100]!r}")
-        print("")
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
 
-    if missing_nodes:
-        print("⚠️ Missing nodes (not found in response JSON):", ", ".join(missing_nodes))
-        print("   (ไม่ถือว่า fail ถ้า response ไม่ได้ include node นั้นใน verbose/debug)\n")
-
-    # Save report
-    report_path = "artifacts/bucketize_711_keyword_report.json"
-    with open(report_path, "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                "url": URL,
-                "keywords": KEYWORDS,
-                "target_nodes": TARGET_NODES,
-                "missing_nodes": missing_nodes,
-                "total_items_all": total_all,
-                "failed_all": failed_all,
-                "node_reports": node_reports,
-            },
-            f,
-            ensure_ascii=False,
-            indent=2,
-        )
-    print("Saved report:", report_path)
-
-    # Fail for CI if actual violation exists
+    # ทำให้ pytest fail จริงถ้าเจอ violation
     if failed_all > 0:
-        print("\n❌ FAIL: พบ item ที่ไม่มี keyword ใน title/tags/article_category")
-        sys.exit(1)
+        sample = []
+        for rep in node_reports:
+            for row in rep.get("fail_samples", []):
+                sample.append(f"{rep['node']}[{row['bucket']}] id={row['id']}")
+                if len(sample) >= 5:
+                    break
+            if len(sample) >= 5:
+                break
+        raise AssertionError(
+            f"{TEST_KEY} FAIL: found {failed_all} item(s) without keyword. sample={sample}"
+        )
 
-    print("\n✅ PASS: ทุก item ที่ออกมา มี keyword อย่างน้อย 1 คำใน 3 field")
-    sys.exit(0)
+    return result
 
+# =====================================================
+# ✅ PYTEST ENTRY (Xray mapping)
+# =====================================================
+def test_DMPREC_9586():
+    result = run_check()
+    print("RESULT:", result["status"], "failed_all=", result["failed_all"])
+
+# =====================================================
 if __name__ == "__main__":
-    main()
+    run_check()
