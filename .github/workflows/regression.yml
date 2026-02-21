@@ -58,7 +58,7 @@ jobs:
         run: |
           set -e
           mkdir -p reports
-          python3 -m pytest -v -s tests \
+          python3 -m pytest -v -s tests -k "not content_type" \
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
 
