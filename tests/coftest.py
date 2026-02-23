@@ -95,3 +95,28 @@ def pytest_collection_modifyitems(items):
         if key:
             # ใช้ property แทน marker เพื่อให้ Xray map กับ test case เดิม
             item.user_properties.append(("test_key", key))
+
+
+import xml.etree.ElementTree as ET
+
+@pytest.hookimpl(trylast=True)
+def pytest_sessionfinish(session, exitstatus):
+    # ... โค้ดเดิม ...
+
+    # Patch junit.xml ให้ Xray อ่าน test_key ได้
+    junit_path = "reports/junit.xml"
+    if os.path.exists(junit_path):
+        tree = ET.parse(junit_path)
+        root = tree.getroot()
+        for testcase in root.iter("testcase"):
+            name = testcase.get("name", "")
+            m = TESTKEY_RE.search(name)
+            if m:
+                key = m.group(1).replace("_", "-")
+                props = testcase.find("properties")
+                if props is None:
+                    props = ET.SubElement(testcase, "properties")
+                prop = ET.SubElement(props, "property")
+                prop.set("name", "test_key")
+                prop.set("value", key)
+        tree.write(junit_path, encoding="unicode", xml_declaration=True)
