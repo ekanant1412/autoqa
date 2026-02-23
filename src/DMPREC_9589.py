@@ -91,6 +91,9 @@ def is_partner_allowed(partner_value: Any) -> bool:
         return True
     if isinstance(partner_value, list) and len(partner_value) == 0:
         return True
+    # เพิ่มตรงนี้ --- รองรับกรณี API ส่งมาเป็น list
+    if isinstance(partner_value, list) and all(v == ALLOWED_PARTNER_ID for v in partner_value):
+        return True
     return False
 
 
