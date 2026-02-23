@@ -3,6 +3,7 @@ import re
 import json
 import zipfile
 import pytest
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 TESTKEY_RE = re.compile(r"(DMPREC[-_]\d+)")
@@ -96,8 +97,6 @@ def pytest_collection_modifyitems(items):
             # ใช้ property แทน marker เพื่อให้ Xray map กับ test case เดิม
             item.user_properties.append(("test_key", key))
 
-
-import xml.etree.ElementTree as ET
 
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session, exitstatus):
