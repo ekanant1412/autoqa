@@ -25,12 +25,18 @@ def _zip_folder(src_dir: str, zip_path: str):
                 z.write(fp, rel)
 
 
+def pytest_collection_modifyitems(items):
+    for item in items:
+        key = _get_test_key(item.nodeid)
+        if key:
+            item.user_properties.append(("test_key", key))
+
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
 
-    # สร้าง evidence ตอนจบ test call เท่านั้น
     if rep.when != "call":
         return
 
@@ -38,12 +44,10 @@ def pytest_runtest_makereport(item, call):
     if not key:
         return
 
-    # แต่ละเคสของคุณเขียน output อยู่ใน reports/<DMPREC-xxxx>/ อยู่แล้ว
     src_dir = os.path.join("reports", key)
     ev_dir = os.path.join("reports", "evidence", key)
     os.makedirs(ev_dir, exist_ok=True)
 
-    # เก็บ meta ของ test run
     meta = {
         "test_key": key,
         "nodeid": item.nodeid,
@@ -54,12 +58,10 @@ def pytest_runtest_makereport(item, call):
     with open(os.path.join(ev_dir, "meta.json"), "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    # ถ้าไม่มี output folder ก็ยัง zip meta อย่างเดียว
     if os.path.isdir(src_dir):
         zip_path = os.path.join(ev_dir, "evidence.zip")
         _zip_folder(src_dir, zip_path)
     else:
-        # zip meta.json อย่างเดียว
         zip_path = os.path.join(ev_dir, "evidence.zip")
         with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as z:
             z.write(os.path.join(ev_dir, "meta.json"), "meta.json")
@@ -67,42 +69,9 @@ def pytest_runtest_makereport(item, call):
 
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session, exitstatus):
-    """
-    สร้าง summary report รวมทุก DMPREC
-    """
     os.makedirs("reports", exist_ok=True)
 
-    # เก็บจาก results cache ของ pytest
-    # วิธีง่าย: อ่านจาก junit.xml ภายหลังได้ แต่ตรงนี้ทำ summary แบบสั้นๆ
-    summary = {
-        "exitstatus": exitstatus,
-        "generated_at": datetime.now().isoformat(timespec="seconds"),
-        "note": "Use reports/junit.xml for canonical per-test results",
-    }
-
-    with open("reports/summary.json", "w", encoding="utf-8") as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
-
-    with open("reports/summary.md", "w", encoding="utf-8") as f:
-        f.write("# Regression Summary\n\n")
-        f.write(f"- Exit status: {exitstatus}\n")
-        f.write(f"- Generated at: {summary['generated_at']}\n")
-        f.write("\nArtifacts:\n")
-        f.write("- reports/junit.xml\n- reports/report.html\n- reports/evidence/<DMPREC-xxxx>/evidence.zip\n")
-
-def pytest_collection_modifyitems(items):
-    for item in items:
-        key = _get_test_key(item.nodeid)
-        if key:
-            # ใช้ property แทน marker เพื่อให้ Xray map กับ test case เดิม
-            item.user_properties.append(("test_key", key))
-
-
-@pytest.hookimpl(trylast=True)
-def pytest_sessionfinish(session, exitstatus):
-    # ... โค้ดเดิม ...
-
-    # Patch junit.xml ให้ Xray อ่าน test_key ได้
+    # Patch junit.xml ให้ Xray map กับเคสเดิม
     junit_path = "reports/junit.xml"
     if os.path.exists(junit_path):
         tree = ET.parse(junit_path)
@@ -119,3 +88,18 @@ def pytest_sessionfinish(session, exitstatus):
                 prop.set("name", "test_key")
                 prop.set("value", key)
         tree.write(junit_path, encoding="unicode", xml_declaration=True)
+
+    summary = {
+        "exitstatus": exitstatus,
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "note": "Use reports/junit.xml for canonical per-test results",
+    }
+    with open("reports/summary.json", "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+
+    with open("reports/summary.md", "w", encoding="utf-8") as f:
+        f.write("# Regression Summary\n\n")
+        f.write(f"- Exit status: {exitstatus}\n")
+        f.write(f"- Generated at: {summary['generated_at']}\n")
+        f.write("\nArtifacts:\n")
+        f.write("- reports/junit.xml\n- reports/report.html\n- reports/evidence/<DMPREC-xxxx>/evidence.zip\n")
