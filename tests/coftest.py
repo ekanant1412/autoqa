@@ -24,14 +24,6 @@ def _zip_folder(src_dir: str, zip_path: str):
                 rel = os.path.relpath(fp, src_dir)
                 z.write(fp, rel)
 
-
-def pytest_collection_modifyitems(items):
-    for item in items:
-        key = _get_test_key(item.nodeid)
-        if key:
-            item.user_properties.append(("test_key", key))
-
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
