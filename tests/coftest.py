@@ -93,4 +93,5 @@ def pytest_collection_modifyitems(items):
     for item in items:
         key = _get_test_key(item.nodeid)
         if key:
-            item.add_marker(pytest.mark.xray(key))
+            # ใช้ property แทน marker เพื่อให้ Xray map กับ test case เดิม
+            item.user_properties.append(("test_key", key))
