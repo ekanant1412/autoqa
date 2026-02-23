@@ -1,15 +1,18 @@
 name: Test Self Hosted Runner
-
 on:
   workflow_dispatch:
-
 jobs:
   test:
     runs-on: [self-hosted, preprod]
-
     steps:
       - name: Check runner
         run: |
           echo "Runner is working!"
           uname -a
           pwd
+
+      - name: Debug network to API
+        run: |
+          curl -s --max-time 10 \
+          "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p7?shelfId=Kaw6MLVzPWmo&total_candidates=200&pool_limit_category_items=50&language=th&limit=100&userId=null&pseudoId=null&cursor=1&ga_id=100118391.0851155978&ssoId=22092422&is_use_live=true&verbose=debug" \
+          | python3 -c "import json,sys; d=json.load(sys.stdin); print('has_data:', 'data' in d); print('message:', d.get('message'))"
