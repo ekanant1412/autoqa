@@ -32,6 +32,38 @@ jobs:
             --junitxml=reports/junit.xml \
             --html=reports/report.html --self-contained-html
 
+      - name: Patch junit.xml with test_key for Xray
+        if: always()
+        run: |
+          python3 - <<'EOF'
+          import xml.etree.ElementTree as ET
+          import re, os
+
+          TESTKEY_RE = re.compile(r"(DMPREC[-_]\d+)")
+          junit_path = "reports/junit.xml"
+
+          if not os.path.exists(junit_path):
+              print("junit.xml not found, skip")
+              exit(0)
+
+          tree = ET.parse(junit_path)
+          root = tree.getroot()
+          for testcase in root.iter("testcase"):
+              name = testcase.get("name", "")
+              m = TESTKEY_RE.search(name)
+              if m:
+                  key = m.group(1).replace("_", "-")
+                  props = testcase.find("properties")
+                  if props is None:
+                      props = ET.SubElement(testcase, "properties")
+                  prop = ET.SubElement(props, "property")
+                  prop.set("name", "test_key")
+                  prop.set("value", key)
+                  print(f"Patched: {key}")
+          tree.write(junit_path, encoding="unicode", xml_declaration=True)
+          print("Done patching junit.xml")
+          EOF
+
       - name: List reports (debug)
         if: always()
         run: |
