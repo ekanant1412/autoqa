@@ -88,3 +88,9 @@ def pytest_sessionfinish(session, exitstatus):
         f.write(f"- Generated at: {summary['generated_at']}\n")
         f.write("\nArtifacts:\n")
         f.write("- reports/junit.xml\n- reports/report.html\n- reports/evidence/<DMPREC-xxxx>/evidence.zip\n")
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        key = _get_test_key(item.nodeid)
+        if key:
+            item.add_marker(pytest.mark.xray(key))
