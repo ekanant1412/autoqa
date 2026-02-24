@@ -10,18 +10,19 @@ TEST_KEY = "DMPREC-9589"
 DEFAULT_URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
     "/api/v1/universal/sfv-p7"
-    "?shelfId=BJq5rZqYzjgJ"
-    "&total_candidates=300"
-    "&pool_limit_category_items=50"
+    "?shelfId=Kaw6MLVzPWmo"
+    "&total_candidates=200"
+    "&pool_limit_category_items=60"
     "&language=th"
+    "&pool_tophit_date=365"
     "&limit=100"
     "&userId=null"
     "&pseudoId=null"
     "&cursor=1"
     "&ga_id=100118391.0851155978"
-    "&ssoId=22092422"
     "&is_use_live=true"
     "&verbose=debug"
+    "&pool_latest_date=365"
 )
 
 URL = os.getenv("URL", DEFAULT_URL)
@@ -85,15 +86,10 @@ def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
 
 
 def is_partner_allowed(partner_value: Any) -> bool:
-    if partner_value is None:
-        return True
-    if partner_value == ALLOWED_PARTNER_ID:
-        return True
-    if isinstance(partner_value, list) and len(partner_value) == 0:
-        return True
-    # เพิ่มตรงนี้ --- รองรับกรณี API ส่งมาเป็น list
-    if isinstance(partner_value, list) and all(v == ALLOWED_PARTNER_ID for v in partner_value):
-        return True
+    if isinstance(partner_value, str):
+        return partner_value == ALLOWED_PARTNER_ID
+    if isinstance(partner_value, list):
+        return ALLOWED_PARTNER_ID in partner_value
     return False
 
 
@@ -147,7 +143,6 @@ def run_check() -> Dict[str, Any]:
     r.raise_for_status()
     data = r.json()
 
-    # evidence: raw response
     with open(RAW_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
@@ -167,40 +162,49 @@ def run_check() -> Dict[str, Any]:
         failed_all += rep["failed_items"]
         all_fail_rows.extend(rep.get("fail_all", []))
 
+        # ✅ print ผลแต่ละ node
+        status_icon = "✅" if rep["failed_items"] == 0 else "❌"
+        print(f"  {status_icon} {rep['node']:40s} total={rep['total_items']:4d}  failed={rep['failed_items']}")
+
+    print("\n" + "="*60)
+    print(f"  total_items : {total_all}")
+    print(f"  failed      : {failed_all}")
+    print(f"  status      : {'✅ PASS' if failed_all == 0 else '❌ FAIL'}")
+    print("="*60)
+
+    if missing_nodes:
+        print(f"\n  ⚠️  Missing nodes: {missing_nodes}")
+
+    if all_fail_rows:
+        print(f"\n  ❌ Fail samples (max 10):")
+        for row in all_fail_rows[:10]:
+            print(f"    - {row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}")
+
     result = {
         "test_key": TEST_KEY,
         "url": URL,
         "target_nodes": TARGET_NODES,
         "missing_nodes": missing_nodes,
-        "allowed_partner_related": [None, [], ALLOWED_PARTNER_ID],
+        "allowed_partner_related": [ALLOWED_PARTNER_ID],
         "total_items_all": total_all,
         "failed_all": failed_all,
-        "fail_rows_all_count": len(all_fail_rows),
-        "fail_rows_all_sample": all_fail_rows[:30],
         "node_reports": node_reports,
         "status": "FAIL" if failed_all > 0 else "PASS",
     }
 
-    # evidence: report
     with open(REPORT_PATH, "w", encoding="utf-8") as f:
-        json.dump(
-            {
-                **result,
-                "fail_rows_all": all_fail_rows,  # full list kept in file
-            },
-            f,
-            ensure_ascii=False,
-            indent=2,
-        )
+        json.dump({**result, "fail_rows_all": all_fail_rows}, f, ensure_ascii=False, indent=2)
+
+    print(f"\n  Saved -> {REPORT_PATH}")
 
     if failed_all > 0:
-        sample = []
-        for row in all_fail_rows[:10]:
-            sample.append(f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}")
+        sample = [
+            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
+            for row in all_fail_rows[:10]
+        ]
         raise AssertionError(f"{TEST_KEY} FAIL: partner_related invalid count={failed_all}. sample={sample}")
 
     return result
-
 
 # =====================================================
 # ✅ PYTEST ENTRY (Xray mapping)

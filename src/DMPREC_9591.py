@@ -9,13 +9,21 @@ from typing import Any, Dict, List, Optional
 TEST_KEY = "DMPREC-9591"
 
 URL = (
-    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p7"
+    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+    "/api/v1/universal/sfv-p7"
     "?shelfId=Kaw6MLVzPWmo"
-    "&limit=100"
-    "&cursor=1"
+    "&total_candidates=200"
+    "&pool_limit_category_items=60"
     "&language=th"
-    "&ssoId=22092422"
+    "&pool_tophit_date=365"
+    "&limit=100"
+    "&userId=null"
+    "&pseudoId=null"
+    "&cursor=1"
+    "&ga_id=100118391.0851155978"
+    "&is_use_live=true"
     "&verbose=debug"
+    "&pool_latest_date=365"
 )
 
 RUNS = 10
