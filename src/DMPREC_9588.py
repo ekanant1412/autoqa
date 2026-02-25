@@ -1,5 +1,6 @@
 import json
 import os
+import pytest
 import requests
 
 REPORT_DIR = "reports/DMPREC-9588"
@@ -29,14 +30,18 @@ METADATA_URL = (
 )
 
 TIMEOUT_SEC = 30
-METADATA_BATCH_SIZE = 50  # เรียก metadata ครั้งละกี่ ID
+METADATA_BATCH_SIZE = 50
+METADATA_NODES = [
+    "append_bucketizes",
+    "generate_candidates",
+    "modifier_generate_candidates",
+]
 
 
 # =============================================================
-# Helper: เรียก metadata API แบบ batch
+# Helpers
 # =============================================================
 def fetch_metadata_batch(ids: list[str], fields: list[str]) -> dict:
-    """Return dict: id -> metadata item"""
     if not ids:
         return {}
     payload = {"parameters": {"id": ids, "fields": fields}}
@@ -47,210 +52,178 @@ def fetch_metadata_batch(ids: list[str], fields: list[str]) -> dict:
 
 
 def fetch_metadata_all(ids: list[str], fields: list[str]) -> dict:
-    """Batch เป็นชุดๆ เพื่อไม่ให้ request ใหญ่เกิน"""
     result = {}
     for i in range(0, len(ids), METADATA_BATCH_SIZE):
         batch = ids[i: i + METADATA_BATCH_SIZE]
-        print(f"    fetching metadata batch {i//METADATA_BATCH_SIZE + 1}: {len(batch)} ids")
+        print(f"  fetching metadata batch {i // METADATA_BATCH_SIZE + 1}: {len(batch)} ids")
         result.update(fetch_metadata_batch(batch, fields))
     return result
 
 
-# =============================================================
-# Step 1: เรียก Universal API
-# =============================================================
-print("[Step 1] Calling Universal API...")
-resp = requests.get(UNIVERSAL_URL, timeout=TIMEOUT_SEC)
-data = resp.json()
+def run_check() -> dict:
+    # ----------------------------------------------------------
+    # Step 1: Call Universal API
+    # ----------------------------------------------------------
+    print("[Step 1] Calling Universal API...")
+    resp = requests.get(UNIVERSAL_URL, timeout=TIMEOUT_SEC)
+    resp.raise_for_status()
+    data = resp.json()
 
-with open(f"{REPORT_DIR}/universal_response.json", "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+    with open(f"{REPORT_DIR}/universal_response.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
-results = data.get("data", {}).get("results", {})
+    results = data.get("data", {}).get("results", {})
 
-# =============================================================
-# Step 2: ดึง final_ids
-# =============================================================
-final_ids = results.get("final_result", {}).get("result", {}).get("ids", [])
-final_ids = [x for x in final_ids if isinstance(x, str) and x.strip()]
+    # ----------------------------------------------------------
+    # Step 2: Get final_ids
+    # ----------------------------------------------------------
+    final_ids = results.get("final_result", {}).get("result", {}).get("ids", [])
+    final_ids = [x for x in final_ids if isinstance(x, str) and x.strip()]
+    print(f"[Step 2] final_ids: {len(final_ids)}")
+    assert final_ids, "final_result ids not found or empty"
 
-if not final_ids:
-    raise SystemExit("ERROR: final_result ids not found or empty")
+    # ----------------------------------------------------------
+    # Step 3: Build item_map from metadata nodes
+    # ----------------------------------------------------------
+    print("\n[Step 3] Building item lookup map from final_ids only...")
+    item_map = {}
+    for node_name in METADATA_NODES:
+        node_data = results.get(node_name, {})
+        node_result = node_data.get("result", {})
+        candidates = (
+            node_result.get("items", [])
+            if isinstance(node_result, dict)
+            else node_result
+            if isinstance(node_result, list)
+            else []
+        )
+        for item in candidates:
+            if isinstance(item, dict) and item.get("id") in final_ids:
+                if item["id"] not in item_map:
+                    item_map[item["id"]] = {**item, "_found_in_node": node_name}
 
-print(f"[Step 2] final_ids: {len(final_ids)}")
+    print(f"  final_ids       : {len(final_ids)}")
+    print(f"  Mapped from nodes: {len(item_map)}")
 
-# =============================================================
-# Step 3: Build item_map เฉพาะจาก final_ids x node ที่มี metadata
-# =============================================================
-print("\n[Step 3] Building item lookup map from final_ids only...")
+    missing_in_nodes = [fid for fid in final_ids if fid not in item_map]
+    if missing_in_nodes:
+        print(f"  ⚠️  IDs not found in any metadata node: {len(missing_in_nodes)}")
 
-# Node ที่รู้ว่ามี full metadata (มี relate_content, title, etc.)
-METADATA_NODES = [
-    "append_bucketizes",
-    "generate_candidates", 
-    "modifier_generate_candidates",
-]
+    # ----------------------------------------------------------
+    # Step 4: Collect relate_content IDs
+    # ----------------------------------------------------------
+    print("\n[Step 4] Collecting relate_content IDs from final_ids...")
+    final_id_to_relate = {}
+    for fid in final_ids:
+        relate = item_map.get(fid, {}).get("relate_content", [])
+        final_id_to_relate[fid] = relate if isinstance(relate, list) else []
 
-item_map = {}
+    all_relate_ids = [rid for ids in final_id_to_relate.values() for rid in ids]
+    print(f"  Total relate_content IDs to check: {len(all_relate_ids)}")
 
-for node_name in METADATA_NODES:
-    node_data = results.get(node_name, {})
-    node_result = node_data.get("result", {})
-    
-    candidates = []
-    if isinstance(node_result, dict):
-        candidates = node_result.get("items", [])
-    elif isinstance(node_result, list):
-        candidates = node_result
+    # ----------------------------------------------------------
+    # Step 5: Fetch metadata for relate_content IDs
+    # ----------------------------------------------------------
+    print("\n[Step 5] Fetching metadata for relate_content IDs...")
+    relate_meta_map = fetch_metadata_all(
+        all_relate_ids, fields=["id", "content_type", "publish_date"]
+    )
+    print(f"  Metadata returned: {len(relate_meta_map)} items")
 
-    for item in candidates:
-        if isinstance(item, dict) and item.get("id") in final_ids:
-            if item["id"] not in item_map:
-                item_map[item["id"]] = {**item, "_found_in_node": node_name}
+    with open(f"{REPORT_DIR}/relate_metadata.json", "w", encoding="utf-8") as f:
+        json.dump(relate_meta_map, f, ensure_ascii=False, indent=2)
 
-print(f"  final_ids: {len(final_ids)}")
-print(f"  Mapped from metadata nodes: {len(item_map)}")
+    # ----------------------------------------------------------
+    # Step 6: Validate
+    # ----------------------------------------------------------
+    print("\n[Step 6] Validating logic...")
+    pass_items = []
+    fail_no_relate = []
+    fail_no_ecommerce = []
 
-# IDs ที่หาไม่เจอใน metadata nodes เลย
-missing_in_nodes = [fid for fid in final_ids if fid not in item_map]
-if missing_in_nodes:
-    print(f"  ⚠️  IDs not found in any metadata node: {len(missing_in_nodes)}")
-    for mid in missing_in_nodes:
-        print(f"    - {mid}")
+    for fid in final_ids:
+        relate_ids = final_id_to_relate[fid]
 
-# =============================================================
-# Step 4: รวบรวม relate_content IDs ของทุก final_id
-# =============================================================
-print("\n[Step 4] Collecting relate_content IDs from final_ids...")
+        if not relate_ids:
+            fail_no_relate.append({
+                "id": fid,
+                "reason": "relate_content is empty or missing",
+                "title": item_map.get(fid, {}).get("title", ""),
+            })
+            continue
 
-final_id_to_relate = {}
+        ecommerce_found = [
+            rid for rid in relate_ids
+            if relate_meta_map.get(rid, {}).get("content_type") == "ecommerce"
+        ]
 
-for fid in final_ids:
-    item = item_map.get(fid, {})
-    relate = item.get("relate_content", [])
-    if not isinstance(relate, list):
-        relate = []
-    final_id_to_relate[fid] = relate
+        if ecommerce_found:
+            pass_items.append({
+                "id": fid,
+                "relate_content": relate_ids,
+                "ecommerce_ids": ecommerce_found,
+            })
+        else:
+            fail_no_ecommerce.append({
+                "id": fid,
+                "reason": "no relate_content with content_type=ecommerce",
+                "relate_content": relate_ids,
+                "relate_content_types": {
+                    rid: relate_meta_map.get(rid, {}).get("content_type", "NOT_FOUND")
+                    for rid in relate_ids
+                },
+                "title": item_map.get(fid, {}).get("title", ""),
+            })
 
-# เอาทุกตัว ไม่ deduplicate (ใช้นับ / validate)
-all_relate_ids = [rid for ids in final_id_to_relate.values() for rid in ids]
-print(f"  Total relate_content IDs to check: {len(all_relate_ids)}")
+    # ----------------------------------------------------------
+    # Step 7: Save & return summary
+    # ----------------------------------------------------------
+    total_fail = len(fail_no_relate) + len(fail_no_ecommerce)
+    summary = {
+        "total_final_ids": len(final_ids),
+        "pass_count": len(pass_items),
+        "fail_empty_relate_count": len(fail_no_relate),
+        "fail_no_ecommerce_count": len(fail_no_ecommerce),
+        "pass": total_fail == 0,
+        "fail_empty_relate": fail_no_relate,
+        "fail_no_ecommerce": fail_no_ecommerce,
+    }
 
-# =============================================================
-# Step 5: เรียก Metadata API เพื่อเช็ค content_type
-# =============================================================
-print("\n[Step 5] Fetching metadata for relate_content IDs...")
-relate_meta_map = fetch_metadata_all(
-    all_relate_ids,
-    fields=["id", "content_type", "publish_date"]
-)
-print(f"  Metadata returned: {len(relate_meta_map)} items")
+    with open(f"{REPORT_DIR}/validation_summary.json", "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    with open(f"{REPORT_DIR}/pass_items.json", "w", encoding="utf-8") as f:
+        json.dump(pass_items, f, ensure_ascii=False, indent=2)
 
-with open(f"{REPORT_DIR}/relate_metadata.json", "w", encoding="utf-8") as f:
-    json.dump(relate_meta_map, f, ensure_ascii=False, indent=2)
-# หลัง fetch metadata แล้ว
-not_found_in_metadata = [rid for rid in all_relate_ids if rid not in relate_meta_map]
+    print("\n" + "=" * 60)
+    print(f"  final_ids total          : {len(final_ids)}")
+    print(f"  ✅ PASS (has ecommerce)  : {len(pass_items)}")
+    print(f"  ❌ FAIL (empty relate)   : {len(fail_no_relate)}")
+    print(f"  ❌ FAIL (no ecommerce)   : {len(fail_no_ecommerce)}")
+    print("=" * 60)
 
-if not_found_in_metadata:
-    print(f"  ⚠️  relate_content IDs not found in metadata: {len(not_found_in_metadata)}")
-    for rid in not_found_in_metadata[:10]:
-        # หา final_id ที่ relate ไป ID นี้
-        owner = [fid for fid, rels in final_id_to_relate.items() if rid in rels]
-        print(f"    - {rid}  (owned by final_id: {owner})")
+    return summary
 
-
-# =============================================================
-# Step 6: Validate แต่ละ final_id
-# =============================================================
-print("\n[Step 6] Validating logic...")
-
-pass_items   = []   # ✅ มี relate_content และมี ecommerce อย่างน้อย 1
-fail_no_relate = []  # ❌ relate_content ว่างเปล่า → ไม่ควรออกมา
-fail_no_ecommerce = []  # ❌ relate_content มี ID แต่ไม่มี ecommerce เลย
-
-for fid in final_ids:
-    relate_ids = final_id_to_relate[fid]
-
-    # กรณี relate_content ว่าง → ไม่ควรออกมา
-    if not relate_ids:
-        fail_no_relate.append({
-            "id": fid,
-            "reason": "relate_content is empty or missing",
-            "title": item_map.get(fid, {}).get("title", ""),
-        })
-        continue
-
-    # เช็คว่ามี relate ID ที่เป็น ecommerce ไหม
-    ecommerce_found = []
-    for rid in relate_ids:
-        meta = relate_meta_map.get(rid, {})
-        if meta.get("content_type") == "ecommerce":
-            ecommerce_found.append(rid)
-
-    if ecommerce_found:
-        pass_items.append({
-            "id": fid,
-            "relate_content": relate_ids,
-            "ecommerce_ids": ecommerce_found,
-        })
-    else:
-        fail_no_ecommerce.append({
-            "id": fid,
-            "reason": "no relate_content with content_type=ecommerce",
-            "relate_content": relate_ids,
-            "relate_content_types": {
-                rid: relate_meta_map.get(rid, {}).get("content_type", "NOT_FOUND")
-                for rid in relate_ids
-            },
-            "title": item_map.get(fid, {}).get("title", ""),
-        })
 
 # =============================================================
-# Step 7: Summary Report
+# ✅ PYTEST ENTRY (Xray mapping)
 # =============================================================
-total_fail = len(fail_no_relate) + len(fail_no_ecommerce)
+def test_DMPREC_9588():
+    summary = run_check()
 
-print("\n" + "="*60)
-print(f"  final_ids total           : {len(final_ids)}")
-print(f"  ✅ PASS (has ecommerce)   : {len(pass_items)}")
-print(f"  ❌ FAIL (empty relate)    : {len(fail_no_relate)}")
-print(f"  ❌ FAIL (no ecommerce)    : {len(fail_no_ecommerce)}")
-print("="*60)
+    fail_msgs = []
+    if summary["fail_empty_relate_count"] > 0:
+        ids = [x["id"] for x in summary["fail_empty_relate"]]
+        fail_msgs.append(
+            f"FAIL empty relate_content ({summary['fail_empty_relate_count']} items): {ids[:10]}"
+        )
+    if summary["fail_no_ecommerce_count"] > 0:
+        ids = [x["id"] for x in summary["fail_no_ecommerce"]]
+        fail_msgs.append(
+            f"FAIL no ecommerce in relate_content ({summary['fail_no_ecommerce_count']} items): {ids[:10]}"
+        )
 
-if fail_no_relate:
-    print("\n  ❌ IDs ที่ relate_content ว่าง (ไม่ควรออกมาใน final_result):")
-    for item in fail_no_relate:
-        print(f"    - {item['id']}  | {item['title'][:50]}")
+    assert not fail_msgs, "\n".join(fail_msgs)
 
-if fail_no_ecommerce:
-    print("\n  ❌ IDs ที่ relate_content ไม่มี content_type=ecommerce:")
-    for item in fail_no_ecommerce:
-        types_str = ", ".join(f"{k}:{v}" for k, v in item["relate_content_types"].items())
-        print(f"    - {item['id']}  | relate types: {types_str}")
-        print(f"      title: {item['title'][:60]}")
 
-# Save reports
-summary = {
-    "total_final_ids": len(final_ids),
-    "pass_count": len(pass_items),
-    "fail_empty_relate_count": len(fail_no_relate),
-    "fail_no_ecommerce_count": len(fail_no_ecommerce),
-    "pass": total_fail == 0,
-    "fail_empty_relate": fail_no_relate,
-    "fail_no_ecommerce": fail_no_ecommerce,
-}
-
-with open(f"{REPORT_DIR}/validation_summary.json", "w", encoding="utf-8") as f:
-    json.dump(summary, f, ensure_ascii=False, indent=2)
-
-with open(f"{REPORT_DIR}/pass_items.json", "w", encoding="utf-8") as f:
-    json.dump(pass_items, f, ensure_ascii=False, indent=2)
-
-print(f"\n  Saved -> {REPORT_DIR}/validation_summary.json")
-print(f"  Saved -> {REPORT_DIR}/pass_items.json")
-print(f"  Saved -> {REPORT_DIR}/relate_metadata.json")
-
-if total_fail > 0:
-    raise SystemExit(f"\n❌ TEST FAILED: {total_fail} items ไม่ผ่าน logic")
-else:
-    print("\n✅ TEST PASSED: All final_ids มี relate_content ที่เป็น ecommerce")
+if __name__ == "__main__":
+    run_check()
