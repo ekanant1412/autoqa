@@ -45,12 +45,11 @@ TARGET_NODES = [
     "bucketize_tophit_ugc_sfv",
 ]
 
-# =====================================================
-# partner_related allowed values
-# =====================================================
 ALLOWED_PARTNER_ID = "AN9PjZR1wEol"
 
 
+# =====================================================
+# Helpers
 # =====================================================
 def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
     found: List[Dict[str, Any]] = []
@@ -67,13 +66,11 @@ def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
 
 def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
     out: List[Tuple[str, Dict[str, Any]]] = []
-
     if isinstance(result, list):
         for it in result:
             if isinstance(it, dict):
                 out.append(("_list_", it))
         return out
-
     if isinstance(result, dict):
         for bucket_name, v in result.items():
             if isinstance(v, list):
@@ -81,7 +78,6 @@ def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
                     if isinstance(it, dict):
                         out.append((str(bucket_name), it))
         return out
-
     return out
 
 
@@ -101,7 +97,7 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
         "node": node_name,
         "total_items": 0,
         "failed_items": 0,
-        "pass_items": [],   # ✅ เพิ่ม
+        "pass_items": [],
         "fail_samples": [],
         "fail_all": [],
         "note": "",
@@ -123,7 +119,6 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
         partner_value = it.get("partner_related", None)
 
         if is_partner_allowed(partner_value):
-            # ✅ เก็บ pass items
             report["pass_items"].append({
                 "id": item_id,
                 "partner_related": partner_value,
@@ -144,6 +139,8 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+# =====================================================
+# Core logic
 # =====================================================
 def run_check() -> Dict[str, Any]:
     r = requests.get(URL, timeout=TIMEOUT_SEC)
@@ -172,17 +169,15 @@ def run_check() -> Dict[str, Any]:
         status_icon = "✅" if rep["failed_items"] == 0 else "❌"
         print(f"\n  {status_icon} {rep['node']}  total={rep['total_items']}  failed={rep['failed_items']}")
 
-        # ✅ แสดง pass items ทุกตัว
         if rep["pass_items"]:
             print(f"    ✅ PASS items ({len(rep['pass_items'])}):")
             for p in rep["pass_items"]:
                 print(f"      - {p['id']}  partner_related={p['partner_related']!r}")
 
-        # ❌ แสดง fail items
         if rep["fail_all"]:
             print(f"    ❌ FAIL items ({len(rep['fail_all'])}):")
-            for f in rep["fail_all"][:10]:
-                print(f"      - {f['id']}  partner_related={f['partner_related']!r}")
+            for row in rep["fail_all"][:10]:
+                print(f"      - {row['id']}  partner_related={row['partner_related']!r}")
 
     result = {
         "test_key": TEST_KEY,
@@ -193,7 +188,7 @@ def run_check() -> Dict[str, Any]:
         "total_items_all": total_all,
         "failed_all": failed_all,
         "node_reports": node_reports,
-        "status": "FAIL" if failed_all > 0 else "PASS",
+        "status": "FAIL" if (failed_all > 0 or missing_nodes) else "PASS",
     }
 
     with open(REPORT_PATH, "w", encoding="utf-8") as f:
@@ -201,14 +196,8 @@ def run_check() -> Dict[str, Any]:
 
     print(f"\n  Saved -> {REPORT_PATH}")
 
-    if failed_all > 0:
-        sample = [
-            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
-            for row in all_fail_rows[:10]
-        ]
-        raise AssertionError(f"{TEST_KEY} FAIL: partner_related invalid count={failed_all}. sample={sample}")
-
     return result
+
 
 # =====================================================
 # ✅ PYTEST ENTRY (Xray mapping)
@@ -216,6 +205,34 @@ def run_check() -> Dict[str, Any]:
 def test_DMPREC_9589():
     result = run_check()
     print("RESULT:", result["status"], "failed_all=", result["failed_all"])
+
+    fail_msgs = []
+
+    if result["missing_nodes"]:
+        fail_msgs.append(
+            f"Missing nodes in response: {result['missing_nodes']}"
+        )
+
+    if result["failed_all"] > 0:
+        sample = [
+            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
+            for row in result.get("fail_rows_all", [])[:10]  # ดึงจาก result ได้เลย
+        ]
+        # --- rebuild fail_rows_all จาก node_reports เพราะ run_check ไม่ return ไว้ ---
+        all_fail_rows = [
+            row
+            for rep in result["node_reports"]
+            for row in rep.get("fail_all", [])
+        ]
+        sample = [
+            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
+            for row in all_fail_rows[:10]
+        ]
+        fail_msgs.append(
+            f"partner_related invalid count={result['failed_all']}. sample={sample}"
+        )
+
+    assert not fail_msgs, f"{TEST_KEY} FAIL:\n" + "\n".join(fail_msgs)
 
 
 if __name__ == "__main__":
