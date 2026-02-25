@@ -7,7 +7,7 @@ os.makedirs(REPORT_DIR, exist_ok=True)
 
 UNIVERSAL_URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p6"
+    "/api/v1/universal/sfv-p7"
     "?shelfId=Kaw6MLVzPWmo"
     "&total_candidates=200"
     "&pool_limit_category_items=60"
@@ -148,6 +148,16 @@ print(f"  Metadata returned: {len(relate_meta_map)} items")
 
 with open(f"{REPORT_DIR}/relate_metadata.json", "w", encoding="utf-8") as f:
     json.dump(relate_meta_map, f, ensure_ascii=False, indent=2)
+# หลัง fetch metadata แล้ว
+not_found_in_metadata = [rid for rid in all_relate_ids if rid not in relate_meta_map]
+
+if not_found_in_metadata:
+    print(f"  ⚠️  relate_content IDs not found in metadata: {len(not_found_in_metadata)}")
+    for rid in not_found_in_metadata[:10]:
+        # หา final_id ที่ relate ไป ID นี้
+        owner = [fid for fid, rels in final_id_to_relate.items() if rid in rels]
+        print(f"    - {rid}  (owned by final_id: {owner})")
+
 
 # =============================================================
 # Step 6: Validate แต่ละ final_id

@@ -101,6 +101,7 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
         "node": node_name,
         "total_items": 0,
         "failed_items": 0,
+        "pass_items": [],   # ✅ เพิ่ม
         "fail_samples": [],
         "fail_all": [],
         "note": "",
@@ -121,14 +122,20 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
         item_id = it.get("id") or it.get("content_id") or it.get("_id") or "(no_id)"
         partner_value = it.get("partner_related", None)
 
-        if not is_partner_allowed(partner_value):
+        if is_partner_allowed(partner_value):
+            # ✅ เก็บ pass items
+            report["pass_items"].append({
+                "id": item_id,
+                "partner_related": partner_value,
+            })
+        else:
             report["failed_items"] += 1
             row = {
                 "node": node_name,
                 "bucket": bucket_name,
                 "id": item_id,
                 "partner_related": partner_value,
-                "reason": f"partner_related must be null, [] or '{ALLOWED_PARTNER_ID}'",
+                "reason": f"partner_related must be '{ALLOWED_PARTNER_ID}'",
             }
             report["fail_all"].append(row)
             if len(report["fail_samples"]) < 20:
@@ -162,23 +169,20 @@ def run_check() -> Dict[str, Any]:
         failed_all += rep["failed_items"]
         all_fail_rows.extend(rep.get("fail_all", []))
 
-        # ✅ print ผลแต่ละ node
         status_icon = "✅" if rep["failed_items"] == 0 else "❌"
-        print(f"  {status_icon} {rep['node']:40s} total={rep['total_items']:4d}  failed={rep['failed_items']}")
+        print(f"\n  {status_icon} {rep['node']}  total={rep['total_items']}  failed={rep['failed_items']}")
 
-    print("\n" + "="*60)
-    print(f"  total_items : {total_all}")
-    print(f"  failed      : {failed_all}")
-    print(f"  status      : {'✅ PASS' if failed_all == 0 else '❌ FAIL'}")
-    print("="*60)
+        # ✅ แสดง pass items ทุกตัว
+        if rep["pass_items"]:
+            print(f"    ✅ PASS items ({len(rep['pass_items'])}):")
+            for p in rep["pass_items"]:
+                print(f"      - {p['id']}  partner_related={p['partner_related']!r}")
 
-    if missing_nodes:
-        print(f"\n  ⚠️  Missing nodes: {missing_nodes}")
-
-    if all_fail_rows:
-        print(f"\n  ❌ Fail samples (max 10):")
-        for row in all_fail_rows[:10]:
-            print(f"    - {row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}")
+        # ❌ แสดง fail items
+        if rep["fail_all"]:
+            print(f"    ❌ FAIL items ({len(rep['fail_all'])}):")
+            for f in rep["fail_all"][:10]:
+                print(f"      - {f['id']}  partner_related={f['partner_related']!r}")
 
     result = {
         "test_key": TEST_KEY,
