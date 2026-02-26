@@ -2,233 +2,287 @@ import requests
 import json
 from datetime import datetime
 import os
-from typing import Any, Dict, List, Tuple
 
 # ===================== CONFIG =====================
 TEST_KEY = "DMPREC-9587"
 
-URL = (
-    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p7"
-    "?shelfId=Kaw6MLVzPWmo"
-    "&total_candidates=200"
-    "&pool_limit_category_items=60"
-    "&language=th"
-    "&pool_tophit_date=365"
-    "&limit=100"
-    "&userId=null"
-    "&pseudoId=null"
-    "&cursor=1"
-    "&ga_id=100118391.0851155978"
-    "&is_use_live=true"
-    "&verbose=debug"
-    "&pool_latest_date=365"
-)
+PLACEMENTS = [
+    {
+        "name": "sfv-p7",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p7"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=100"
+            "&language=th&pool_tophit_date=365"
+            "&limit=100&userId=null&pseudoId=null"
+            "&cursor=1&ga_id=100118391.0851155978"
+            "&is_use_live=true&verbose=debug&pool_latest_date=365"
+        ),
+    },
+    {
+        "name": "sfv-p6",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=100"
+            "&language=th&pool_tophit_date=365"
+            "&limit=100&userId=null&pseudoId=null"
+            "&cursor=1&ga_id=100118391.0851155978"
+            "&is_use_live=true&verbose=debug&pool_latest_date=365"
+        ),
+    },
+]
 
 TIMEOUT_SEC = 20
+BLOCK_SIZE = 5
 
 REPORT_DIR = "reports"
 ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
 os.makedirs(ART_DIR, exist_ok=True)
 
-LOG_TXT = f"{ART_DIR}/pin_check.log"
-RESULT_JSON = f"{ART_DIR}/pin_check_result.json"
-FULL_RESPONSE_JSON = f"{ART_DIR}/pin_check_full_response.json"
-
 
 # =================================================
-def tlog(msg: str):
+def tlog(msg: str, log_path: str):
     line = f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | {msg}\n"
-    with open(LOG_TXT, "a", encoding="utf-8") as f:
+    with open(log_path, "a", encoding="utf-8") as f:
         f.write(line)
     print(msg)
 
 
-def extract_ids_from_items(items):
-    ids = []
-    if isinstance(items, list):
-        for it in items:
-            if isinstance(it, dict) and isinstance(it.get("id"), str):
-                ids.append(it["id"])
-            elif isinstance(it, str):
-                ids.append(it)
-    return ids
-
-
-def get_results_root(j: dict):
+def get_results_root(j: dict) -> dict:
     data = j.get("data", {})
     return data.get("results", {}) if isinstance(data, dict) else {}
 
 
-def extract_candidate_pin_global_ids(results: dict):
-    node = results.get("candidate_pin_global", {})
-    if not isinstance(node, dict):
-        return []
+def extract_insert_pin_node(results: dict) -> dict:
+    return results.get("insert_pin_candidates", {})
+
+
+def extract_reserved_positions(node: dict) -> dict:
+    result = node.get("result", {})
+    if not isinstance(result, dict):
+        return {}
+    reserved = result.get("reservedPositions", {})
+    out = {}
+    for k, v in reserved.items():
+        if str(k).isdigit() and isinstance(v, str):
+            pin_id = v[4:] if v.startswith("pin_") else v
+            out[int(k)] = pin_id
+    return out
+
+
+def extract_pin_items(node: dict) -> list:
     result = node.get("result", {})
     if not isinstance(result, dict):
         return []
+    reserved = result.get("reservedPositions", {})
+    return [
+        v[4:] if v.startswith("pin_") else v
+        for v in reserved.values()
+        if isinstance(v, str)
+    ]
 
-    ids = result.get("ids")
-    if isinstance(ids, list):
-        return [x for x in ids if isinstance(x, str) and x.strip()]
 
-    return extract_ids_from_items(result.get("items", []))
-
-
-def extract_merge_page_ids(results: dict):
+def extract_merge_page_ids(results: dict) -> list:
     node = results.get("merge_page", {})
     if not isinstance(node, dict):
         return []
     result = node.get("result", {})
     if not isinstance(result, dict):
         return []
-    return extract_ids_from_items(result.get("items", []))
+    items = result.get("items", [])
+    ids = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        if "id" in it:
+            ids.append(str(it["id"]))
+        elif "items" in it and isinstance(it["items"], list):
+            for sub in it["items"]:
+                if isinstance(sub, dict):
+                    activity_id = sub.get("ActivityId") or sub.get("activity_id")
+                    if activity_id is not None:
+                        ids.append(str(activity_id))
+    return ids
 
 
-# =================================================
-# CHECK: PIN POSITION PER BLOCK (STOP WHEN EXHAUSTED)
-# =================================================
-def check_pin_positions_until_exhausted(merge_ids, pin_ids, n=5):
-    """
-    - ตรวจตำแหน่ง pin ในแต่ละ block (0..n-1)
-    - ถ้า block ไหนไม่เจอ pin => ถือว่า pin หมด -> STOP (ไม่เช็ค block ต่อๆไป)
-    """
-    pin_set = set(pin_ids)
+def check_pin_in_blocks(merge_ids: list, reserved: dict, pin_items: list, n: int = 5):
+    pin_set = set(pin_items)
+    last_pin_block = max((rank // n + 1 for rank in reserved), default=0)
 
-    found_blocks = []
-    stopped_at_block = None
-    stopped_reason = None
+    results_by_block = []
+    fail_blocks = []
+    pass_blocks = []
 
-    for start in range(0, len(merge_ids), n):
-        block_index = start // n + 1
+    total_blocks = (len(merge_ids) + n - 1) // n
+
+    for block_index in range(1, total_blocks + 1):
+        start = (block_index - 1) * n
         block = merge_ids[start:start + n]
 
-        pins_in_block = []
-        for i, mid in enumerate(block):
-            if mid in pin_set:
-                pins_in_block.append(
-                    {"pin_id": mid, "pos0": i, "pos1": i + 1, "rank": start + i + 1}
-                )
+        expected_pins = {
+            rank: pid
+            for rank, pid in reserved.items()
+            if rank // n + 1 == block_index
+        }
+        actual_pins = {
+            start + i: mid
+            for i, mid in enumerate(block)
+            if mid in pin_set
+        }
 
-        if not pins_in_block:
-            stopped_at_block = block_index
-            stopped_reason = "pin exhausted -> stop checking next blocks"
-            break
+        block_info = {
+            "block": block_index,
+            "rank_range": (start, start + len(block) - 1),
+            "expected_pins": expected_pins,
+            "actual_pins": actual_pins,
+            "status": None,
+            "issues": [],
+        }
 
-        found_blocks.append(
-            {
-                "block": block_index,
-                "rank_range": (start + 1, start + len(block)),
-                "pins": pins_in_block,
-            }
-        )
+        if block_index > last_pin_block:
+            block_info["status"] = "SKIP (pin exhausted)"
+        else:
+            issues = []
+            for rank, pin_id in expected_pins.items():
+                actual = merge_ids[rank] if rank < len(merge_ids) else None
+                if actual != pin_id:
+                    issues.append(f"rank={rank} expected={pin_id} actual={actual}")
+            if not expected_pins:
+                issues.append("no pin reserved for this block (but pin not exhausted yet)")
 
-    return found_blocks, stopped_at_block, stopped_reason
+            if issues:
+                block_info["status"] = "FAIL"
+                block_info["issues"] = issues
+                fail_blocks.append(block_index)
+            else:
+                block_info["status"] = "PASS"
+                pass_blocks.append(block_index)
+
+        results_by_block.append(block_info)
+
+    return results_by_block, pass_blocks, fail_blocks, last_pin_block
 
 
 # =================================================
-def run_check():
-    # reset log
-    open(LOG_TXT, "w", encoding="utf-8").close()
+def run_check(placement: dict) -> dict:
+    name = placement["name"]
+    url = placement["url"]
 
-    tlog(f"TEST={TEST_KEY}")
-    tlog(f"URL={URL}")
+    log_path = f"{ART_DIR}/pin_check_{name}.log"
+    result_json = f"{ART_DIR}/pin_check_result_{name}.json"
+    full_response_json = f"{ART_DIR}/pin_check_full_response_{name}.json"
 
-    r = requests.get(URL, timeout=TIMEOUT_SEC)
-    tlog(f"HTTP={r.status_code}")
+    open(log_path, "w", encoding="utf-8").close()
+
+    def log(msg):
+        tlog(msg, log_path)
+
+    log(f"TEST={TEST_KEY}  PLACEMENT={name}")
+    log(f"URL={url}")
+
+    r = requests.get(url, timeout=TIMEOUT_SEC)
+    log(f"HTTP={r.status_code}")
     r.raise_for_status()
 
     j = r.json()
     results = get_results_root(j)
 
-    pin_ids = extract_candidate_pin_global_ids(results)
+    with open(full_response_json, "w", encoding="utf-8") as f:
+        json.dump(j, f, ensure_ascii=False, indent=2)
+
+    pin_node = extract_insert_pin_node(results)
+    reserved = extract_reserved_positions(pin_node)
+    pin_items = extract_pin_items(pin_node)
     merge_ids = extract_merge_page_ids(results)
 
-    tlog("=== Extracted ===")
-    tlog(f"pin_ids_count={len(pin_ids)}")
-    tlog(f"merge_page_ids_count={len(merge_ids)}")
+    log("=== Extracted ===")
+    log(f"insert_pin_candidates items : {len(pin_items)}")
+    log(f"reservedPositions count     : {len(reserved)}")
+    log(f"merge_page_ids count        : {len(merge_ids)}")
 
     if not merge_ids:
-        tlog("[WARN] merge_page_ids is empty or missing (merge_page.result.items not found)")
+        log("[WARN] merge_page is empty")
 
-    # CHECK 0: if no pin in candidate_pin_global => OK (skip insertion checks)
-    tlog("=== TC-PIN: candidate_pin_global availability ===")
-    if not pin_ids:
-        tlog("PASS no pin_ids in candidate_pin_global (pin exhausted) -> SKIP insertion checks")
-
-        missing_in_merge = []
-        pin_block_positions = []
-        stopped_at_block = None
-        stopped_reason = "no pin_ids in candidate_pin_global"
-
+    if not pin_items:
+        log("PASS no pin items in insert_pin_candidates -> SKIP all checks")
         status = "PASS"
-
+        results_by_block = []
+        pass_blocks = []
+        fail_blocks = []
+        last_pin_block = 0
     else:
-        # CHECK 1: pin must exist in merge_page
-        merge_set = set(merge_ids)
-        missing_in_merge = [pid for pid in pin_ids if pid not in merge_set]
+        log(f"\n=== TC-PIN-BLOCK: checking {BLOCK_SIZE}-item blocks ===")
 
-        tlog("=== TC-PIN: pin must be in merge_page ===")
-        if missing_in_merge:
-            tlog(f"FAIL missing_in_merge={missing_in_merge}")
-        else:
-            tlog("PASS all pin_ids exist in merge_page")
-
-        # CHECK 2: pin position per block until exhausted
-        tlog("=== TC-PIN-BLOCK: pin position (0-4) per block (STOP when exhausted) ===")
-
-        pin_block_positions, stopped_at_block, stopped_reason = (
-            check_pin_positions_until_exhausted(merge_ids, pin_ids, n=5)
+        results_by_block, pass_blocks, fail_blocks, last_pin_block = check_pin_in_blocks(
+            merge_ids, reserved, pin_items, n=BLOCK_SIZE
         )
 
-        if not pin_block_positions:
-            tlog("WARN no pin detected in merge_page blocks")
-        else:
-            for b in pin_block_positions:
-                ids = [p["pin_id"] for p in b["pins"]]
-                pos0 = [p["pos0"] for p in b["pins"]]
-                pos1 = [p["pos1"] for p in b["pins"]]
-                ranks = [p["rank"] for p in b["pins"]]
+        log(f"last block with pin : block {last_pin_block}")
 
-                tlog(
-                    f"BLOCK {b['block']} ranks {b['rank_range'][0]}-{b['rank_range'][1]} | "
-                    f"pin_ids={ids} | pos0={pos0} pos1={pos1} | ranks={ranks}"
-                )
+        for b in results_by_block:
+            if b["status"] == "SKIP (pin exhausted)":
+                continue
+            icon = "✅" if b["status"] == "PASS" else "❌"
+            log(f"{icon} BLOCK {b['block']} ranks {b['rank_range'][0]}-{b['rank_range'][1]} | {b['status']}")
+            for rank, pin_id in sorted(b["expected_pins"].items()):
+                actual = merge_ids[rank] if rank < len(merge_ids) else None
+                match_icon = "✅" if actual == pin_id else "❌"
+                log(f"     {match_icon} rank={rank} pos={rank % BLOCK_SIZE} expected={pin_id} actual={actual}")
+            for issue in b["issues"]:
+                log(f"     ⚠️  {issue}")
 
-        if stopped_at_block is not None:
-            tlog(f"STOP at BLOCK {stopped_at_block}: {stopped_reason}")
-        else:
-            tlog("DONE checked all blocks (no exhaustion detected)")
+        status = "FAIL" if fail_blocks else "PASS"
 
-        # define FAIL condition (สำคัญ)
-        # - ถ้ามี pin_ids แต่บางอันไม่อยู่ใน merge_page => FAIL
-        status = "FAIL" if missing_in_merge else "PASS"
+        log("\n--- reservedPositions (global_rank -> pin_id) ---")
+    if not reserved:
+        log("  (none)")
+    else:
+        for rank in sorted(reserved.keys()):
+            log(f"  rank={rank:3d}  block={rank // BLOCK_SIZE + 1}  pos={rank % BLOCK_SIZE}  | {reserved[rank]}")    
 
-    # SAVE RESULT + full response (evidence)
+    log("\n=== PIN USAGE SUMMARY ===")
+    log(f"placement        : {name}")
+    log(f"pin_items_total  : {len(pin_items)}")
+    log(f"reserved_count   : {len(reserved)}")
+    log(f"last_pin_block   : {last_pin_block}")
+    log(f"pass_blocks      : {pass_blocks}")
+    log(f"fail_blocks      : {fail_blocks}")
+    log(f"STATUS           : {'✅ PASS' if status == 'PASS' else '❌ FAIL'}")
+
+
+
     result = {
         "test_key": TEST_KEY,
-        "url": URL,
-        "pin_ids": pin_ids,
-        "merge_page_ids": merge_ids,
-        "missing_in_merge": missing_in_merge,
-        "pin_block_positions": pin_block_positions,
-        "pin_check_stopped_at_block": stopped_at_block,
-        "pin_check_stopped_reason": stopped_reason,
+        "placement": name,
+        "url": url,
+        "pin_items_total": len(pin_items),
+        "reserved_positions": {str(k): v for k, v in reserved.items()},
+        "reserved_count": len(reserved),
+        "merge_page_count": len(merge_ids),
+        "last_pin_block": last_pin_block,
+        "pass_blocks": pass_blocks,
+        "fail_blocks": fail_blocks,
+        "block_details": results_by_block,
         "status": status,
     }
 
-    with open(RESULT_JSON, "w", encoding="utf-8") as f:
+    with open(result_json, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2, ensure_ascii=False)
 
-    with open(FULL_RESPONSE_JSON, "w", encoding="utf-8") as f:
-        json.dump(j, f, indent=2, ensure_ascii=False)
-
-    tlog(f"Saved: {RESULT_JSON}")
-    tlog(f"Saved: {FULL_RESPONSE_JSON}")
-    tlog(f"Saved: {LOG_TXT}")
+    log(f"\nSaved: {result_json}")
+    log(f"Saved: {full_response_json}")
+    log(f"Saved: {log_path}")
 
     if status == "FAIL":
-        raise AssertionError(f"{TEST_KEY} FAIL: missing_in_merge={missing_in_merge[:30]} (total={len(missing_in_merge)})")
+        raise AssertionError(
+            f"{TEST_KEY} [{name}] FAIL: fail_blocks={fail_blocks} "
+            f"(pin_total={len(pin_items)}, reserved={len(reserved)})"
+        )
 
     return result
 
@@ -236,10 +290,22 @@ def run_check():
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-def test_DMPREC_9587():
-    result = run_check()
-    print("RESULT:", result["status"])
+def test_DMPREC_9587_sfv_p7():
+    result = run_check(PLACEMENTS[0])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pin_total={result['pin_items_total']}",
+          f"| fail_blocks={result['fail_blocks']}")
+
+
+def test_DMPREC_9587_sfv_p6():
+    result = run_check(PLACEMENTS[1])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pin_total={result['pin_items_total']}",
+          f"| fail_blocks={result['fail_blocks']}")
 
 
 if __name__ == "__main__":
-    run_check()
+    for p in PLACEMENTS:
+        run_check(p)

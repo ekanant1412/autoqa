@@ -2,7 +2,7 @@ import os
 import json
 import time
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Set, Tuple
 
 import requests
 
@@ -11,118 +11,143 @@ import requests
 # ===================================
 TEST_KEY = "DMPREC-9613"
 
-URL = (
-    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p7"
-    "?shelfId=Kaw6MLVzPWmo"
-    "&total_candidates=200"
-    "&pool_limit_category_items=60"
-    "&language=th"
-    "&pool_tophit_date=365"
-    "&limit=100"
-    "&userId=null"
-    "&pseudoId=null"
-    "&cursor=1"
-    "&ga_id=100118391.0851155978"
-    "&is_use_live=true"
-    "&verbose=debug"
-    "&pool_latest_date=365"
-)
+PLACEMENTS = [
+    {
+        "name": "sfv-p7",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p7"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+    {
+        "name": "sfv-p6",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+]
 
 RUNS = 20
 TIMEOUT = 20
-SLEEP_SEC = 0.2  # เว้นจังหวะยิง (กัน cache/กัน rate)
+SLEEP_SEC = 0.2
+
+# ✅ เพิ่ม: target bucketize nodes (ยืมจาก DMPREC-9589)
+TARGET_NODES = [
+    "bucketize_tophit_sfv",
+    "bucketize_latest_sfv",
+    "bucketize_latest_ugc_sfv",
+    "bucketize_tophit_ugc_sfv",
+]
 
 BANNED_IDS: Set[str] = {
-    "wj5GOky1mkYx","yVb5Mwjx55yK","09pGq8RbEv1K","5GMzjgY2VO8A",
-    "xo4XD2gbaJpo","2OramNWW42mM","lk1xWMlyB3pq","rGRzA9EdZRLG",
-    "QXzdvLe5y5yq","nY4NvWQvwyZ5","KRZ0EyX7X6bW","8GYgr8R94B5l",
-    "npXJYPV0LPWb","G5pjqMJekWyP","YoQPY686MqbN","a13LzAMLLVNg",
-    "YVdk7XjNLn5p","0XNNmQDmN6LX","jl1Oq5YMADw0","WkZlKxJoW3wq",
-    "4OeVdaXapd5l","LVQ1o5Wd8QdV","6kMBqG4BMD3y"
+    "wj5GOky1mkYx", "yVb5Mwjx55yK", "09pGq8RbEv1K", "5GMzjgY2VO8A",
+    "xo4XD2gbaJpo", "2OramNWW42mM", "lk1xWMlyB3pq", "rGRzA9EdZRLG",
+    "QXzdvLe5y5yq", "nY4NvWQvwyZ5", "8GYgr8R94B5l",
+    "npXJYPV0LPWb", "G5pjqMJekWyP", "YoQPY686MqbN", "a13LzAMLLVNg",
+    "YVdk7XjNLn5p", "0XNNmQDmN6LX", "jl1Oq5YMADw0", "WkZlKxJoW3wq",
+    "4OeVdaXapd5l", "LVQ1o5Wd8QdV", "6kMBqG4BMD3y", "8y506nqnAqkj",
+    "GXzmkeobYDq6", "0xoVO2apADp1"
 }
 
-# ===================================
-# REPORT OUTPUT
-# ===================================
 REPORT_DIR = "reports"
 ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
 os.makedirs(ART_DIR, exist_ok=True)
-
-OUT_LOG = f"{ART_DIR}/tc_exclude_merge_page.log"
-OUT_HTML = f"{ART_DIR}/tc_exclude_merge_page_report.html"
-OUT_JSON = f"{ART_DIR}/tc_exclude_merge_page_summary.json"
-OUT_ALL_IDS = f"{ART_DIR}/tc_exclude_merge_page_all_ids.txt"
 
 
 def _now() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-def log(msg: str) -> None:
+def log(msg: str, log_path: str) -> None:
     line = f"{_now()} | {msg}"
     print(line)
-    with open(OUT_LOG, "a", encoding="utf-8") as f:
+    with open(log_path, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
 
 # ===================================
 # HELPERS
 # ===================================
-def deep_find(obj: Any, key: str) -> Any:
+
+# ✅ เพิ่ม: ยืมจาก DMPREC-9589
+def deep_find_nodes(obj: Any, target_names: List[str]) -> List[Dict[str, Any]]:
+    found: List[Dict[str, Any]] = []
     if isinstance(obj, dict):
-        if key in obj:
-            return obj[key]
+        if obj.get("name") in target_names:
+            found.append(obj)
         for v in obj.values():
-            r = deep_find(v, key)
-            if r is not None:
-                return r
+            found.extend(deep_find_nodes(v, target_names))
     elif isinstance(obj, list):
         for it in obj:
-            r = deep_find(it, key)
-            if r is not None:
-                return r
-    return None
+            found.extend(deep_find_nodes(it, target_names))
+    return found
 
 
-def extract_merge_ids(json_data: Dict[str, Any]) -> List[str]:
-    """
-    Extract IDs from merge_page.result.items:
-      - CMS item: item["id"]
-      - LIVE wrapper: item["items"][*]["Id"]  (เก็บเป็น string)
-    """
-    merge_page = deep_find(json_data, "merge_page")
-    if not isinstance(merge_page, dict):
-        return []
+# ✅ เพิ่ม: ยืมจาก DMPREC-9589
+def iter_items_from_result(result: Any) -> List[Tuple[str, Dict[str, Any]]]:
+    out: List[Tuple[str, Dict[str, Any]]] = []
+    if isinstance(result, list):
+        for it in result:
+            if isinstance(it, dict):
+                out.append(("_list_", it))
+        return out
+    if isinstance(result, dict):
+        for bucket_name, v in result.items():
+            if isinstance(v, list):
+                for it in v:
+                    if isinstance(it, dict):
+                        out.append((str(bucket_name), it))
+        return out
+    return out
 
-    items = merge_page.get("result", {}).get("items", [])
-    if not isinstance(items, list):
-        return []
 
+# ✅ เปลี่ยน: จากเดิมดึง merge_page → ดึงจาก bucketize nodes แทน
+def extract_bucketize_ids(json_data: Dict[str, Any]) -> List[str]:
+    nodes = deep_find_nodes(json_data, TARGET_NODES)
     ids: List[str] = []
-
-    for it in items:
-        if not isinstance(it, dict):
+    for node in nodes:
+        result = node.get("result")
+        if result is None:
             continue
-
-        # CMS item id
-        if isinstance(it.get("id"), str) and it["id"].strip():
-            ids.append(it["id"].strip())
-
-        # LIVE wrapper ids
-        if isinstance(it.get("items"), list):
-            for live in it["items"]:
-                if isinstance(live, dict) and live.get("Id") is not None:
-                    ids.append(str(live["Id"]).strip())
-
-    return [x for x in ids if x]
+        for _, it in iter_items_from_result(result):
+            item_id = it.get("id") or it.get("content_id") or it.get("_id")
+            if item_id and str(item_id).strip():
+                ids.append(str(item_id).strip())
+    return ids
 
 
 # ===================================
 # REPORT WRITERS
 # ===================================
-def write_all_ids(runs: List[Dict[str, Any]]) -> None:
-    with open(OUT_ALL_IDS, "w", encoding="utf-8") as f:
+def write_all_ids(runs: List[Dict[str, Any]], out_path: str) -> None:
+    with open(out_path, "w", encoding="utf-8") as f:
         for r in runs:
             f.write(f"\n===== RUN {r['run']} =====\n")
             f.write(f"extracted={r['extracted_count']}\n")
@@ -132,7 +157,7 @@ def write_all_ids(runs: List[Dict[str, Any]]) -> None:
                 f.write(f"{i:03d} {_id}\n")
 
 
-def write_html(summary: Dict[str, Any], runs: List[Dict[str, Any]]) -> None:
+def write_html(summary: Dict[str, Any], runs: List[Dict[str, Any]], out_path: str) -> None:
     html: List[str] = []
     html.append("<html><head><meta charset='utf-8'>")
     html.append("<style>")
@@ -140,21 +165,16 @@ def write_html(summary: Dict[str, Any], runs: List[Dict[str, Any]]) -> None:
     html.append("td,th{border:1px solid #ccc;padding:6px;font-size:12px;vertical-align:top}")
     html.append(".fail{background:#ffe5e5} .pass{background:#e7ffe7}")
     html.append("</style></head><body>")
-
-    html.append(f"<h2>Exclude Validation Report: {TEST_KEY}</h2>")
-
+    html.append(f"<h2>Exclude Validation Report: {TEST_KEY} [{summary['placement']}]</h2>")
     html.append("<h3>Summary</h3><table>")
     for k, v in summary.items():
         html.append(f"<tr><th>{k}</th><td>{v}</td></tr>")
     html.append("</table>")
-
-    html.append("<h3>Runs</h3>")
-    html.append("<table>")
+    html.append("<h3>Runs</h3><table>")
     html.append("<tr><th>Run</th><th>Extracted</th><th>Found banned</th><th>Sample IDs</th></tr>")
-
     for r in runs:
         klass = "fail" if r["found_banned"] else "pass"
-        sample = "<br>".join(r["ids"][:20])  # โชว์แค่ 20 ตัวแรกกันยาว
+        sample = "<br>".join(r["ids"][:20])
         found = "<br>".join(r["found_banned"]) if r["found_banned"] else "-"
         html.append(
             f"<tr class='{klass}'>"
@@ -164,82 +184,95 @@ def write_html(summary: Dict[str, Any], runs: List[Dict[str, Any]]) -> None:
             f"<td>{sample}</td>"
             f"</tr>"
         )
-
     html.append("</table></body></html>")
-
-    with open(OUT_HTML, "w", encoding="utf-8") as f:
+    with open(out_path, "w", encoding="utf-8") as f:
         f.write("".join(html))
 
 
 # ===================================
 # MAIN CHECK
 # ===================================
-def run_exclude_check() -> Dict[str, Any]:
-    # reset log each run of pytest (ให้ไฟล์ใหม่เสมอ)
-    open(OUT_LOG, "w", encoding="utf-8").close()
+def run_check(placement: dict) -> Dict[str, Any]:
+    name = placement["name"]
+    url = placement["url"]
 
-    log(f"TEST={TEST_KEY}")
-    log("START EXCLUDE VALIDATION")
+    placement_dir = f"{ART_DIR}/{name}"
+    os.makedirs(placement_dir, exist_ok=True)
+
+    out_log     = f"{placement_dir}/tc_exclude_bucketize.log"
+    out_html    = f"{placement_dir}/tc_exclude_bucketize_report.html"
+    out_json    = f"{placement_dir}/tc_exclude_bucketize_summary.json"
+    out_all_ids = f"{placement_dir}/tc_exclude_bucketize_all_ids.txt"
+
+    open(out_log, "w", encoding="utf-8").close()
+
+    def _log(msg):
+        log(msg, out_log)
+
+    _log(f"TEST={TEST_KEY}  PLACEMENT={name}")
+    _log("START EXCLUDE VALIDATION (source: bucketize nodes)")
 
     runs_result: List[Dict[str, Any]] = []
     total_found: Set[str] = set()
     total_extracted = 0
 
     for run in range(1, RUNS + 1):
-        log(f"RUN {run}")
+        _log(f"RUN {run}")
 
-        resp = requests.get(URL, timeout=TIMEOUT)
+        resp = requests.get(url, timeout=TIMEOUT)
         resp.raise_for_status()
         data = resp.json()
 
-        ids = extract_merge_ids(data)
+        # ✅ เปลี่ยน: เรียก extract_bucketize_ids แทน extract_merge_ids
+        ids = extract_bucketize_ids(data)
         id_set = set(ids)
-
         found = sorted(id_set.intersection(BANNED_IDS))
+
         if found:
             total_found.update(found)
 
         total_extracted += len(ids)
+        runs_result.append({
+            "run": run,
+            "extracted_count": len(ids),
+            "found_banned": found,
+            "ids": ids,
+        })
 
-        runs_result.append(
-            {
-                "run": run,
-                "extracted_count": len(ids),
-                "found_banned": found,
-                "ids": ids,
-            }
-        )
-
-        log(f"extracted={len(ids)} found_banned={len(found)}")
+        _log(f"extracted={len(ids)} found_banned={len(found)}")
         if found:
-            log(f"FOUND_BANNED: {found}")
+            _log(f"FOUND_BANNED: {found}")
 
         if SLEEP_SEC:
             time.sleep(SLEEP_SEC)
 
     summary = {
         "test_key": TEST_KEY,
-        "url": URL,
+        "placement": name,
+        "url": url,
         "runs": RUNS,
         "timeout_sec": TIMEOUT,
         "sleep_sec": SLEEP_SEC,
+        "target_nodes": TARGET_NODES,  # ✅ เพิ่ม: บันทึก nodes ที่ใช้
         "avg_extracted_per_run": round(total_extracted / max(1, RUNS), 2),
         "total_unique_banned_found": len(total_found),
         "banned_found_list": sorted(total_found),
         "status": "FAIL" if total_found else "PASS",
     }
 
-    write_all_ids(runs_result)
-    write_html(summary, runs_result)
+    write_all_ids(runs_result, out_all_ids)
+    write_html(summary, runs_result, out_html)
 
-    with open(OUT_JSON, "w", encoding="utf-8") as f:
+    with open(out_json, "w", encoding="utf-8") as f:
         json.dump({"summary": summary, "runs": runs_result}, f, indent=2, ensure_ascii=False)
 
-    log("DONE")
-    log(f"HTML REPORT -> {OUT_HTML}")
+    _log("DONE")
+    _log(f"HTML REPORT -> {out_html}")
 
     if total_found:
-        raise AssertionError(f"{TEST_KEY} FAIL: found banned IDs in merge_page: {sorted(total_found)}")
+        raise AssertionError(
+            f"{TEST_KEY} [{name}] FAIL: found banned IDs in bucketize nodes: {sorted(total_found)}"
+        )
 
     return summary
 
@@ -247,6 +280,27 @@ def run_exclude_check() -> Dict[str, Any]:
 # ===================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # ===================================
-def test_DMPREC_9613():
-    result = run_exclude_check()
-    print("RESULT:", result["status"])
+def test_DMPREC_9613_sfv_p7():
+    summary = run_check(PLACEMENTS[0])
+    print("RESULT:", summary["status"],
+          f"| placement={summary['placement']}",
+          f"| banned_found={summary['total_unique_banned_found']}")
+
+
+def test_DMPREC_9613_sfv_p6():
+    summary = run_check(PLACEMENTS[1])
+    print("RESULT:", summary["status"],
+          f"| placement={summary['placement']}",
+          f"| banned_found={summary['total_unique_banned_found']}")
+
+
+if __name__ == "__main__":
+    failures = []
+    for p in PLACEMENTS:
+        try:
+            run_check(p)
+        except AssertionError as e:
+            failures.append(str(e))
+
+    if failures:
+        raise AssertionError("\n".join(failures))

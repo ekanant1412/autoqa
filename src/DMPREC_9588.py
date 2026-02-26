@@ -1,28 +1,52 @@
 import json
 import os
-import pytest
 import requests
 
 REPORT_DIR = "reports/DMPREC-9588"
 os.makedirs(REPORT_DIR, exist_ok=True)
 
-UNIVERSAL_URL = (
-    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p7"
-    "?shelfId=Kaw6MLVzPWmo"
-    "&total_candidates=200"
-    "&pool_limit_category_items=60"
-    "&language=th"
-    "&pool_tophit_date=365"
-    "&limit=100"
-    "&userId=null"
-    "&pseudoId=null"
-    "&cursor=1"
-    "&ga_id=100118391.0851155978"
-    "&is_use_live=true"
-    "&verbose=debug"
-    "&pool_latest_date=365"
-)
+PLACEMENTS = [
+    {
+        "name": "sfv-p7",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p7"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+    {
+        "name": "sfv-p6",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+]
 
 METADATA_URL = (
     "http://ai-metadata-service.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
@@ -60,16 +84,25 @@ def fetch_metadata_all(ids: list[str], fields: list[str]) -> dict:
     return result
 
 
-def run_check() -> dict:
+def run_check(placement: dict) -> dict:
+    name = placement["name"]
+    url = placement["url"]
+    art_dir = f"{REPORT_DIR}/{name}"
+    os.makedirs(art_dir, exist_ok=True)
+
+    print(f"\n{'='*60}")
+    print(f"  PLACEMENT: {name}")
+    print(f"{'='*60}")
+
     # ----------------------------------------------------------
     # Step 1: Call Universal API
     # ----------------------------------------------------------
     print("[Step 1] Calling Universal API...")
-    resp = requests.get(UNIVERSAL_URL, timeout=TIMEOUT_SEC)
+    resp = requests.get(url, timeout=TIMEOUT_SEC)
     resp.raise_for_status()
     data = resp.json()
 
-    with open(f"{REPORT_DIR}/universal_response.json", "w", encoding="utf-8") as f:
+    with open(f"{art_dir}/universal_response.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     results = data.get("data", {}).get("results", {})
@@ -80,7 +113,7 @@ def run_check() -> dict:
     final_ids = results.get("final_result", {}).get("result", {}).get("ids", [])
     final_ids = [x for x in final_ids if isinstance(x, str) and x.strip()]
     print(f"[Step 2] final_ids: {len(final_ids)}")
-    assert final_ids, "final_result ids not found or empty"
+    assert final_ids, f"[{name}] final_result ids not found or empty"
 
     # ----------------------------------------------------------
     # Step 3: Build item_map from metadata nodes
@@ -102,7 +135,7 @@ def run_check() -> dict:
                 if item["id"] not in item_map:
                     item_map[item["id"]] = {**item, "_found_in_node": node_name}
 
-    print(f"  final_ids       : {len(final_ids)}")
+    print(f"  final_ids        : {len(final_ids)}")
     print(f"  Mapped from nodes: {len(item_map)}")
 
     missing_in_nodes = [fid for fid in final_ids if fid not in item_map]
@@ -130,7 +163,7 @@ def run_check() -> dict:
     )
     print(f"  Metadata returned: {len(relate_meta_map)} items")
 
-    with open(f"{REPORT_DIR}/relate_metadata.json", "w", encoding="utf-8") as f:
+    with open(f"{art_dir}/relate_metadata.json", "w", encoding="utf-8") as f:
         json.dump(relate_meta_map, f, ensure_ascii=False, indent=2)
 
     # ----------------------------------------------------------
@@ -180,6 +213,7 @@ def run_check() -> dict:
     # ----------------------------------------------------------
     total_fail = len(fail_no_relate) + len(fail_no_ecommerce)
     summary = {
+        "placement": name,
         "total_final_ids": len(final_ids),
         "pass_count": len(pass_items),
         "fail_empty_relate_count": len(fail_no_relate),
@@ -189,12 +223,13 @@ def run_check() -> dict:
         "fail_no_ecommerce": fail_no_ecommerce,
     }
 
-    with open(f"{REPORT_DIR}/validation_summary.json", "w", encoding="utf-8") as f:
+    with open(f"{art_dir}/validation_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
-    with open(f"{REPORT_DIR}/pass_items.json", "w", encoding="utf-8") as f:
+    with open(f"{art_dir}/pass_items.json", "w", encoding="utf-8") as f:
         json.dump(pass_items, f, ensure_ascii=False, indent=2)
 
     print("\n" + "=" * 60)
+    print(f"  placement                : {name}")
     print(f"  final_ids total          : {len(final_ids)}")
     print(f"  ✅ PASS (has ecommerce)  : {len(pass_items)}")
     print(f"  ❌ FAIL (empty relate)   : {len(fail_no_relate)}")
@@ -207,9 +242,8 @@ def run_check() -> dict:
 # =============================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =============================================================
-def test_DMPREC_9588():
-    summary = run_check()
-
+def test_DMPREC_9588_sfv_p7():
+    summary = run_check(PLACEMENTS[0])
     fail_msgs = []
     if summary["fail_empty_relate_count"] > 0:
         ids = [x["id"] for x in summary["fail_empty_relate"]]
@@ -219,11 +253,27 @@ def test_DMPREC_9588():
     if summary["fail_no_ecommerce_count"] > 0:
         ids = [x["id"] for x in summary["fail_no_ecommerce"]]
         fail_msgs.append(
-            f"FAIL no ecommerce in relate_content ({summary['fail_no_ecommerce_count']} items): {ids[:10]}"
+            f"FAIL no ecommerce ({summary['fail_no_ecommerce_count']} items): {ids[:10]}"
         )
+    assert not fail_msgs, "\n".join(fail_msgs)
 
+
+def test_DMPREC_9588_sfv_p6():
+    summary = run_check(PLACEMENTS[1])
+    fail_msgs = []
+    if summary["fail_empty_relate_count"] > 0:
+        ids = [x["id"] for x in summary["fail_empty_relate"]]
+        fail_msgs.append(
+            f"FAIL empty relate_content ({summary['fail_empty_relate_count']} items): {ids[:10]}"
+        )
+    if summary["fail_no_ecommerce_count"] > 0:
+        ids = [x["id"] for x in summary["fail_no_ecommerce"]]
+        fail_msgs.append(
+            f"FAIL no ecommerce ({summary['fail_no_ecommerce_count']} items): {ids[:10]}"
+        )
     assert not fail_msgs, "\n".join(fail_msgs)
 
 
 if __name__ == "__main__":
-    run_check()
+    for p in PLACEMENTS:
+        run_check(p)

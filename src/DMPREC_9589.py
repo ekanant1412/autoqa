@@ -7,37 +7,55 @@ import requests
 # ===================== CONFIG =====================
 TEST_KEY = "DMPREC-9589"
 
-DEFAULT_URL = (
-    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p7"
-    "?shelfId=Kaw6MLVzPWmo"
-    "&total_candidates=200"
-    "&pool_limit_category_items=60"
-    "&language=th"
-    "&pool_tophit_date=365"
-    "&limit=100"
-    "&userId=null"
-    "&pseudoId=null"
-    "&cursor=1"
-    "&ga_id=100118391.0851155978"
-    "&is_use_live=true"
-    "&verbose=debug"
-    "&pool_latest_date=365"
-)
+PLACEMENTS = [
+    {
+        "name": "sfv-p7",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p7"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+    {
+        "name": "sfv-p6",
+        "url": (
+            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=Kaw6MLVzPWmo"
+            "&total_candidates=200"
+            "&pool_limit_category_items=60"
+            "&language=th"
+            "&pool_tophit_date=365"
+            "&limit=100"
+            "&userId=null"
+            "&pseudoId=null"
+            "&cursor=1"
+            "&ga_id=100118391.0851155978"
+            "&is_use_live=true"
+            "&verbose=debug"
+            "&pool_latest_date=365"
+        ),
+    },
+]
 
-URL = os.getenv("URL", DEFAULT_URL)
 TIMEOUT_SEC = int(os.getenv("TIMEOUT_SEC", "25"))
 
 REPORT_DIR = "reports"
 ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
 os.makedirs(ART_DIR, exist_ok=True)
 
-RAW_PATH = f"{ART_DIR}/universal_debug_response.json"
-REPORT_PATH = f"{ART_DIR}/bucketize_partner_related_report.json"
-
-# =====================================================
-# Nodes ที่ต้องตรวจ
-# =====================================================
 TARGET_NODES = [
     "bucketize_tophit_sfv",
     "bucketize_latest_sfv",
@@ -114,7 +132,6 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
 
     for bucket_name, it in pairs:
         report["total_items"] += 1
-
         item_id = it.get("id") or it.get("content_id") or it.get("_id") or "(no_id)"
         partner_value = it.get("partner_related", None)
 
@@ -142,12 +159,25 @@ def validate_partner_related_allowed(node: Dict[str, Any]) -> Dict[str, Any]:
 # =====================================================
 # Core logic
 # =====================================================
-def run_check() -> Dict[str, Any]:
-    r = requests.get(URL, timeout=TIMEOUT_SEC)
+def run_check(placement: dict) -> Dict[str, Any]:
+    name = placement["name"]
+    url = placement["url"]
+
+    placement_dir = f"{ART_DIR}/{name}"
+    os.makedirs(placement_dir, exist_ok=True)
+
+    raw_path = f"{placement_dir}/universal_debug_response.json"
+    report_path = f"{placement_dir}/bucketize_partner_related_report.json"
+
+    print(f"\n{'='*60}")
+    print(f"  PLACEMENT: {name}")
+    print(f"{'='*60}")
+
+    r = requests.get(url, timeout=TIMEOUT_SEC)
     r.raise_for_status()
     data = r.json()
 
-    with open(RAW_PATH, "w", encoding="utf-8") as f:
+    with open(raw_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     nodes = deep_find_nodes(data, TARGET_NODES)
@@ -181,7 +211,8 @@ def run_check() -> Dict[str, Any]:
 
     result = {
         "test_key": TEST_KEY,
-        "url": URL,
+        "placement": name,
+        "url": url,
         "target_nodes": TARGET_NODES,
         "missing_nodes": missing_nodes,
         "allowed_partner_related": [ALLOWED_PARTNER_ID],
@@ -191,10 +222,10 @@ def run_check() -> Dict[str, Any]:
         "status": "FAIL" if (failed_all > 0 or missing_nodes) else "PASS",
     }
 
-    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+    with open(report_path, "w", encoding="utf-8") as f:
         json.dump({**result, "fail_rows_all": all_fail_rows}, f, ensure_ascii=False, indent=2)
 
-    print(f"\n  Saved -> {REPORT_PATH}")
+    print(f"\n  Saved -> {report_path}")
 
     return result
 
@@ -202,38 +233,52 @@ def run_check() -> Dict[str, Any]:
 # =====================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =====================================================
-def test_DMPREC_9589():
-    result = run_check()
-    print("RESULT:", result["status"], "failed_all=", result["failed_all"])
+def test_DMPREC_9589_sfv_p7():
+    result = run_check(PLACEMENTS[0])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| failed_all={result['failed_all']}")
 
     fail_msgs = []
-
     if result["missing_nodes"]:
-        fail_msgs.append(
-            f"Missing nodes in response: {result['missing_nodes']}"
-        )
-
+        fail_msgs.append(f"Missing nodes: {result['missing_nodes']}")
     if result["failed_all"] > 0:
-        sample = [
-            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
-            for row in result.get("fail_rows_all", [])[:10]  # ดึงจาก result ได้เลย
-        ]
-        # --- rebuild fail_rows_all จาก node_reports เพราะ run_check ไม่ return ไว้ ---
         all_fail_rows = [
-            row
-            for rep in result["node_reports"]
+            row for rep in result["node_reports"]
             for row in rep.get("fail_all", [])
         ]
         sample = [
             f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
             for row in all_fail_rows[:10]
         ]
-        fail_msgs.append(
-            f"partner_related invalid count={result['failed_all']}. sample={sample}"
-        )
+        fail_msgs.append(f"partner_related invalid count={result['failed_all']}. sample={sample}")
 
-    assert not fail_msgs, f"{TEST_KEY} FAIL:\n" + "\n".join(fail_msgs)
+    assert not fail_msgs, f"{TEST_KEY} [sfv-p7] FAIL:\n" + "\n".join(fail_msgs)
+
+
+# def test_DMPREC_9589_sfv_p6():
+    result = run_check(PLACEMENTS[1])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| failed_all={result['failed_all']}")
+
+    fail_msgs = []
+    if result["missing_nodes"]:
+        fail_msgs.append(f"Missing nodes: {result['missing_nodes']}")
+    if result["failed_all"] > 0:
+        all_fail_rows = [
+            row for rep in result["node_reports"]
+            for row in rep.get("fail_all", [])
+        ]
+        sample = [
+            f"{row['node']}[{row['bucket']}] id={row['id']} partner_related={row['partner_related']!r}"
+            for row in all_fail_rows[:10]
+        ]
+        fail_msgs.append(f"partner_related invalid count={result['failed_all']}. sample={sample}")
+
+    assert not fail_msgs, f"{TEST_KEY} [sfv-p6] FAIL:\n" + "\n".join(fail_msgs)
 
 
 if __name__ == "__main__":
-    run_check()
+    for p in PLACEMENTS:
+        run_check(p)
