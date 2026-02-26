@@ -129,7 +129,6 @@ def run_check(placement: dict) -> dict:
         j1 = r1.json()
         results1 = get_results_root(j1)
 
-        # save เฉพาะ run แรกและ run สุดท้าย
         if run == 1 or run == RUNS:
             with open(f"{placement_dir}/response_req1_run{run}.json", "w", encoding="utf-8") as f:
                 json.dump(j1, f, ensure_ascii=False, indent=2)
@@ -223,6 +222,9 @@ def run_check(placement: dict) -> dict:
     fail_runs = sum(1 for r in run_results if r["status"] == "FAIL")
     status = "FAIL" if all_issues else "PASS"
 
+    # รวม missing_top_n ทั้งหมดจาก run_details
+    total_missing = sum(len(r["missing_top_n"]) for r in run_results)
+
     log(f"\n{'='*50}")
     log(f"=== FINAL SUMMARY  placement={name} ===")
     log(f"{'='*50}")
@@ -244,6 +246,7 @@ def run_check(placement: dict) -> dict:
         "max_seen": MAX_SEEN,
         "pass_runs": pass_runs,
         "fail_runs": fail_runs,
+        "total_missing_top_n": total_missing,   # ✅ key ใหม่ที่ถูกต้อง
         "total_issues": len(all_issues),
         "all_issues": all_issues,
         "run_details": run_results,
@@ -271,24 +274,26 @@ def test_DMPREC_9707_sfv_p4():
     result = run_check(PLACEMENTS[0])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
-          f"| seen_before={result['seen_before_count']}",
-          f"| seen_after={result['seen_after_count']}",
-          f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
+          f"| pass_runs={result['pass_runs']}",
+          f"| fail_runs={result['fail_runs']}",
+          f"| total_missing_top{TOP_N}={result['total_missing_top_n']}")
 
 
 def test_DMPREC_9707_sfv_p5():
     result = run_check(PLACEMENTS[1])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
-          f"| seen_before={result['seen_before_count']}",
-          f"| seen_after={result['seen_after_count']}",
-          f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
-    
+          f"| pass_runs={result['pass_runs']}",
+          f"| fail_runs={result['fail_runs']}",
+          f"| total_missing_top{TOP_N}={result['total_missing_top_n']}")
+
+
 def test_DMPREC_9707():
     test_DMPREC_9707_sfv_p4()
     test_DMPREC_9707_sfv_p5()
 
 
+# =================================================
 if __name__ == "__main__":
     failures = []
     for p in PLACEMENTS:
