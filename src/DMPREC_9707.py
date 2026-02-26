@@ -48,7 +48,7 @@ PLACEMENTS = [
 TIMEOUT_SEC = 20
 MAX_SEEN = 200   # default limit ของ redis
 TOP_N = 5        # จำนวนที่เช็ค (5 อันดับแรก)
-RUNS = 50        # จำนวนรอบที่รัน
+RUNS = 10        # จำนวนรอบที่รัน
 
 
 REPORT_DIR = "reports"

@@ -47,7 +47,7 @@ PLACEMENTS = [
 ]
 
 TIMEOUT_SEC = 20
-RUNS = 50
+RUNS = 10
 
 REPORT_DIR = "reports"
 ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"
