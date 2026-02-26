@@ -6,3 +6,5 @@ from src.DMPREC_9588 import test_DMPREC_9588
 from src.DMPREC_9589 import test_DMPREC_9589
 from src.DMPREC_9590 import test_DMPREC_9590
 from src.DMPREC_9613 import test_DMPREC_9613
+from src.DMPREC_9700 import test_DMPREC_9700
+from src.DMPREC_9701 import test_DMPREC_9701
