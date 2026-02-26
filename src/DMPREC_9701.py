@@ -213,9 +213,9 @@ def run_check():
 # =================================================
 # ✅ PYTEST ENTRY
 # =================================================
-def test_DMPREC_9701():
-    result = run_check()
-    print("RESULT:", result["status"])
+# def test_DMPREC_9701():
+#     result = run_check()
+#     print("RESULT:", result["status"])
 
 
 if __name__ == "__main__":

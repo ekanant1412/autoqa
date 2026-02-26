@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 # ===================== CONFIG =====================
-TEST_KEY = "DMPREC-SEEN"
+TEST_KEY = "DMPREC-9707"
 
 PLACEMENTS = [
     {
@@ -267,22 +267,26 @@ def run_check(placement: dict) -> dict:
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-# def test_DMPREC_SEEN_sfv_p4():
-#     result = run_check(PLACEMENTS[0])
-#     print("RESULT:", result["status"],
-#           f"| placement={result['placement']}",
-#           f"| seen_before={result['seen_before_count']}",
-#           f"| seen_after={result['seen_after_count']}",
-#           f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
+def test_DMPREC_9707_sfv_p4():
+    result = run_check(PLACEMENTS[0])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| seen_before={result['seen_before_count']}",
+          f"| seen_after={result['seen_after_count']}",
+          f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
 
 
-# def test_DMPREC_SEEN_sfv_p5():
-#     result = run_check(PLACEMENTS[1])
-#     print("RESULT:", result["status"],
-#           f"| placement={result['placement']}",
-#           f"| seen_before={result['seen_before_count']}",
-#           f"| seen_after={result['seen_after_count']}",
-#           f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
+def test_DMPREC_9707_sfv_p5():
+    result = run_check(PLACEMENTS[1])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| seen_before={result['seen_before_count']}",
+          f"| seen_after={result['seen_after_count']}",
+          f"| missing_top{TOP_N}={len(result['missing_in_seen_r2'])}")
+    
+def test_DMPREC_9707():
+    test_DMPREC_9707_sfv_p4()
+    test_DMPREC_9707_sfv_p5()
 
 
 if __name__ == "__main__":

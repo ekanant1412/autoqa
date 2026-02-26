@@ -5,7 +5,7 @@ import os
 from collections import Counter
 
 # ===================== CONFIG =====================
-TEST_KEY = "DMPREC-SEEN"
+TEST_KEY = "DMPREC-9706"
 
 PLACEMENTS = [
     {
@@ -231,6 +231,32 @@ def run_check(placement: dict):
         )
 
     return result
+
+
+# =================================================
+# ✅ PYTEST ENTRY (Xray mapping)
+# =================================================
+def test_DMPREC_9706_sfv_p4():
+    result = run_check(PLACEMENTS[0])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pass_runs={result['pass_runs']}",
+          f"| fail_runs={result['fail_runs']}",
+          f"| total_issues={len(result['issues'])}")
+
+
+def test_DMPREC_9706_sfv_p5():
+    result = run_check(PLACEMENTS[1])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pass_runs={result['pass_runs']}",
+          f"| fail_runs={result['fail_runs']}",
+          f"| total_issues={len(result['issues'])}")
+
+
+def test_DMPREC_9706():
+    test_DMPREC_9706_sfv_p4()
+    test_DMPREC_9706_sfv_p5()
 
 
 # =================================================

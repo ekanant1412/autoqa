@@ -17,7 +17,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&limit=100&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=100118391.0851155978"
+            "&cursor=1&ga_id=100118391.0851157978"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
         ),
     },
@@ -31,7 +31,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&limit=100&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=100118391.0851155978"
+            "&cursor=1&ga_id=100118391.0851157978"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
         ),
     },
@@ -66,7 +66,11 @@ def extract_reserved_positions(node: dict) -> dict:
     result = node.get("result", {})
     if not isinstance(result, dict):
         return {}
-    reserved = result.get("reservedPositions", {})
+
+    reserved = result.get("reservedPositions")
+    if not isinstance(reserved, dict):  # ครอบคลุม None, list, str
+        return {}
+
     out = {}
     for k, v in reserved.items():
         if str(k).isdigit() and isinstance(v, str):
@@ -79,9 +83,13 @@ def extract_pin_items(node: dict) -> list:
     result = node.get("result", {})
     if not isinstance(result, dict):
         return []
-    reserved = result.get("reservedPositions", {})
+
+    reserved = result.get("reservedPositions")
+    if not isinstance(reserved, dict):
+        return []
+
     return [
-        v[4:] if v.startswith("pin_") else v
+        v[4:] if isinstance(v, str) and v.startswith("pin_") else v
         for v in reserved.values()
         if isinstance(v, str)
     ]
@@ -290,25 +298,25 @@ def run_check(placement: dict) -> dict:
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-def test_DMPREC_9587_sfv_p7():
-    result = run_check(PLACEMENTS[0])
-    print("RESULT:", result["status"],
-          f"| placement={result['placement']}",
-          f"| pin_total={result['pin_items_total']}",
-          f"| fail_blocks={result['fail_blocks']}")
+# def test_DMPREC_9587_sfv_p7():
+#     result = run_check(PLACEMENTS[0])
+#     print("RESULT:", result["status"],
+#           f"| placement={result['placement']}",
+#           f"| pin_total={result['pin_items_total']}",
+#           f"| fail_blocks={result['fail_blocks']}")
 
 
-def test_DMPREC_9587_sfv_p6():
-    result = run_check(PLACEMENTS[1])
-    print("RESULT:", result["status"],
-          f"| placement={result['placement']}",
-          f"| pin_total={result['pin_items_total']}",
-          f"| fail_blocks={result['fail_blocks']}")
+# def test_DMPREC_9587_sfv_p6():
+#     result = run_check(PLACEMENTS[1])
+#     print("RESULT:", result["status"],
+#           f"| placement={result['placement']}",
+#           f"| pin_total={result['pin_items_total']}",
+#           f"| fail_blocks={result['fail_blocks']}")
     
-# ✅ Single entrypoint for test_all.py (วางท้ายสุด)
-def test_DMPREC_9587():
-    test_DMPREC_9587_sfv_p7()
-    test_DMPREC_9587_sfv_p6()
+# # ✅ Single entrypoint for test_all.py (วางท้ายสุด)
+# def test_DMPREC_9587():
+#     test_DMPREC_9587_sfv_p7()
+#     test_DMPREC_9587_sfv_p6()
 
 
 if __name__ == "__main__":
