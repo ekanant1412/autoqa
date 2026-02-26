@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 
 # ===================== CONFIG =====================
-TEST_KEY = "DMPREC-DEDUP"
+TEST_KEY = "DMPREC-9701"
 
 BASE_URL = (
     "http://atlas-serving.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
@@ -213,7 +213,7 @@ def run_check():
 # =================================================
 # ✅ PYTEST ENTRY
 # =================================================
-def test_DMPREC_DEDUP():
+def test_DMPREC_9701():
     result = run_check()
     print("RESULT:", result["status"])
 

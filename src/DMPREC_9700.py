@@ -5,7 +5,7 @@ import os
 import time
 
 # ===================== CONFIG =====================
-TEST_KEY = "DMPREC-SEEN"
+TEST_KEY = "DMPREC-9700"
 
 URL = (
     "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
@@ -239,7 +239,7 @@ def run_check():
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-def test_DMPREC_SEEN():
+def test_DMPREC_9700():
     result = run_check()
     print("RESULT:", result["status"],
           f"| seen_before={result['seen_before_count']}",
