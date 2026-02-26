@@ -292,6 +292,10 @@ def test_DMPREC_9613_sfv_p6():
     print("RESULT:", summary["status"],
           f"| placement={summary['placement']}",
           f"| banned_found={summary['total_unique_banned_found']}")
+    
+def test_DMPREC_9613():
+    test_DMPREC_9613_sfv_p7()
+    test_DMPREC_9613_sfv_p6()
 
 
 if __name__ == "__main__":

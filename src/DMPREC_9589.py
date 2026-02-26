@@ -256,7 +256,7 @@ def test_DMPREC_9589_sfv_p7():
     assert not fail_msgs, f"{TEST_KEY} [sfv-p7] FAIL:\n" + "\n".join(fail_msgs)
 
 
-# def test_DMPREC_9589_sfv_p6():
+def test_DMPREC_9589_sfv_p6():
     result = run_check(PLACEMENTS[1])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
@@ -277,6 +277,10 @@ def test_DMPREC_9589_sfv_p7():
         fail_msgs.append(f"partner_related invalid count={result['failed_all']}. sample={sample}")
 
     assert not fail_msgs, f"{TEST_KEY} [sfv-p6] FAIL:\n" + "\n".join(fail_msgs)
+
+def test_DMPREC_9589():
+    test_DMPREC_9589_sfv_p7()
+    test_DMPREC_9589_sfv_p6()
 
 
 if __name__ == "__main__":

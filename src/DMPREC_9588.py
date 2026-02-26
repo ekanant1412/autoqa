@@ -273,6 +273,10 @@ def test_DMPREC_9588_sfv_p6():
         )
     assert not fail_msgs, "\n".join(fail_msgs)
 
+def test_DMPREC_9588():
+    test_DMPREC_9588_sfv_p7()
+    test_DMPREC_9588_sfv_p6()    
+
 
 if __name__ == "__main__":
     for p in PLACEMENTS:
