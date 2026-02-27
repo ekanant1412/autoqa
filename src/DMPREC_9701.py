@@ -7,7 +7,7 @@ import os
 TEST_KEY = "DMPREC-9701"
 
 BASE_URL = (
-    "http://atlas-serving.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+    "http://atlas-serving.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
     "/v2/placements/711-sfv-moscow"
 )
 
@@ -33,7 +33,7 @@ COMMON_PARAMS = {
     "pseudoId": "1",
     "limit": 10,
     "returnItemMetadata": "false",
-    "ga_id": "868707658.1772007422",
+    "ga_id": "868707658.1772207422",
 }
 
 TIMEOUT_SEC = 20
@@ -213,9 +213,9 @@ def run_check():
 # =================================================
 # ✅ PYTEST ENTRY
 # =================================================
-# def test_DMPREC_9701():
-#     result = run_check()
-#     print("RESULT:", result["status"])
+def test_DMPREC_9701():
+    result = run_check()
+    print("RESULT:", result["status"])
 
 
 if __name__ == "__main__":

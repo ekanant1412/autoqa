@@ -12,7 +12,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p7"
-            "?shelfId=Kaw6MLVzPWmo"
+            "?shelfId=BJq5rZqYzjgJ"
             "&total_candidates=200"
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
@@ -298,25 +298,25 @@ def run_check(placement: dict) -> dict:
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-# def test_DMPREC_9587_sfv_p7():
-#     result = run_check(PLACEMENTS[0])
-#     print("RESULT:", result["status"],
-#           f"| placement={result['placement']}",
-#           f"| pin_total={result['pin_items_total']}",
-#           f"| fail_blocks={result['fail_blocks']}")
+def test_DMPREC_9587_sfv_p7():
+    result = run_check(PLACEMENTS[0])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pin_total={result['pin_items_total']}",
+          f"| fail_blocks={result['fail_blocks']}")
 
 
-# def test_DMPREC_9587_sfv_p6():
-#     result = run_check(PLACEMENTS[1])
-#     print("RESULT:", result["status"],
-#           f"| placement={result['placement']}",
-#           f"| pin_total={result['pin_items_total']}",
-#           f"| fail_blocks={result['fail_blocks']}")
+def test_DMPREC_9587_sfv_p6():
+    result = run_check(PLACEMENTS[1])
+    print("RESULT:", result["status"],
+          f"| placement={result['placement']}",
+          f"| pin_total={result['pin_items_total']}",
+          f"| fail_blocks={result['fail_blocks']}")
     
-# # ✅ Single entrypoint for test_all.py (วางท้ายสุด)
-# def test_DMPREC_9587():
-#     test_DMPREC_9587_sfv_p7()
-#     test_DMPREC_9587_sfv_p6()
+# ✅ Single entrypoint for test_all.py (วางท้ายสุด)
+def test_DMPREC_9587():
+    test_DMPREC_9587_sfv_p7()
+    test_DMPREC_9587_sfv_p6()
 
 
 if __name__ == "__main__":
