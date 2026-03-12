@@ -17,6 +17,13 @@ jobs:
           python3 --version
           python3 -m pip --version || true
 
+      - name: Show workspace files
+        run: |
+          pwd
+          ls -la
+          echo "===== tests ====="
+          ls -la tests || true
+
       - name: Install dependencies
         run: |
           set -e
@@ -28,7 +35,18 @@ jobs:
         run: |
           set -e
           mkdir -p reports
-          python3 tests/run_baseline_vs_candidate.py
+
+          if [ -f "tests/Test_search.py" ]; then
+            echo "Running tests/Test_search.py"
+            python3 tests/Test_search.py
+          elif [ -f "tests/test_search.py" ]; then
+            echo "Running tests/test_search.py"
+            python3 tests/test_search.py
+          else
+            echo "ERROR: cannot find baseline vs candidate script in tests/"
+            ls -la tests || true
+            exit 1
+          fi
 
       - name: Verify reports
         if: always()
@@ -42,6 +60,11 @@ jobs:
         if: always()
         run: |
           set -e
+          if [ ! -d reports ]; then
+            echo "ERROR: reports directory not found"
+            exit 1
+          fi
+
           rm -f reports/evidence.zip || true
           (cd reports && zip -r evidence.zip .)
           ls -la reports/evidence.zip
@@ -153,3 +176,4 @@ jobs:
         with:
           name: baseline-vs-candidate-reports
           path: reports
+          if-no-files-found: warn
