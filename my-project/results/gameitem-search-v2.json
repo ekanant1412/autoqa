@@ -1,0 +1,365 @@
+{
+  "timestamp": "2026-02-27T09:09:05.151Z",
+  "name": "gameitem-search-v2",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=0Ge4ERr9edO5&content_type_filtering=game_item&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_item&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_item",
+  "total_items": 89,
+  "items": [
+    {
+      "id": "LXEzKxYq3End",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "bz7mEQa09nbL",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Jepp85pE4XGe",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "g4Wkg5dJZDQ4",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "MpkxOV5jyjKn",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "d4vmLRyjlBan",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "YKLG2oYNr67v",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "3m3qy5GPk3ej",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "7ODB9wW3x2oa",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "0BnoePG95pxO",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "KmVMYBZd8New",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "z67dkN9Ovvv3",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "AkKDGb2beZ5x",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "3n7w2dQXrXRn",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "m47WK0NrBvz4",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "JwkXvLp0EZva",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "zkRmPy9gvQy2",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "bwLVRQk5R3va",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "zY0xKy22ddXY",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "PW6ZVb9lRXqW",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "a5kAJVl1W2py",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "N18lXoxOYy71",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "JAYa0qkV3rZA",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "MPjEBGY5MM8N",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "VGgYbyNbKdM7",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "JAN8JyBqpn16",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "vrM3Bwyld3lO",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "LGvN79WLqgMG",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "ljO0LmbZvD6K",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "8YQ6PLvlroD2",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "YZ4m2gm0lGVv",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "j4vOjmnpVerK",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "meXJYBZ0xvWn",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "d7lgdz4oPgl1",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Er3dYpAwMM2q",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "497b7e6xKr3X",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "5bZgRvDEP4gW",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "8gNEGjKL7Bal",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "7xWWqEe0Mzox",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "AWAn8vYGbXdm",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "k5QA0QopjpV5",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "qBd0PRyMzmMB",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "EBmg8jNJbMno",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "BOPlxegPmywO",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "EjLVR56lr4lM",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "ZaozGyvKEvGq",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "06pXbodR8QO6",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "6g7z91qPE5r0",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Av1lqGAb0A9X",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "RzDyKRdj4ldr",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "RzB9XZqqPM84",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Vr8v3qb3PDNO",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "4JayZ67rPn1J",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "ODnLeEYYLdpN",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "EV6YJApeR7Xw",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "OW6J2gbMdDPW",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "VOvmQakLrN83",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "vVv014K2dOyB",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "BNe5XJnQjRoN",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "4y2nNv8rg3vy",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "AdV06o1YMgkW",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Exwr29onjQe3",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "VJeZzplxqEyG",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "e7ow16MYLle7",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "8283onEpjp4a",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "xZn4v5AzBvdb",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "wRnxbV3kZ2W9",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "aY1ykaoPpr0Y",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "LDbl4JqXzzWQ",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "AEw1XxK99zlm",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Qg0z4lrYqvzW",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "rqXmkdaenkZ0",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "d2llGkLwGRP2",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "qy24pqjB7aEw",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "NG87EvNnOYlz",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "d2RMobyOoPOg",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "3z5pKAwglWEb",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "9qMMAbVN2onq",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "3Rj7Wd3wrpyN",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "L1NJozOoEOd1",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "64NWlyLwanZB",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "VODDjN4xxRGO",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "4AZ2eQl06elA",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "d1wbloq3kQam",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "DVPDzGyL0NmV",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "Eg3rMZqAm3EP",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "G3Yv24QLYWpB",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "W43wo2RMzqN4",
+      "content_type": "gameitem"
+    },
+    {
+      "id": "yq6vB0gW8ZXq",
+      "content_type": "gameitem"
+    }
+  ]
+}

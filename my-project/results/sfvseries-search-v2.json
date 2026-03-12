@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-02-27T09:07:23.119Z",
+  "name": "sfvseries-search-v2",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=sfvseries&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=4a93zWKQvANj&content_type_filtering=sfv_series&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv_series&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv_series",
+  "total_items": 30,
+  "items": [
+    {
+      "id": "ynZE7V4AJ9kY",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "YEYyGNMQe02E",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "l3MK4y4kNX1g",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "v40MOaVN6DEX",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "Qw0VKpJygJBM",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "bVWwl27bAQZV",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "X3ypz2Vq5Ab8",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "1zGA683Xokyn",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "qr1V6BbDKWvn",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "YDygz4gOBk5E",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "VGQJzWw7L3L2",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "kAaqJLb3PZKA",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "bmKBDvKKqNYR",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "j9XX6wNrw739",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "9Y7vDdBpybg4",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "njvQLKvoYazr",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "bB1NQj8p1qP4",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "mxdyq0jGyRPD",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "GO1ypmzx89LO",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "Ay0XRxN9gZAy",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "2Po09qL72V3A",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "dgKwxQXznkrg",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "95we94k6xnqN",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "b9OQJ5lVLlln",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "BWb2QpZqzq0W",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "7JOjdL067Yev",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "Vv4GDa45q8Oz",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "D026wPN5DYP0",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "PwRbAB5DBkEw",
+      "content_type": "sfvseries"
+    },
+    {
+      "id": "VdA4G8mZDo6g",
+      "content_type": "sfvseries"
+    }
+  ]
+}

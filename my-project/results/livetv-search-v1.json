@@ -1,0 +1,409 @@
+{
+  "timestamp": "2026-02-27T09:07:35.099Z",
+  "name": "livetv-search-v1",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=2APVEbbo4zmX&content_type_filtering=livetv&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Flivetv&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Flivetv",
+  "total_items": 100,
+  "items": [
+    {
+      "id": "rVWJGN1VLOB",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GDna51EdVk4",
+      "content_type": "livetv"
+    },
+    {
+      "id": "5XaDjQd1JJgw",
+      "content_type": "livetv"
+    },
+    {
+      "id": "wQZrKd3mo65",
+      "content_type": "livetv"
+    },
+    {
+      "id": "OzKE5d4pdNwy",
+      "content_type": "livetv"
+    },
+    {
+      "id": "3JYow6Dx7zx0",
+      "content_type": "livetv"
+    },
+    {
+      "id": "MG60o1KjmzNP",
+      "content_type": "livetv"
+    },
+    {
+      "id": "7OBlr4RJZDR5",
+      "content_type": "livetv"
+    },
+    {
+      "id": "zyab4aWZ0OWx",
+      "content_type": "livetv"
+    },
+    {
+      "id": "2Yyb9xXEgeOJ",
+      "content_type": "livetv"
+    },
+    {
+      "id": "qkrdgooa4no8",
+      "content_type": "livetv"
+    },
+    {
+      "id": "3xyaeKOdaZEx",
+      "content_type": "livetv"
+    },
+    {
+      "id": "eZbmYRvMvylj",
+      "content_type": "livetv"
+    },
+    {
+      "id": "k3B64mk9ELl3",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Q7vaEm8O9e4",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GDwwA11rPBgD",
+      "content_type": "livetv"
+    },
+    {
+      "id": "4QGmlkkeqBd1",
+      "content_type": "livetv"
+    },
+    {
+      "id": "r9ombkk8M7n4",
+      "content_type": "livetv"
+    },
+    {
+      "id": "v2M0K4kgbrN",
+      "content_type": "livetv"
+    },
+    {
+      "id": "eyEPa8A2WaJN",
+      "content_type": "livetv"
+    },
+    {
+      "id": "3wLvyKyryPAD",
+      "content_type": "livetv"
+    },
+    {
+      "id": "YmaygkwgE6Lm",
+      "content_type": "livetv"
+    },
+    {
+      "id": "OZeq8ZLPldY",
+      "content_type": "livetv"
+    },
+    {
+      "id": "zmvD0RO72nL",
+      "content_type": "livetv"
+    },
+    {
+      "id": "EnWNeavOdeVq",
+      "content_type": "livetv"
+    },
+    {
+      "id": "g9ONWXWJV5pq",
+      "content_type": "livetv"
+    },
+    {
+      "id": "xDYqbGEY4lK",
+      "content_type": "livetv"
+    },
+    {
+      "id": "18bXErKy2Am",
+      "content_type": "livetv"
+    },
+    {
+      "id": "NPDG7knzdgN",
+      "content_type": "livetv"
+    },
+    {
+      "id": "pQNm6nA20a6e",
+      "content_type": "livetv"
+    },
+    {
+      "id": "pmXrb1NjLeP0",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GdgqaeMewGp4",
+      "content_type": "livetv"
+    },
+    {
+      "id": "YZzDXGM1Yd68",
+      "content_type": "livetv"
+    },
+    {
+      "id": "wkOEnAR062w",
+      "content_type": "livetv"
+    },
+    {
+      "id": "eXlvvZ4EA5aY",
+      "content_type": "livetv"
+    },
+    {
+      "id": "E9k68z9aKDp",
+      "content_type": "livetv"
+    },
+    {
+      "id": "QYvlo1DEA0Zb",
+      "content_type": "livetv"
+    },
+    {
+      "id": "lQm56Ow0wjl",
+      "content_type": "livetv"
+    },
+    {
+      "id": "1ZrGkEk3qP7L",
+      "content_type": "livetv"
+    },
+    {
+      "id": "wkrQgY603zM",
+      "content_type": "livetv"
+    },
+    {
+      "id": "jqepWV3ka8j",
+      "content_type": "livetv"
+    },
+    {
+      "id": "DpZV0741AWz",
+      "content_type": "livetv"
+    },
+    {
+      "id": "5KYLwQAL6aXe",
+      "content_type": "livetv"
+    },
+    {
+      "id": "n8OW8d0x0qA",
+      "content_type": "livetv"
+    },
+    {
+      "id": "bN8M16MRd20",
+      "content_type": "livetv"
+    },
+    {
+      "id": "D9a3Kl4ZWZBb",
+      "content_type": "livetv"
+    },
+    {
+      "id": "JkpG4LeljXJ0",
+      "content_type": "livetv"
+    },
+    {
+      "id": "M34YDGLk2wVj",
+      "content_type": "livetv"
+    },
+    {
+      "id": "xkZ7M890k1z",
+      "content_type": "livetv"
+    },
+    {
+      "id": "yvjQWlnQqkzL",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Vwz1j7XVRkdn",
+      "content_type": "livetv"
+    },
+    {
+      "id": "L3Jbvn0BnbA",
+      "content_type": "livetv"
+    },
+    {
+      "id": "vmDMJ9qmJxg",
+      "content_type": "livetv"
+    },
+    {
+      "id": "pK4nxR53lEbJ",
+      "content_type": "livetv"
+    },
+    {
+      "id": "5YQaWExRqD5",
+      "content_type": "livetv"
+    },
+    {
+      "id": "OX4KG1R3W8O",
+      "content_type": "livetv"
+    },
+    {
+      "id": "B9alY9gp0vB",
+      "content_type": "livetv"
+    },
+    {
+      "id": "nYvz5QLWjyD",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Yb4p39lbgvN",
+      "content_type": "livetv"
+    },
+    {
+      "id": "KlW9OymBRqrD",
+      "content_type": "livetv"
+    },
+    {
+      "id": "2KyzkV6AyPZ",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GPVMYwpnzKv",
+      "content_type": "livetv"
+    },
+    {
+      "id": "RN8ALdyRovrj",
+      "content_type": "livetv"
+    },
+    {
+      "id": "G91q58rrakG",
+      "content_type": "livetv"
+    },
+    {
+      "id": "NopZ5gjkGmE",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Kz5zjkGyDVA",
+      "content_type": "livetv"
+    },
+    {
+      "id": "EGvbeMNZOwq",
+      "content_type": "livetv"
+    },
+    {
+      "id": "MDDoq1pvaVM",
+      "content_type": "livetv"
+    },
+    {
+      "id": "R4WyxL6Mp8b",
+      "content_type": "livetv"
+    },
+    {
+      "id": "r71LNbqjaKe",
+      "content_type": "livetv"
+    },
+    {
+      "id": "eM73Dj2x6pk",
+      "content_type": "livetv"
+    },
+    {
+      "id": "xR0n6ePG7wL",
+      "content_type": "livetv"
+    },
+    {
+      "id": "pQ6ok8M72AD",
+      "content_type": "livetv"
+    },
+    {
+      "id": "nbyAVeb1jpN",
+      "content_type": "livetv"
+    },
+    {
+      "id": "A36nrdXGn3V",
+      "content_type": "livetv"
+    },
+    {
+      "id": "KEN52vz3o6M",
+      "content_type": "livetv"
+    },
+    {
+      "id": "JeQ5L9PpVBJ",
+      "content_type": "livetv"
+    },
+    {
+      "id": "6Qna2oVjq3P",
+      "content_type": "livetv"
+    },
+    {
+      "id": "JGAQ7VZpX9Y",
+      "content_type": "livetv"
+    },
+    {
+      "id": "2L1ZZdJGxPej",
+      "content_type": "livetv"
+    },
+    {
+      "id": "J2LMzNN8k4K",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Ay93Q8zlOeA",
+      "content_type": "livetv"
+    },
+    {
+      "id": "jbzlQpWG6nj",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GOPVJMln56Y",
+      "content_type": "livetv"
+    },
+    {
+      "id": "Kwj7W2nmmjoO",
+      "content_type": "livetv"
+    },
+    {
+      "id": "rO7WMREyepr",
+      "content_type": "livetv"
+    },
+    {
+      "id": "3ELoobaOBdd9",
+      "content_type": "livetv"
+    },
+    {
+      "id": "NB2d2A9Zd94z",
+      "content_type": "livetv"
+    },
+    {
+      "id": "q9zDawRRd44L",
+      "content_type": "livetv"
+    },
+    {
+      "id": "3AqanG58Er3",
+      "content_type": "livetv"
+    },
+    {
+      "id": "4QmJ09AyPm4",
+      "content_type": "livetv"
+    },
+    {
+      "id": "PanRBOzKovQ",
+      "content_type": "livetv"
+    },
+    {
+      "id": "xVW7oVd8Gen",
+      "content_type": "livetv"
+    },
+    {
+      "id": "NOed9VVgV2K",
+      "content_type": "livetv"
+    },
+    {
+      "id": "GNd67OBJ6pv",
+      "content_type": "livetv"
+    },
+    {
+      "id": "9O54lyP5Rqx",
+      "content_type": "livetv"
+    },
+    {
+      "id": "dyZWzDo7b0q",
+      "content_type": "livetv"
+    },
+    {
+      "id": "dQ9rmrAZjrXv",
+      "content_type": "livetv"
+    },
+    {
+      "id": "2Ag1bgVdNwoL",
+      "content_type": "livetv"
+    },
+    {
+      "id": "YLN6d3oYyXEL",
+      "content_type": "livetv"
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+{
+  "timestamp": "2026-02-27T09:08:26.057Z",
+  "name": "sportclip-search-v1",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=watch&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=0DEBKEx1xJ9&content_type_filtering=sport_clip&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsport_clip&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsport_clip",
+  "total_items": 62,
+  "items": [
+    {
+      "id": "48moLmog9YK",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "NeGVDG3RWrM",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "WDeDveOARXa",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Yp52v57Omzb",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "DR46Q98wVg1",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "a8Q8O97XxdG",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "2GrNgrDj0JP",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "4xMRqMpy6rz",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "6KAKyAVaN3g",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Ly8kd8DyPY6",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "nj2JX2Wo1En",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "35qjnZaz0e3",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Xz5BOrj0AJP",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "6lNvOxngNDG",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "74Ae0Abml6j",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "DxK0z41XKjW",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "MrJn4bq6KGM",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "NXqbGyQVXvY",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "RE8xnQKPdL6",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "jJQlPQkM8Qw",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "k3KnbwAnDmk",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "wK3pG0W36Qw",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "3XQbXZmb6OK",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "5WDkNJ3AbjG",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Bzpgav4V1Or",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "EXg62NOp22x",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Jb0EmzNa3W9",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "MD9Xqab7dp5",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "PyEJ1WMV9QP",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Qy38vVvL69W",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "eOpYdvwQB0A",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "k0x2lApENOk",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "lyN1EpDvP09",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "p3RBWGleVEa",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "r69malbOQ8j",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "vob03X7Dlng",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "QA9ozBDz4kQ",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "32xLzB1NGx0",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "41pyD1arYBj",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "4bzvG2OwZP4",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "60D7zPPOVg6",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "BbpeoXygy1q",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "JQWznGQw6A9",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "JeRe79Qdk8Y",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "K5QVmE313JK",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "KXo7YGzO1Vp",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "MnDERygllPX",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "PZXk7a2v1J6",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "PgO0YxYeWDP",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "QXmenrz8En7",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "W4qQmObwOzx",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "XnoNkxMM2RJ",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "Xrg1JglOWe0",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "ZYKJvVO5po0",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "a0KQgJBzlwe",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "bjX928QgryB",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "dgQn0892zWE",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "dzRGxK7zOKd",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "lOkQjAdm37l",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "o5lea8PRzO4",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "RrMX18EZvLl",
+      "content_type": "sportclip"
+    },
+    {
+      "id": "aZrbJzoxKOa",
+      "content_type": "sportclip"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-02-27T09:09:37.155Z",
+  "name": "coupon-search",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=1GJBJVpLL3OG&content_type_filtering=coupon&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fcoupon&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fcoupon",
+  "total_items": 17,
+  "items": [
+    {
+      "id": "1x8byZgRm9Rv",
+      "content_type": "coupon"
+    },
+    {
+      "id": "B7gM0l6PeKrq",
+      "content_type": "coupon"
+    },
+    {
+      "id": "Gn3g7Y0xgbEn",
+      "content_type": "coupon"
+    },
+    {
+      "id": "4WJZy0BpBjzW",
+      "content_type": "coupon"
+    },
+    {
+      "id": "7PjYRbLq2wd1",
+      "content_type": "coupon"
+    },
+    {
+      "id": "rNZXq4b884YR",
+      "content_type": "coupon"
+    },
+    {
+      "id": "K5N2K4ejZrx5",
+      "content_type": "coupon"
+    },
+    {
+      "id": "xGQmeKXw6PRG",
+      "content_type": "coupon"
+    },
+    {
+      "id": "Pk9bP9wR6lAJ",
+      "content_type": "coupon"
+    },
+    {
+      "id": "B3qzP19p7YLg",
+      "content_type": "coupon"
+    },
+    {
+      "id": "vVr5xj73N9nR",
+      "content_type": "coupon"
+    },
+    {
+      "id": "8a8D8JvQeLMa",
+      "content_type": "coupon"
+    },
+    {
+      "id": "m0q2KgLWmQd8",
+      "content_type": "coupon"
+    },
+    {
+      "id": "d1eP3VBXEl7N",
+      "content_type": "coupon"
+    },
+    {
+      "id": "w5eN8nVRBo2k",
+      "content_type": "coupon"
+    },
+    {
+      "id": "N8bLWXPE1Gy2",
+      "content_type": "coupon"
+    },
+    {
+      "id": "veYmO9VMp5Me",
+      "content_type": "coupon"
+    }
+  ]
+}

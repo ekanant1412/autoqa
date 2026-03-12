@@ -1,0 +1,409 @@
+{
+  "timestamp": "2026-02-27T09:10:02.035Z",
+  "name": "privilege-search-v2",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=top_results&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=YmNGN1dP78G3&content_type_filtering=privilege&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fprivilege&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fprivilege",
+  "total_items": 100,
+  "items": [
+    {
+      "id": "EdxER5mM628v",
+      "content_type": "privilege"
+    },
+    {
+      "id": "0yJnqOqb9Vly",
+      "content_type": "privilege"
+    },
+    {
+      "id": "B8PpBZ5B56Q8",
+      "content_type": "privilege"
+    },
+    {
+      "id": "9vW6Jmk8d1Bj",
+      "content_type": "privilege"
+    },
+    {
+      "id": "Ve49vDZQyRXq",
+      "content_type": "privilege"
+    },
+    {
+      "id": "8XqLglMyjx9n",
+      "content_type": "privilege"
+    },
+    {
+      "id": "ZLnwB9B8XXlM",
+      "content_type": "privilege"
+    },
+    {
+      "id": "XxkBg2og65AM",
+      "content_type": "privilege"
+    },
+    {
+      "id": "EyZ5Rvn8ekV7",
+      "content_type": "privilege"
+    },
+    {
+      "id": "VOKJDKyy9o1v",
+      "content_type": "privilege"
+    },
+    {
+      "id": "d8PlKRKdpda8",
+      "content_type": "privilege"
+    },
+    {
+      "id": "9KPoVqJO62eE",
+      "content_type": "privilege"
+    },
+    {
+      "id": "2BGzOzQ3Dxk1",
+      "content_type": "privilege"
+    },
+    {
+      "id": "MzvZxEx9L9Gz",
+      "content_type": "privilege"
+    },
+    {
+      "id": "ekow3123D5Ek",
+      "content_type": "privilege"
+    },
+    {
+      "id": "r6GyRNy2QwGY",
+      "content_type": "privilege"
+    },
+    {
+      "id": "3PYORDRKDy0V",
+      "content_type": "privilege"
+    },
+    {
+      "id": "QAdQ4YVxmw0g",
+      "content_type": "privilege"
+    },
+    {
+      "id": "yq7o93JzAprq",
+      "content_type": "privilege"
+    },
+    {
+      "id": "q5MzMbMZbM6B",
+      "content_type": "privilege"
+    },
+    {
+      "id": "vaJzqRPe4nBa",
+      "content_type": "privilege"
+    },
+    {
+      "id": "pQLjZM9djNpl",
+      "content_type": "privilege"
+    },
+    {
+      "id": "eyqXaxd2ww3B",
+      "content_type": "privilege"
+    },
+    {
+      "id": "w7V6Xbevved7",
+      "content_type": "privilege"
+    },
+    {
+      "id": "vlJkdBo3Mkd9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "JzRWMOwe7KwN",
+      "content_type": "privilege"
+    },
+    {
+      "id": "g3RvA71AOXW3",
+      "content_type": "privilege"
+    },
+    {
+      "id": "V25v17y1aBOz",
+      "content_type": "privilege"
+    },
+    {
+      "id": "LEJeKY6KjKG0",
+      "content_type": "privilege"
+    },
+    {
+      "id": "pBRDYJoJO6jz",
+      "content_type": "privilege"
+    },
+    {
+      "id": "4e3AbMbzXJn2",
+      "content_type": "privilege"
+    },
+    {
+      "id": "lZe06nv6z40E",
+      "content_type": "privilege"
+    },
+    {
+      "id": "OaovZGx42L2M",
+      "content_type": "privilege"
+    },
+    {
+      "id": "kJDoNBDvxmlK",
+      "content_type": "privilege"
+    },
+    {
+      "id": "67WMxLx5nrVR",
+      "content_type": "privilege"
+    },
+    {
+      "id": "JZav4vD7Ke6y",
+      "content_type": "privilege"
+    },
+    {
+      "id": "L7gE6NyXqwvZ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "Y1N0MyDoEjew",
+      "content_type": "privilege"
+    },
+    {
+      "id": "REZGQG4owYdp",
+      "content_type": "privilege"
+    },
+    {
+      "id": "vr3l50o570YZ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "G2EB4xdeRmzW",
+      "content_type": "privilege"
+    },
+    {
+      "id": "Jme5WyP3d4zm",
+      "content_type": "privilege"
+    },
+    {
+      "id": "80kqbqpaeb2x",
+      "content_type": "privilege"
+    },
+    {
+      "id": "yn15lRrd2Lan",
+      "content_type": "privilege"
+    },
+    {
+      "id": "GWyGEjwP55zo",
+      "content_type": "privilege"
+    },
+    {
+      "id": "qrgvRWv8KmKM",
+      "content_type": "privilege"
+    },
+    {
+      "id": "92gD9Xk1x9YR",
+      "content_type": "privilege"
+    },
+    {
+      "id": "B6z0Xv9Ma4qK",
+      "content_type": "privilege"
+    },
+    {
+      "id": "4axyQWGQ0qP6",
+      "content_type": "privilege"
+    },
+    {
+      "id": "3KA6NDN64jQE",
+      "content_type": "privilege"
+    },
+    {
+      "id": "x2mKLOZx3V4a",
+      "content_type": "privilege"
+    },
+    {
+      "id": "5K4Q5Wy8maX2",
+      "content_type": "privilege"
+    },
+    {
+      "id": "nWmOoE1gVjV5",
+      "content_type": "privilege"
+    },
+    {
+      "id": "JyOMbgl8zVeo",
+      "content_type": "privilege"
+    },
+    {
+      "id": "5wZD5Vz59OoJ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "2mZkBzW20Zpa",
+      "content_type": "privilege"
+    },
+    {
+      "id": "2ZjYmkLm6Yj9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "yx2joQoXQqYx",
+      "content_type": "privilege"
+    },
+    {
+      "id": "5zl3qP2Rl2vZ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "VyDlwpqwNQly",
+      "content_type": "privilege"
+    },
+    {
+      "id": "YMpKWreBm2Dk",
+      "content_type": "privilege"
+    },
+    {
+      "id": "KzO5A1aA9lY3",
+      "content_type": "privilege"
+    },
+    {
+      "id": "M2xnNK6da8A0",
+      "content_type": "privilege"
+    },
+    {
+      "id": "q2YaWdg4qrE2",
+      "content_type": "privilege"
+    },
+    {
+      "id": "JjDXwq9m5z0j",
+      "content_type": "privilege"
+    },
+    {
+      "id": "OmQozyzM7leZ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "VaW812MX4246",
+      "content_type": "privilege"
+    },
+    {
+      "id": "60RRpPknMAL0",
+      "content_type": "privilege"
+    },
+    {
+      "id": "dg0J8BGLAa0P",
+      "content_type": "privilege"
+    },
+    {
+      "id": "PwBjPeNPqG3w",
+      "content_type": "privilege"
+    },
+    {
+      "id": "ZlGXpOwpYGyv",
+      "content_type": "privilege"
+    },
+    {
+      "id": "6zEJB5eBOWMQ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "37563Bkmyb4v",
+      "content_type": "privilege"
+    },
+    {
+      "id": "n124jL8jKLng",
+      "content_type": "privilege"
+    },
+    {
+      "id": "wMp5axzw90eW",
+      "content_type": "privilege"
+    },
+    {
+      "id": "NyRJkGe4pbZy",
+      "content_type": "privilege"
+    },
+    {
+      "id": "QYo2no3KBNkx",
+      "content_type": "privilege"
+    },
+    {
+      "id": "zAGGBR6EzWLA",
+      "content_type": "privilege"
+    },
+    {
+      "id": "ebDgW0wWppeQ",
+      "content_type": "privilege"
+    },
+    {
+      "id": "V6LaP4Pg57Nj",
+      "content_type": "privilege"
+    },
+    {
+      "id": "xGgJED3mqmK4",
+      "content_type": "privilege"
+    },
+    {
+      "id": "VX6xBzwwrnxj",
+      "content_type": "privilege"
+    },
+    {
+      "id": "XvEnm1XYo7w6",
+      "content_type": "privilege"
+    },
+    {
+      "id": "K4MVaxzPwEd9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "VmGAJnqGO58b",
+      "content_type": "privilege"
+    },
+    {
+      "id": "lZMjwBD4v5LN",
+      "content_type": "privilege"
+    },
+    {
+      "id": "rBx4jnREkavB",
+      "content_type": "privilege"
+    },
+    {
+      "id": "kXzQL5o1D8d4",
+      "content_type": "privilege"
+    },
+    {
+      "id": "WB2yOnjOrZn4",
+      "content_type": "privilege"
+    },
+    {
+      "id": "egGM1AmD3YP9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "dwkp0Ae0DXmY",
+      "content_type": "privilege"
+    },
+    {
+      "id": "ZRrn0qkaaVAR",
+      "content_type": "privilege"
+    },
+    {
+      "id": "G9y1jgLNBzV9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "YLBYmNVmOqlj",
+      "content_type": "privilege"
+    },
+    {
+      "id": "kGvRxMMqkXJG",
+      "content_type": "privilege"
+    },
+    {
+      "id": "KxDXjwAM51Nx",
+      "content_type": "privilege"
+    },
+    {
+      "id": "m9X4KbBDD6g9",
+      "content_type": "privilege"
+    },
+    {
+      "id": "3GEDJ543QaAv",
+      "content_type": "privilege"
+    },
+    {
+      "id": "BJojrWDz9k47",
+      "content_type": "privilege"
+    },
+    {
+      "id": "E81NqdmKExqP",
+      "content_type": "privilege"
+    }
+  ]
+}

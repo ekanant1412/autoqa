@@ -1,0 +1,84 @@
+
+Atlas Endpoint Comparison Summary
+Run at: 2026-03-12 13:47:51
+Endpoint 1: http://atlas-serving.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th
+Endpoint 2: http://atlas-serving-2.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th
+Total placements: 197
+
+── Body Comparison ──────────────────
+  SAME              : 131
+  BODY_DIFF         : 62
+  ITEMS_COUNT_DIFF  : 1
+  ONE_FAILED        : 0
+  BOTH_FAILED       : 3
+
+── Status Code ──────────────────────
+  Status mismatch   : 1
+
+── Placements with differences ──────
+  [  4] trueid-ecommerce-for-you-madrid                    EP1=200(20) EP2=200(20) → BODY_DIFF
+  [  5] 711-sfv-moscow                                     EP1=200(10) EP2=200(10) → BODY_DIFF
+  [  6] ott-similar-tvvod-arlington                        EP1=404(0) EP2=404(0) → BODY_DIFF
+  [  7] trueid/external/wemall                             EP1=200(0) EP2=200(0) → BOTH_FAILED
+  [  9] trueid-personalize-news-vernonia                   EP1=404(0) EP2=404(0) → BODY_DIFF
+  [ 14] trueyou-personalize-privilege-passley              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 17] trueid-mychannel-anbul                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 18] trueid-sfv-shelf-giza                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 20] trueid-gameitem-similar-lima                       EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 22] trueidweb-search-keyword-kingston                  EP1=200(50) EP2=200(50) → BODY_DIFF
+  [ 24] ott-tophit-search-hiroshima                        EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 25] personalize/movie                                  EP1=200(50) EP2=200(50) → BODY_DIFF
+  [ 41] trueid-similar-privilege-thimphu                   EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 42] trueid-similar-series-ampthill                     EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 50] trueidweb-basic-sfv-shelf-hazvil                   EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 51] model-tf-serving-sp4                               EP1=404(0) EP2=404(0) → BODY_DIFF
+  [ 57] trueyou-basic-privilege-colesburg                  EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 60] trueid-today-sfv-shelf-kotor                       EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 62] trueid-basic-sfv-shelf-kowloon                     EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 63] model-tf-serving-ecp2                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 64] trueid-live-ecommerce-auckland                     EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 65] model-tf-serving-sfvp2                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 68] model-tf-serving-sfvp4                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 71] trueid-home-sfv-singapore                          EP1=200(20) EP2=200(20) → BODY_DIFF
+  [ 73] iservice-personalize-privilege-harrow              EP1=200(20) EP2=200(20) → BODY_DIFF
+  [ 74] iservice-personalize-privilege-london              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 75] trueid-sfv-shelf-ziei                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 76] trueid-sfv-shelf-kano                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 77] trueid-sfv-shelf-luanda                            EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 78] trueid-sfv-shelf-kiev                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 79] trueid-sfv-shelf-cali                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 80] trueyou-sfv-shelf-lahore                           EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 82] trueid-sfv-shelf-douala                            EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 83] trueid-sfv-feed-hefei                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 84] trueid-sfv-feed-houston                            EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 85] trueid-sfv-feed-daegu                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 86] trueyou-sfv-feed-seoul                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 87] trueid-sfv-shelf-izmir                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 88] trueid-sfv-feed-berlin                             EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 89] trueid-basic-sfv-feed-shenzen                      EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 90] trueid-sfv-feed-istanbul                           EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 91] trueid-sfv-feed-wuxi                               EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 92] trueid-sfv-feed-zibo                               EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 93] trueid-today-sfv-feed-mostar                       EP1=200(10) EP2=200(10) → BODY_DIFF
+  [ 94] trueid-shopping-sfv-feed-pluta                     EP1=200(20) EP2=200(20) → BODY_DIFF
+  [ 97] trueid-feed-clalo                                  EP1=200(10) EP2=200(10) → BODY_DIFF
+  [104] trueid-sfv-feed-jinan                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [105] trueid-sfv-feed-bursa                              EP1=200(10) EP2=200(10) → BODY_DIFF
+  [106] trueid-sfv-feed-bandung                            EP1=200(10) EP2=200(10) → BODY_DIFF
+  [114] trueid-merchant-shopping-westley                   EP1=400(0) EP2=200(10) → ITEMS_COUNT_DIFF
+  [122] 711-sfv-hokkaido                                   EP1=200(20) EP2=200(20) → BODY_DIFF
+  [128] trueid-sfv-series-feed-lisbon                      EP1=200(15) EP2=200(15) → BODY_DIFF
+  [130] trueid-search-keyword-paris                        EP1=200(50) EP2=200(50) → BODY_DIFF
+  [143] trueid/similar/series                              EP1=404(0) EP2=404(0) → BODY_DIFF
+  [159] smart-tv-lg/personalize/movie                      EP1=200(10) EP2=200(10) → BODY_DIFF
+  [160] smart-tv-samsung/personalize/movie                 EP1=200(10) EP2=200(10) → BODY_DIFF
+  [161] trueid-web/personalize/movie                       EP1=404(0) EP2=404(0) → BOTH_FAILED
+  [164] trueid/reranking/movie                             EP1=404(0) EP2=404(0) → BOTH_FAILED
+  [176] trueid-mm-similar-series-millfork                  EP1=404(0) EP2=404(0) → BODY_DIFF
+  [177] trueid-similar-movie-penmon                        EP1=200(20) EP2=200(20) → BODY_DIFF
+  [182] model-tf-serving-mp9                               EP1=404(0) EP2=404(0) → BODY_DIFF
+  [185] model-tf-serving-pp3-privilege                     EP1=404(0) EP2=404(0) → BODY_DIFF
+  [187] trueid-explore-comond                              EP1=200(40) EP2=200(40) → BODY_DIFF
+  [188] model-tf-serving-pp2                               EP1=404(0) EP2=404(0) → BODY_DIFF
+  [192] trueid-merchant-education-kotte                    EP1=404(0) EP2=404(0) → BODY_DIFF
+  [197] trueid-vn-similar-series-passburg                  EP1=404(0) EP2=404(0) → BODY_DIFF

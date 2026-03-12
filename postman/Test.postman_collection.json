@@ -1,0 +1,99 @@
+{
+  "info": {
+    "_postman_id": "1a42758c-a75a-4896-9541-6a0993a03cf0",
+    "name": "Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50622847",
+    "_collection_link": "https://go.postman.co/collection/50622847-1a42758c-a75a-4896-9541-6a0993a03cf0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Verify Search Basic logic with content_type: 'sfv' by search_type is 'sfv'",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=sfv&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=jRXowYY9VrB7&content_type_filtering=sfv&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv",
+          "protocol": "http",
+          "host": [
+            "ai-universal-service-new",
+            "preprod-gcp-ai-bn",
+            "int-ai-platform",
+            "gcp",
+            "dmp",
+            "true",
+            "th"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "universal",
+            "search-basic"
+          ],
+          "query": [
+            {
+              "key": "language",
+              "value": "th"
+            },
+            {
+              "key": "cursor",
+              "value": "1"
+            },
+            {
+              "key": "search_type",
+              "value": "sfv"
+            },
+            {
+              "key": "search_time_out",
+              "value": "5s"
+            },
+            {
+              "key": "option_rerank_by_time_off",
+              "value": "false"
+            },
+            {
+              "key": "verbose",
+              "value": "debug",
+              "disabled": true
+            },
+            {
+              "key": "ssoId",
+              "value": "22092422"
+            },
+            {
+              "key": "search_url",
+              "value": "https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "search_keyword",
+              "value": "ไก่",
+              "type": "text",
+              "disabled": true
+            },
+            {
+              "key": "id",
+              "value": "jRXowYY9VrB7"
+            },
+            {
+              "key": "content_type_filtering",
+              "value": "sfv"
+            },
+            {
+              "key": "validate_metadata_similar_url",
+              "value": "http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv"
+            },
+            {
+              "key": "metadata_item_url",
+              "value": "http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fsfv"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
