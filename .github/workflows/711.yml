@@ -1,4 +1,4 @@
-name: Baseline vs Candidate Ordering
+name: 7-11 Regression Tests
 on:
   workflow_dispatch:
 jobs:
