@@ -20,7 +20,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=100118391.0843335978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -41,7 +41,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=100118391.0851455978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -245,7 +245,7 @@ def run_check(placement: dict) -> dict:
 # =============================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =============================================================
-def test_DMPREC_9588_sfv_p7():
+def test_verify_relate_ecom_sfv_p7():
     summary = run_check(PLACEMENTS[0])
     fail_msgs = []
     if summary["fail_empty_relate_count"] > 0:
@@ -261,7 +261,7 @@ def test_DMPREC_9588_sfv_p7():
     assert not fail_msgs, "\n".join(fail_msgs)
 
 
-def test_DMPREC_9588_sfv_p8():
+def test_verify_relate_ecom_sfv_p8():
     summary = run_check(PLACEMENTS[1])
     fail_msgs = []
     if summary["fail_empty_relate_count"] > 0:
@@ -276,9 +276,9 @@ def test_DMPREC_9588_sfv_p8():
         )
     assert not fail_msgs, "\n".join(fail_msgs)
 
-def test_DMPREC_9588():
-    test_DMPREC_9588_sfv_p7()
-    test_DMPREC_9588_sfv_p8()    
+def test_verify_relate_ecom():
+    test_verify_relate_ecom_sfv_p7()
+    test_verify_relate_ecom_sfv_p8()    
 
 
 if __name__ == "__main__":

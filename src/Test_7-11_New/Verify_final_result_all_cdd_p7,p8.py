@@ -19,7 +19,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=502229391.0851147978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -35,7 +35,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=502448391.086651397978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -296,20 +296,20 @@ def _assert_result(summary: Dict[str, Any]):
     )
 
 
-def test_DMPREC_9584_sfv_p7():
+def test_verify_final_result_all_cdd_sfv_p7():
     """DMPREC-9584 sfv-p7: final_result ids traced to known pools"""
     _assert_result(run_check(PLACEMENTS[0]))
 
 
-def test_DMPREC_9584_sfv_p8():
+def test_verify_final_result_all_cdd_sfv_p8():
     """DMPREC-9584 sfv-p8: final_result ids traced to known pools"""
     _assert_result(run_check(PLACEMENTS[1]))
 
 
-def test_DMPREC_9584():
+def test_verify_final_result_all_cdd():
     """รันทั้ง p7 + p8 ในครั้งเดียว"""
-    test_DMPREC_9584_sfv_p7()
-    test_DMPREC_9584_sfv_p8()
+    test_verify_final_result_all_cdd_sfv_p7()
+    test_verify_final_result_all_cdd_sfv_p8()
 
 
 if __name__ == "__main__":

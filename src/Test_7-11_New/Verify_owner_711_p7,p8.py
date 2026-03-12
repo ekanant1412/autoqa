@@ -22,7 +22,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=100113391.1851155978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -43,7 +43,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=10033328391.2851155978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -235,7 +235,7 @@ def run_check(placement: dict) -> Dict[str, Any]:
 # =====================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =====================================================
-def test_DMPREC_9589_sfv_p7():
+def test_verify_owner_711_sfv_p7():
     result = run_check(PLACEMENTS[0])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
@@ -258,7 +258,7 @@ def test_DMPREC_9589_sfv_p7():
     assert not fail_msgs, f"{TEST_KEY} [sfv-p7] FAIL:\n" + "\n".join(fail_msgs)
 
 
-def test_DMPREC_9589_sfv_p8():
+def test_verify_owner_711_sfv_p8():
     result = run_check(PLACEMENTS[1])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
@@ -280,9 +280,9 @@ def test_DMPREC_9589_sfv_p8():
 
     assert not fail_msgs, f"{TEST_KEY} [sfv-p8] FAIL:\n" + "\n".join(fail_msgs)
 
-def test_DMPREC_9589():
-    test_DMPREC_9589_sfv_p7()
-    test_DMPREC_9589_sfv_p8()
+def test_verify_owner_711():
+    test_verify_owner_711_sfv_p7()
+    test_verify_owner_711_sfv_p8()
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=902218391.0851147978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -36,7 +36,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=9022878391.0851337978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -260,7 +260,7 @@ def run_all_checks() -> List[Dict[str, Any]]:
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-def test_DMPREC_9590():
+def test_verify_default_result():
     results = run_all_checks()
     print("RESULTS:", json.dumps(results, ensure_ascii=False, indent=2))
 

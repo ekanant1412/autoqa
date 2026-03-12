@@ -17,7 +17,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=70228833331.0851377978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"

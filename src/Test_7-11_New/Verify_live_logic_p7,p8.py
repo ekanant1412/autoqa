@@ -17,7 +17,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=202218391.0851147978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -35,7 +35,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=125218391.0851337978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"
@@ -292,7 +292,7 @@ def run_all_checks():
 # =================================================
 # ✅ PYTEST ENTRY
 # =================================================
-def test_DMPREC_9585_live_check():
+def test_verify_live_logic():
     print("RUN: DMPREC-9585 live check")
     results = run_all_checks()
     print("RESULTS:", json.dumps(results, ensure_ascii=False, indent=2))

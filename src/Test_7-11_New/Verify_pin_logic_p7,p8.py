@@ -17,7 +17,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&limit=100&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=100118391.0851157978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
         ),
@@ -32,7 +32,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&limit=100&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=10033328391.0851137978"
+            "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
         ),
@@ -300,7 +300,7 @@ def run_check(placement: dict) -> dict:
 # =================================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # =================================================
-def test_DMPREC_9587_sfv_p7():
+def test_verify_pin_logic_sfv_p7():
     result = run_check(PLACEMENTS[0])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
@@ -308,7 +308,7 @@ def test_DMPREC_9587_sfv_p7():
           f"| fail_blocks={result['fail_blocks']}")
 
 
-def test_DMPREC_9587_sfv_p8():
+def test_verify_pin_logic_sfv_p8():
     result = run_check(PLACEMENTS[1])
     print("RESULT:", result["status"],
           f"| placement={result['placement']}",
@@ -316,9 +316,9 @@ def test_DMPREC_9587_sfv_p8():
           f"| fail_blocks={result['fail_blocks']}")
     
 # ✅ Single entrypoint for test_all.py (วางท้ายสุด)
-def test_DMPREC_9587():
-    test_DMPREC_9587_sfv_p7()
-    test_DMPREC_9587_sfv_p8()
+def test_verify_pin_logic():
+    test_verify_pin_logic_sfv_p7()
+    test_verify_pin_logic_sfv_p8()
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=100118391.08533385978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -46,7 +46,7 @@ PLACEMENTS = [
             "&userId=null"
             "&pseudoId=null"
             "&cursor=1"
-            "&ga_id=100118391.0858155978"
+            "&ga_id=999999999.999999999"
             "&is_use_live=true"
             "&verbose=debug"
             "&pool_latest_date=365"
@@ -280,22 +280,22 @@ def run_check(placement: dict) -> Dict[str, Any]:
 # ===================================
 # ✅ PYTEST ENTRY (Xray mapping)
 # ===================================
-def test_DMPREC_9613_sfv_p7():
+def test_verify_must_not_logic_sfv_p7():
     summary = run_check(PLACEMENTS[0])
     print("RESULT:", summary["status"],
           f"| placement={summary['placement']}",
           f"| banned_found={summary['total_unique_banned_found']}")
 
 
-def test_DMPREC_9613_sfv_p8():
+def test_verify_must_not_logic_sfv_p8():
     summary = run_check(PLACEMENTS[1])
     print("RESULT:", summary["status"],
           f"| placement={summary['placement']}",
           f"| banned_found={summary['total_unique_banned_found']}")
     
-def test_DMPREC_9613():
-    test_DMPREC_9613_sfv_p7()
-    test_DMPREC_9613_sfv_p8()
+def test_verify_must_not_logic():
+    test_verify_must_not_logic_sfv_p7()
+    test_verify_must_not_logic_sfv_p8()
 
 
 if __name__ == "__main__":
