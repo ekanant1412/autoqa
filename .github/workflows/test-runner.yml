@@ -1,18 +1,55 @@
 name: Test Self Hosted Runner
+
 on:
   workflow_dispatch:
+
 jobs:
   test:
     runs-on: [self-hosted, preprod]
+
     steps:
       - name: Check runner
         run: |
           echo "Runner is working!"
           uname -a
           pwd
+          which python3 || true
+          python3 --version || true
+          which curl || true
 
-      - name: Debug network to API
+      - name: Test candidate endpoint
         run: |
-          curl -s --max-time 10 \
-          "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p7?shelfId=Kaw6MLVzPWmo&total_candidates=200&pool_limit_category_items=50&language=th&limit=100&userId=null&pseudoId=null&cursor=1&ga_id=100118391.0851155978&ssoId=22092422&is_use_live=true&verbose=debug" \
-          | python3 -c "import json,sys; d=json.load(sys.stdin); print('has_data:', 'data' in d); print('message:', d.get('message'))"
+          set -e
+          URL="http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/text_search?userId=1&pseudoId=1&cursor=1&limit=5&top_k=10&ssoId=101316473&search_keyword=Joker&type=movie"
+          echo "$URL"
+          curl -sS --max-time 20 "$URL" -o candidate_response.txt -w "\nHTTP_STATUS:%{http_code}\n"
+          python3 - <<'PY'
+          import json
+          with open("candidate_response.txt", "r", encoding="utf-8", errors="replace") as f:
+              text = f.read()
+          print("Preview:", text[:500])
+          data = json.loads(text)
+          print("JSON OK")
+          print("keys:", list(data.keys())[:20] if isinstance(data, dict) else type(data).__name__)
+          PY
+
+      - name: Test baseline endpoint
+        run: |
+          set -e
+          curl -sS --max-time 20 \
+            -X POST "https://ai-raas-api.trueid-preprod.net/personalize-rcom/v2/search-api/api/v5/text_search" \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json, text/plain, */*" \
+            -H "Authorization: 5b18e526f0463656f7c4329f90b7ecef9dc546aeb6adad28e911ba82" \
+            -d '{"debug": false, "no_cache_vector": false, "search_keyword": "Joker", "top_k": "10", "type": "movie"}' \
+            -o baseline_response.txt -w "\nHTTP_STATUS:%{http_code}\n"
+
+          python3 - <<'PY'
+          import json
+          with open("baseline_response.txt", "r", encoding="utf-8", errors="replace") as f:
+              text = f.read()
+          print("Preview:", text[:500])
+          data = json.loads(text)
+          print("JSON OK")
+          print("keys:", list(data.keys())[:20] if isinstance(data, dict) else type(data).__name__)
+          PY
