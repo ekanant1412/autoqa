@@ -25,7 +25,10 @@ except ImportError:
     raise SystemExit(1)
 
 XRAY_TEST_KEY = "DMPREC-9833"
-REPORT_DIR = "reports"
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+REPORT_DIR = os.path.join(ROOT_DIR, "reports")
 
 # ===================================================================
 # CONFIG
