@@ -127,7 +127,6 @@ def create_junit_report(results: list, output_path: str, test_key: str):
         )
 
         props = ET.SubElement(testcase, "properties")
-        ET.SubElement(props, "property", name="test_key", value=test_key)
         ET.SubElement(props, "property", name="keyword", value=escape_attr(r["search_keyword"]))
         ET.SubElement(props, "property", name="type", value=escape_attr(r["type"]))
         ET.SubElement(props, "property", name="bl_status", value=escape_attr(r["bl_status"]))
