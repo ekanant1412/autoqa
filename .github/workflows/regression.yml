@@ -1,4 +1,4 @@
-name: Content Type Regression (Phase A)
+name: Baseline vs Candidate Ordering
 
 on:
   workflow_dispatch:
@@ -22,49 +22,15 @@ jobs:
           set -e
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt || true
-          python3 -m pip install pytest requests pytest-html
+          python3 -m pip install requests openpyxl
 
-      - name: Run Pytest (generate reports)
+      - name: Run baseline vs candidate script
         run: |
           set -e
           mkdir -p reports
-          python3 -m pytest -v -s tests -k "not content_type" \
-            --junitxml=reports/junit.xml \
-            --html=reports/report.html --self-contained-html
+          python3 tests/run_baseline_vs_candidate.py
 
-      - name: Patch junit.xml with test_key for Xray
-        if: always()
-        run: |
-          python3 - <<'EOF'
-          import xml.etree.ElementTree as ET
-          import re, os
-
-          TESTKEY_RE = re.compile(r"(DMPREC[-_]\d+)")
-          junit_path = "reports/junit.xml"
-
-          if not os.path.exists(junit_path):
-              print("junit.xml not found, skip")
-              exit(0)
-
-          tree = ET.parse(junit_path)
-          root = tree.getroot()
-          for testcase in root.iter("testcase"):
-              name = testcase.get("name", "")
-              m = TESTKEY_RE.search(name)
-              if m:
-                  key = m.group(1).replace("_", "-")
-                  props = testcase.find("properties")
-                  if props is None:
-                      props = ET.SubElement(testcase, "properties")
-                  prop = ET.SubElement(props, "property")
-                  prop.set("name", "test_key")
-                  prop.set("value", key)
-                  print(f"Patched: {key}")
-          tree.write(junit_path, encoding="unicode", xml_declaration=True)
-          print("Done patching junit.xml")
-          EOF
-
-      - name: List reports (debug)
+      - name: Verify reports
         if: always()
         run: |
           echo "===== reports tree ====="
@@ -72,17 +38,14 @@ jobs:
           echo "===== ls -la reports ====="
           ls -la reports || true
 
-      # --------- Zip Evidence ทั้งหมดใน reports/ ---------
       - name: Zip evidence (reports)
         if: always()
         run: |
           set -e
           rm -f reports/evidence.zip || true
-          # zip ทั้งโฟลเดอร์ reports (รวม DMPREC-xxxx logs/json + junit + html)
           (cd reports && zip -r evidence.zip .)
           ls -la reports/evidence.zip
 
-      # --------- Import JUnit เข้า Xray ---------
       - name: Import JUnit to Xray
         if: always()
         env:
@@ -105,6 +68,7 @@ jobs:
           fi
 
           XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
+          XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
 
           echo "Authenticate Xray..."
           TOKEN=$(curl -sS -H "Content-Type: application/json" \
@@ -129,8 +93,7 @@ jobs:
           echo "Xray response:"
           cat reports/xray_import_response.json
 
-      # --------- Attach evidence เข้า Jira (Test Execution issue) ---------
-      - name: Attach evidence (HTML + ZIP) to Jira Test Execution
+      - name: Attach evidence to Jira Test Execution
         if: always()
         env:
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
@@ -161,7 +124,6 @@ jobs:
           fi
           echo "Test Execution key: $TEST_EXEC_KEY"
 
-          # verify auth
           curl -sS --fail-with-body \
             -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
             -H "Accept: application/json" \
@@ -170,8 +132,7 @@ jobs:
           ATTACH_URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
           echo "Attach URL: $ATTACH_URL"
 
-          # แนบ report.html + evidence.zip (+junit.xml ถ้าต้องการ)
-          for f in reports/report.html reports/evidence.zip reports/junit.xml; do
+          for f in reports/Baseline_vs_Candidate_Report.xlsx reports/Baseline_vs_Candidate_Results.json reports/evidence.zip reports/junit.xml; do
             if [ -f "$f" ]; then
               echo "Uploading $f ..."
               curl -sS --fail-with-body \
@@ -186,10 +147,9 @@ jobs:
 
           echo "DONE attach files to $TEST_EXEC_KEY"
 
-      # --------- Upload artifact เผื่อโหลดจาก Actions ---------
       - name: Upload reports as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: reports
+          name: baseline-vs-candidate-reports
           path: reports
