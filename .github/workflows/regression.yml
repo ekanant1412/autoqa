@@ -34,7 +34,6 @@ jobs:
       - name: Run baseline vs candidate script
         run: |
           set -e
-          mkdir -p reports
 
           if [ -f "tests/Test_search.py" ]; then
             echo "Running tests/Test_search.py"
@@ -51,10 +50,18 @@ jobs:
       - name: Verify reports
         if: always()
         run: |
-          echo "===== reports tree ====="
-          find reports -maxdepth 3 -type f | sort || true
-          echo "===== ls -la reports ====="
+          echo "===== workspace ====="
+          pwd
+          ls -la
+
+          echo "===== reports dir ====="
           ls -la reports || true
+
+          echo "===== reports files ====="
+          find reports -maxdepth 3 -type f | sort || true
+
+          echo "===== check junit ====="
+          test -f reports/junit.xml
 
       - name: Zip evidence (reports)
         if: always()
