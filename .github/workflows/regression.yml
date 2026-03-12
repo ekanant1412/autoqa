@@ -60,13 +60,22 @@ jobs:
         if: always()
         run: |
           set -e
+
           if [ ! -d reports ]; then
             echo "ERROR: reports directory not found"
             exit 1
           fi
 
+          if [ -z "$(find reports -maxdepth 1 -type f ! -name 'evidence.zip' | head -n 1)" ]; then
+            echo "WARN: reports directory is empty, skip zipping"
+            exit 0
+          fi
+
           rm -f reports/evidence.zip || true
-          (cd reports && zip -r evidence.zip .)
+          (
+            cd reports
+            zip -r evidence.zip . -x evidence.zip
+          )
           ls -la reports/evidence.zip
 
       - name: Import JUnit to Xray
@@ -155,7 +164,12 @@ jobs:
           ATTACH_URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
           echo "Attach URL: $ATTACH_URL"
 
-          for f in reports/Baseline_vs_Candidate_Report.xlsx reports/Baseline_vs_Candidate_Results.json reports/evidence.zip reports/junit.xml; do
+          for f in \
+            reports/Baseline_vs_Candidate_Report.xlsx \
+            reports/Baseline_vs_Candidate_Results.json \
+            reports/evidence.zip \
+            reports/junit.xml
+          do
             if [ -f "$f" ]; then
               echo "Uploading $f ..."
               curl -sS --fail-with-body \
