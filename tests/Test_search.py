@@ -117,7 +117,7 @@ def create_junit_report(results: list, output_path: str, test_key: str):
     )
 
     for r in results:
-        tc_name = f'{test_key} | kw={repr(r["search_keyword"])} | type={r["type"]}'
+        tc_name = f'kw={repr(r["search_keyword"])} | type={r["type"]}'
         testcase = ET.SubElement(
             testsuite,
             "testcase",
