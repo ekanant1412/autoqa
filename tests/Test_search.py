@@ -7,12 +7,14 @@ BASELINE vs CANDIDATE Ordering Test
   - CANDIDATE : ai-universal-service-new / placements (GET)
 """
 
-import requests
 import json
-import time
 import os
+import time
+import traceback
 from datetime import datetime
 import xml.etree.ElementTree as ET
+
+import requests
 
 try:
     import openpyxl
@@ -20,7 +22,7 @@ try:
     from openpyxl.utils import get_column_letter
 except ImportError:
     print("กรุณาติดตั้ง openpyxl ก่อน: pip install openpyxl")
-    exit(1)
+    raise SystemExit(1)
 
 XRAY_TEST_KEY = "DMPREC-9833"
 REPORT_DIR = "reports"
@@ -83,9 +85,23 @@ TYPES = [
 
 
 def escape_attr(text):
-    if text is None:
-        return ""
-    return str(text)
+    return "" if text is None else str(text)
+
+
+def safe_json(resp):
+    try:
+        return resp.json()
+    except Exception:
+        return {
+            "_raw_text": resp.text[:1000] if hasattr(resp, "text") else "",
+            "_json_error": "response is not valid JSON",
+        }
+
+
+def ensure_report_dir():
+    os.makedirs(REPORT_DIR, exist_ok=True)
+    print(f"DEBUG cwd        = {os.getcwd()}")
+    print(f"DEBUG REPORT_DIR = {os.path.abspath(REPORT_DIR)}")
 
 
 def create_junit_report(results: list, output_path: str, test_key: str):
@@ -140,11 +156,7 @@ def create_junit_report(results: list, output_path: str, test_key: str):
 
 
 def build_test_cases():
-    cases = []
-    for kw in KEYWORDS:
-        for t in TYPES:
-            cases.append((kw, t))
-    return cases
+    return [(kw, t) for kw in KEYWORDS for t in TYPES]
 
 
 def call_baseline(keyword: str, type_val: str) -> dict:
@@ -157,19 +169,34 @@ def call_baseline(keyword: str, type_val: str) -> dict:
     }
     try:
         resp = requests.post(BASELINE_URL, headers=BASELINE_HEADERS, json=body, timeout=30)
-        rj = resp.json()
+        rj = safe_json(resp)
+
         items = None
-        for key in ("search_results", "results", "items", "data"):
-            if key in rj and isinstance(rj[key], list):
-                items = rj[key]
-                break
-        if items is None and isinstance(rj, list):
+        if isinstance(rj, dict):
+            for key in ("search_results", "results", "items", "data"):
+                if key in rj and isinstance(rj[key], list):
+                    items = rj[key]
+                    break
+        elif isinstance(rj, list):
             items = rj
+
         items = items or []
-        ids = [x["id"] for x in items if x.get("id")][:TOP_N]
-        return {"status": resp.status_code, "ids": ids, "count": len(ids), "error": "", "raw": str(rj)[:400]}
+        ids = [x["id"] for x in items if isinstance(x, dict) and x.get("id")][:TOP_N]
+        return {
+            "status": resp.status_code,
+            "ids": ids,
+            "count": len(ids),
+            "error": "",
+            "raw": str(rj)[:400],
+        }
     except Exception as e:
-        return {"status": "ERROR", "ids": [], "count": 0, "error": str(e)[:200], "raw": ""}
+        return {
+            "status": "ERROR",
+            "ids": [],
+            "count": 0,
+            "error": str(e)[:200],
+            "raw": "",
+        }
 
 
 def call_candidate(keyword: str, type_val: str) -> dict:
@@ -180,11 +207,27 @@ def call_candidate(keyword: str, type_val: str) -> dict:
     }
     try:
         resp = requests.get(CANDIDATE_URL, params=params, timeout=30)
-        rj = resp.json()
-        ids = [x["id"] for x in (rj.get("items") or []) if x.get("id")][:TOP_N]
-        return {"status": resp.status_code, "ids": ids, "count": len(ids), "error": "", "raw": str(rj)[:400]}
+        rj = safe_json(resp)
+
+        items = rj.get("items") if isinstance(rj, dict) else []
+        items = items or []
+        ids = [x["id"] for x in items if isinstance(x, dict) and x.get("id")][:TOP_N]
+
+        return {
+            "status": resp.status_code,
+            "ids": ids,
+            "count": len(ids),
+            "error": "",
+            "raw": str(rj)[:400],
+        }
     except Exception as e:
-        return {"status": "ERROR", "ids": [], "count": 0, "error": str(e)[:200], "raw": ""}
+        return {
+            "status": "ERROR",
+            "ids": [],
+            "count": 0,
+            "error": str(e)[:200],
+            "raw": "",
+        }
 
 
 def run_test(keyword: str, type_val: str, idx: int, total: int) -> dict:
@@ -219,7 +262,11 @@ def run_test(keyword: str, type_val: str, idx: int, total: int) -> dict:
         n = min(TOP_N, len(bl["ids"]), len(cd["ids"]))
         passed = (bl["ids"][:n] == cd["ids"][:n])
         if not passed:
-            mismatches = [(i + 1, bl["ids"][i], cd["ids"][i]) for i in range(n) if bl["ids"][i] != cd["ids"][i]]
+            mismatches = [
+                (i + 1, bl["ids"][i], cd["ids"][i])
+                for i in range(n)
+                if bl["ids"][i] != cd["ids"][i]
+            ]
             first_diff = mismatches[0] if mismatches else ("?", "?", "?")
             fail_reason = (
                 f"{len(mismatches)}/{n} mismatches; "
@@ -266,17 +313,18 @@ def create_excel_report(results: list, output_path: str):
     passed = sum(1 for r in results if r["passed"])
     failed = total - passed
 
-    C_BLUE = "1565C0"
-    C_WHITE = "FFFFFF"
-    C_GREEN = "00C851"
-    C_RED = "FF4444"
-    C_ORANGE = "FF6D00"
-    C_LGRE = "E8F5E9"
-    C_LYEL = "FFFDE7"
-    C_LBLUE = "E3F2FD"
+    c_blue = "1565C0"
+    c_white = "FFFFFF"
+    c_green = "00C851"
+    c_red = "FF4444"
+    c_orange = "FF6D00"
+    c_lgre = "E8F5E9"
+    c_lyel = "FFFDE7"
 
-    def fill(h): return PatternFill(start_color=h, end_color=h, fill_type="solid")
-    def bd():
+    def fill(h):
+        return PatternFill(start_color=h, end_color=h, fill_type="solid")
+
+    def border():
         s = Side(style="thin")
         return Border(left=s, right=s, top=s, bottom=s)
 
@@ -285,13 +333,14 @@ def create_excel_report(results: list, output_path: str):
 
     ws = wb.active
     ws.title = "Test Results"
+
     ws.merge_cells("A1:N1")
     c = ws["A1"]
-    c.value = "🔍  BASELINE vs CANDIDATE Ordering Test Report"
-    c.font = Font(size=15, bold=True, color=C_WHITE)
-    c.fill = fill(C_BLUE)
+    c.value = "BASELINE vs CANDIDATE Ordering Test Report"
+    c.font = Font(size=15, bold=True, color=c_white)
+    c.fill = fill(c_blue)
     c.alignment = center
-    ws.row_dimensions[1].height = 36
+    ws.row_dimensions[1].height = 28
 
     meta = [
         ("Run Date", datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "Top N Compared", str(TOP_N)),
@@ -304,41 +353,24 @@ def create_excel_report(results: list, output_path: str):
             if col in (1, 5):
                 cell.font = Font(bold=True)
 
-    ws.cell(3, 2).font = Font(bold=True, color=C_GREEN if passed == total else C_ORANGE)
-    ws.cell(4, 2).font = Font(bold=True, color=C_RED if failed > 0 else C_GREEN)
-
-    for col, (lbl, val, color) in enumerate([
-        ("TOTAL", total, C_BLUE),
-        ("PASSED", passed, C_GREEN),
-        ("FAILED", failed, C_RED if failed > 0 else "9E9E9E"),
-    ], start=10):
-        lc = ws.cell(2, col, lbl)
-        vc = ws.cell(3, col, val)
-        for cell in (lc, vc):
-            cell.fill = fill(color)
-            cell.font = Font(bold=True, color=C_WHITE, size=12 if cell == vc else 9)
-            cell.alignment = center
-            cell.border = bd()
-        ws.column_dimensions[get_column_letter(col)].width = 12
-
-    HDR = 5
     headers = [
         "#", "Test Name (keyword / type)", "Keyword", "Type",
         "BL Status", "BL Time(ms)", "BL Results",
         "CD Status", "CD Time(ms)", "CD Results",
         "Matched / N", "Result", "Fail Reason", "BASELINE top-5 IDs",
     ]
+    hdr_row = 5
     for col, h in enumerate(headers, 1):
-        cell = ws.cell(HDR, col, h)
-        cell.fill = fill(C_BLUE)
-        cell.font = Font(bold=True, color=C_WHITE)
+        cell = ws.cell(hdr_row, col, h)
+        cell.fill = fill(c_blue)
+        cell.font = Font(bold=True, color=c_white)
         cell.alignment = center
-        cell.border = bd()
+        cell.border = border()
 
     for r in results:
-        row = HDR + r["test_no"]
-        rf = fill(C_LGRE) if r["passed"] else fill(C_LYEL)
-        matched_label = f'{r["matched_positions"]}/{r["compared_n"]}' if r["compared_n"] else "–"
+        row = hdr_row + r["test_no"]
+        row_fill = fill(c_lgre) if r["passed"] else fill(c_lyel)
+        matched_label = f'{r["matched_positions"]}/{r["compared_n"]}' if r["compared_n"] else "-"
         vals = [
             r["test_no"],
             f'{repr(r["search_keyword"])} / {r["type"]}',
@@ -353,15 +385,17 @@ def create_excel_report(results: list, output_path: str):
         ]
         for col, val in enumerate(vals, 1):
             cell = ws.cell(row, col, val)
-            cell.fill = rf
-            cell.border = bd()
+            cell.fill = row_fill
+            cell.border = border()
             cell.alignment = wrap if col in (2, 13, 14) else center
+            if col == 12:
+                cell.font = Font(bold=True, color=c_green if r["passed"] else c_red)
 
     for i, w in enumerate([4, 32, 14, 14, 10, 11, 10, 10, 11, 10, 12, 8, 50, 50], 1):
         ws.column_dimensions[get_column_letter(i)].width = w
 
     wb.save(output_path)
-    print(f"\n✅ Excel report saved → {output_path}")
+    print(f"✅ Excel report saved → {output_path}")
 
 
 def main():
@@ -373,11 +407,11 @@ def main():
     print(f"  Start     : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 72)
 
+    ensure_report_dir()
+
     cases = build_test_cases()
     total = len(cases)
     print(f"  Total test cases: {total}  (each case = 2 API calls)\n")
-
-    os.makedirs(REPORT_DIR, exist_ok=True)
 
     results = []
     for i, (kw, t) in enumerate(cases, 1):
@@ -397,6 +431,10 @@ def main():
     json_path = os.path.join(REPORT_DIR, "Baseline_vs_Candidate_Results.json")
     junit_path = os.path.join(REPORT_DIR, "junit.xml")
 
+    print(f"DEBUG xlsx_path  = {os.path.abspath(xlsx_path)}")
+    print(f"DEBUG json_path  = {os.path.abspath(json_path)}")
+    print(f"DEBUG junit_path = {os.path.abspath(junit_path)}")
+
     create_excel_report(results, xlsx_path)
 
     with open(json_path, "w", encoding="utf-8") as f:
@@ -405,6 +443,13 @@ def main():
 
     create_junit_report(results, junit_path, XRAY_TEST_KEY)
 
+    print("DEBUG files in reports:", os.listdir(REPORT_DIR))
+
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"FATAL ERROR: {e}")
+        traceback.print_exc()
+        raise
