@@ -11,6 +11,7 @@ Run:
 """
 
 import time
+from typing import Optional
 import pytest
 import requests
 
@@ -50,7 +51,7 @@ BASE_PARAMS = {
 # HELPER
 # ===================================================================
 def call_search(
-    keyword: str | None = "",
+    keyword: Optional[str] = "",
     type_val: str = DEFAULT_TYPE,
     omit_keyword: bool = False,
     omit_type: bool = False,
