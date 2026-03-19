@@ -34,14 +34,14 @@ jobs:
       - name: Run check_pp2vspp5_changeid.py
         run: |
           set -e
-          python3 -m pytest check_pp2vspp5_changeid.py \
+          python3 -m pytest tests/check_pp2vspp5_changeid.py \
             --junitxml=reports/junit_pp2vspp5_changeid.xml \
             -v -s
 
       - name: Run check_pp2vspp5_changeid_run.py
         run: |
           set -e
-          python3 -m pytest check_pp2vspp5_changeid_run.py \
+          python3 -m pytest tests/check_pp2vspp5_changeid_run.py \
             --junitxml=reports/junit_pp2vspp5_changeid_run.xml \
             -v -s
 
