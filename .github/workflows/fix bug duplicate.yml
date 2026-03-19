@@ -27,7 +27,7 @@ jobs:
       - name: Run check_pp2vspp5.py
         run: |
           set -e
-          python3 -m pytest check_pp2vspp5.py \
+          python3 -m pytest tests/check_pp2vspp5.py \
             --junitxml=reports/junit_pp2vspp5.xml \
             -v -s
 
