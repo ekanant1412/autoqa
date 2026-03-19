@@ -1,0 +1,35 @@
+appId: com.tdcm.trueidapp.dev  # เปลี่ยนเป็น bundle ID จริงของ TrueID
+---
+- launchApp
+- waitForAnimationToEnd
+
+# ปิด popup ถ้ามี
+- tapOn:
+    id: "close_button"
+    optional: true
+- waitForAnimationToEnd
+
+- tapOn:
+    id: "Privilege"
+- extendedWaitUntil:
+    notVisible: "Loading..."
+    timeout: 15000
+- waitForAnimationToEnd
+
+# ปิด popup ถ้ามี
+- tapOn:
+    id: "specialpopup_button_close"
+    optional: true
+- waitForAnimationToEnd
+
+- scrollUntilVisible:
+    element:
+      id: "today_textview_header_title_VyErp2QDkmWA"
+    direction: DOWN
+    timeout: 15000
+    visibilityPercentage: 10
+
+- assertVisible:
+    id: "today_button_seeall_VyErp2QDkmWA"
+
+- takeScreenshot: screenshots/trueblack-shelf

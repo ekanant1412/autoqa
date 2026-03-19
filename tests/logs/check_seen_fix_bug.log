@@ -1,0 +1,140 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.11, pytest-9.0.2, pluggy-1.6.0 -- /Users/ekananat/Desktop/autoqa/venv/bin/python
+cachedir: .pytest_cache
+metadata: {'Python': '3.13.11', 'Platform': 'macOS-26.3-arm64-arm-64bit-Mach-O', 'Packages': {'pytest': '9.0.2', 'pluggy': '1.6.0'}, 'Plugins': {'metadata': '3.1.1', 'html': '4.2.0'}, 'JAVA_HOME': '/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home'}
+rootdir: /Users/ekananat/Desktop/autoqa
+plugins: metadata-3.1.1, html-4.2.0
+collecting ... 
+═════════════════════════════════════════════════════════════════
+  Building test cases — source node: logic_filter_overlap_items_pin_and_live
+═════════════════════════════════════════════════════════════════
+  ▶ Calling cursor=1
+  ▶ cursor=1 logic_filter_overlap_items_pin_and_live top5: ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  ▶ cursor=1 seen_ids count: 15
+  ✅ cursor=1 → first request, captured top5 only
+  ▶ Calling cursor=2
+  ▶ cursor=2 logic_filter_overlap_items_pin_and_live top5: ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  ▶ cursor=2 seen_ids count: 20
+  ✅ cursor=2 → test case added (checking top5 from cursor=1)
+  ▶ Calling cursor=3
+  ▶ cursor=3 logic_filter_overlap_items_pin_and_live top5: ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  ▶ cursor=3 seen_ids count: 25
+  ✅ cursor=3 → test case added (checking top5 from cursor=2)
+  ▶ Calling cursor=4
+  ▶ cursor=4 logic_filter_overlap_items_pin_and_live top5: ['ePJLmalj652n', 'DqAGBeYXxVV0', '3162K42mPrj1']
+  ▶ cursor=4 seen_ids count: 30
+  ✅ cursor=4 → test case added (checking top5 from cursor=3)
+  ▶ Calling cursor=5
+  ▶ cursor=5 logic_filter_overlap_items_pin_and_live top5: []
+  ▶ cursor=5 seen_ids count: 33
+  ✅ cursor=5 → logic_filter_overlap_items_pin_and_live.items empty, stopping
+
+  📋 Total test cases: 3
+═════════════════════════════════════════════════════════════════
+collected 3 items
+
+tests/check_seen_fix_bug.py::TestSeenPool::test_seen_pool[src=cursor1_chk=cursor2] 
+═════════════════════════════════════════════════════════════════
+  TEST  source=cursor1  check=cursor2
+═════════════════════════════════════════════════════════════════
+  ▶ top5 from logic_filter_overlap_items_pin_and_live at cursor=1: ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  ▶ seen_ids at cursor=2: ['R7vRJ0zL0aa7', 'b9OQJ5lVLlln', 'BGX6jmgawoZK', 'bEVdGNev2xkP', 'jk55BZn51VYk', 'ybGywMpjoK8g', '4Pp6zG7Oe9lq', 'D28joJYlYEng', 'z9LGmz7kLPvd', 'VwZYzVV1L8bO', 'epq0baNXjREW', 'RyVB2e3LA1by', 'GOYy160RVQrO', '3n1mxqmw9ROn', 'LM3jQB1R4lEV', 'p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  ▶ seen count: 20
+  ▶ seen_limit: 200
+
+  [T1] Top 5 from cursor=1 must exist in seen at cursor=2
+  ✅ "p08pdv4MpjQ0" in seen ✓
+  ✅ "42ZkzwyYV5AN" in seen ✓
+  ✅ "qrVNMXAzqvqr" in seen ✓
+  ✅ "qkeg0K8RYNdO" in seen ✓
+  ✅ "QVQKeZDNzMxL" in seen ✓
+
+  [T2] Top 5 must be at END of seen list in order
+  ▶ expected tail: ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  ▶ actual tail  : ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  ✅ Tail matches ✓
+
+  [T3] seen size (20) <= limit (200)
+  ✅ 20 <= 200 ✓
+
+  [T4] No duplicates in seen_ids
+  ✅ No duplicates ✓
+
+  ─────────────────────────────────────────────────────────────────
+  top5 (src cursor=1) : ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  seen tail (chk cursor=2) : ['p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL']
+  T1 ✅  T2 ✅  T3 ✅  T4 ✅
+═════════════════════════════════════════════════════════════════
+PASSED
+tests/check_seen_fix_bug.py::TestSeenPool::test_seen_pool[src=cursor2_chk=cursor3] 
+═════════════════════════════════════════════════════════════════
+  TEST  source=cursor2  check=cursor3
+═════════════════════════════════════════════════════════════════
+  ▶ top5 from logic_filter_overlap_items_pin_and_live at cursor=2: ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  ▶ seen_ids at cursor=3: ['R7vRJ0zL0aa7', 'b9OQJ5lVLlln', 'BGX6jmgawoZK', 'bEVdGNev2xkP', 'jk55BZn51VYk', 'ybGywMpjoK8g', '4Pp6zG7Oe9lq', 'D28joJYlYEng', 'z9LGmz7kLPvd', 'VwZYzVV1L8bO', 'epq0baNXjREW', 'RyVB2e3LA1by', 'GOYy160RVQrO', '3n1mxqmw9ROn', 'LM3jQB1R4lEV', 'p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL', 'NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  ▶ seen count: 25
+  ▶ seen_limit: 200
+
+  [T1] Top 5 from cursor=2 must exist in seen at cursor=3
+  ✅ "NanZekkdDlqa" in seen ✓
+  ✅ "ewM6N5A4ppqy" in seen ✓
+  ✅ "VMgL53AqN9yD" in seen ✓
+  ✅ "QNwlRwERlwnV" in seen ✓
+  ✅ "Zby9vwEk6vBb" in seen ✓
+
+  [T2] Top 5 must be at END of seen list in order
+  ▶ expected tail: ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  ▶ actual tail  : ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  ✅ Tail matches ✓
+
+  [T3] seen size (25) <= limit (200)
+  ✅ 25 <= 200 ✓
+
+  [T4] No duplicates in seen_ids
+  ✅ No duplicates ✓
+
+  ─────────────────────────────────────────────────────────────────
+  top5 (src cursor=2) : ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  seen tail (chk cursor=3) : ['NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb']
+  T1 ✅  T2 ✅  T3 ✅  T4 ✅
+═════════════════════════════════════════════════════════════════
+PASSED
+tests/check_seen_fix_bug.py::TestSeenPool::test_seen_pool[src=cursor3_chk=cursor4] 
+═════════════════════════════════════════════════════════════════
+  TEST  source=cursor3  check=cursor4
+═════════════════════════════════════════════════════════════════
+  ▶ top5 from logic_filter_overlap_items_pin_and_live at cursor=3: ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  ▶ seen_ids at cursor=4: ['R7vRJ0zL0aa7', 'b9OQJ5lVLlln', 'BGX6jmgawoZK', 'bEVdGNev2xkP', 'jk55BZn51VYk', 'ybGywMpjoK8g', '4Pp6zG7Oe9lq', 'D28joJYlYEng', 'z9LGmz7kLPvd', 'VwZYzVV1L8bO', 'epq0baNXjREW', 'RyVB2e3LA1by', 'GOYy160RVQrO', '3n1mxqmw9ROn', 'LM3jQB1R4lEV', 'p08pdv4MpjQ0', '42ZkzwyYV5AN', 'qrVNMXAzqvqr', 'qkeg0K8RYNdO', 'QVQKeZDNzMxL', 'NanZekkdDlqa', 'ewM6N5A4ppqy', 'VMgL53AqN9yD', 'QNwlRwERlwnV', 'Zby9vwEk6vBb', 'vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  ▶ seen count: 30
+  ▶ seen_limit: 200
+
+  [T1] Top 5 from cursor=3 must exist in seen at cursor=4
+  ✅ "vjL28NM5Abno" in seen ✓
+  ✅ "6QAOVkNooyj5" in seen ✓
+  ✅ "XwdmPb2WEAb1" in seen ✓
+  ✅ "npbeGLndrlDM" in seen ✓
+  ✅ "Xmvbv0nyDWym" in seen ✓
+
+  [T2] Top 5 must be at END of seen list in order
+  ▶ expected tail: ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  ▶ actual tail  : ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  ✅ Tail matches ✓
+
+  [T3] seen size (30) <= limit (200)
+  ✅ 30 <= 200 ✓
+
+  [T4] No duplicates in seen_ids
+  ✅ No duplicates ✓
+
+  ─────────────────────────────────────────────────────────────────
+  top5 (src cursor=3) : ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  seen tail (chk cursor=4) : ['vjL28NM5Abno', '6QAOVkNooyj5', 'XwdmPb2WEAb1', 'npbeGLndrlDM', 'Xmvbv0nyDWym']
+  T1 ✅  T2 ✅  T3 ✅  T4 ✅
+═════════════════════════════════════════════════════════════════
+PASSED
+
+============================== 3 passed in 3.37s ===============================
+FILE  : /Users/ekananat/Desktop/autoqa/tests/check_seen_fix_bug.py
+START : 2026-03-17 16:19:44.969869
+======================================================================
+

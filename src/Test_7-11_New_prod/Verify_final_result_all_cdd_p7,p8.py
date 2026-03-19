@@ -12,7 +12,7 @@ PLACEMENTS = [
     {
         "name": "sfv-p7",
         "url": (
-            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
+            "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p7"
             "?shelfId=BJq5rZqYzjgJ"
             "&total_candidates=200"
@@ -35,7 +35,7 @@ PLACEMENTS = [
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=999999999.999999999"
+            "&cursor=1&ga_id=99999999.99999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
             "&partner_id=AN9PjZR1wEol"
             "&limit=3"

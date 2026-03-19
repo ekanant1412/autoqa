@@ -53,7 +53,7 @@ CANDIDATE_PARAMS_BASE = {
     "cursor": "1",
     "limit": "100",
     "top_k": "450",
-    "ssoId": "101316473",
+    "ssoId": "999",
 }
 
 TOP_N = 100
@@ -72,18 +72,7 @@ KEYWORDS = [
 ]
 
 TYPES = [
-    "movie",
-    "series",
-    "livetv",
-    "top_results",
-    "watch",
-    "sfv",
-    "privilege",
-    "sfvseries",
-    "read",
-    "channel",
-    "ecommerce",
-    "game",
+    "711-ecommerce"
 ]
 
 

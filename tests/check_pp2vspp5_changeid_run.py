@@ -27,7 +27,7 @@ ENDPOINTS = {
     "p-p5": f"{BASE_URL}/api/v1/universal/p-p5",
 }
 
-ROUNDS    = 1000
+ROUNDS    = 100
 SSO_START = 1001   # round=1→1001, round=2→1002, ..., round=1000→2000
 TIMEOUT   = 30
 
