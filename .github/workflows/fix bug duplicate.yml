@@ -24,57 +24,33 @@ jobs:
           ls -la
           mkdir -p reports
 
-      - name: Run check_pp2vspp5.py
+      # ──────────────────────────────────────────────────────────────
+      # Run each file separately → own junit XML (avoid pytest_generate_tests conflict)
+      # ──────────────────────────────────────────────────────────────
+      - name: Run tests/check_pp2vspp5.py
         run: |
           set -e
           python3 -m pytest tests/check_pp2vspp5.py \
             --junitxml=reports/junit_pp2vspp5.xml \
             -v -s
 
-      - name: Run check_pp2vspp5_changeid.py
+      - name: Run tests/check_pp2vspp5_changeid.py
         run: |
           set -e
           python3 -m pytest tests/check_pp2vspp5_changeid.py \
             --junitxml=reports/junit_pp2vspp5_changeid.xml \
             -v -s
 
-      - name: Run check_pp2vspp5_changeid_run.py
+      - name: Run tests/check_pp2vspp5_changeid_run.py
         run: |
           set -e
           python3 -m pytest tests/check_pp2vspp5_changeid_run.py \
             --junitxml=reports/junit_pp2vspp5_changeid_run.xml \
             -v -s
 
-      - name: Merge JUnit XMLs
-        if: always()
-        run: |
-          python3 - <<'EOF'
-          import glob, xml.etree.ElementTree as ET
-
-          out = ET.Element("testsuites")
-          total = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
-
-          for path in sorted(glob.glob("reports/junit_*.xml")):
-              root = ET.parse(path).getroot()
-              suites = root.findall("testsuite") if root.tag == "testsuites" else [root]
-              for ts in suites:
-                  out.append(ts)
-                  for k in total:
-                      total[k] += int(ts.get(k, 0))
-
-          out.set("tests",    str(total["tests"]))
-          out.set("failures", str(total["failures"]))
-          out.set("errors",   str(total["errors"]))
-          out.set("skipped",  str(total["skipped"]))
-
-          ET.ElementTree(out).write(
-              "reports/junit.xml", encoding="utf-8", xml_declaration=True
-          )
-          print(f"Merged → reports/junit.xml  "
-                f"tests={total['tests']} failures={total['failures']} "
-                f"errors={total['errors']} skipped={total['skipped']}")
-          EOF
-
+      # ──────────────────────────────────────────────────────────────
+      # Import each XML to Xray separately → smaller payload, no timeout
+      # ──────────────────────────────────────────────────────────────
       - name: Import JUnit to Xray
         if: always()
         env:
@@ -84,51 +60,106 @@ jobs:
           XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
         run: |
           set -euo pipefail
-          if [ ! -f reports/junit.xml ]; then
-            echo "ERROR: reports/junit.xml not found"
-            ls -la reports || true
-            exit 1
-          fi
-          echo "=== junit.xml preview (first 30 lines) ==="
-          head -30 reports/junit.xml || true
+
+          # ── Validate secrets ──────────────────────────────────────
           if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
             echo "ERROR: Missing required XRAY secrets"
             exit 1
           fi
-          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
+
+          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY"   | tr -d '\r\n' | xargs)"
           XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
           echo "Project key : $XRAY_PROJECT_KEY"
           echo "Test plan   : ${XRAY_TEST_PLAN_KEY:-(not set)}"
+
+          # ── Authenticate (once) ───────────────────────────────────
           echo "Authenticating with Xray..."
           TOKEN=$(curl -sS \
             -H "Content-Type: application/json" \
             -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
             -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" \
             | tr -d '"')
+
           if [ -z "$TOKEN" ]; then
             echo "ERROR: Xray authentication failed"
             exit 1
           fi
           echo "Authentication successful"
+
+          # ── Build import URL ──────────────────────────────────────
           URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
-          if [ -n "$XRAY_TEST_PLAN_KEY" ]; then
+          if [ -n "${XRAY_TEST_PLAN_KEY:-}" ]; then
             URL="${URL}&testPlanKey=$XRAY_TEST_PLAN_KEY"
           fi
           echo "Import URL: $URL"
-          HTTP_STATUS=$(curl -sS \
-            -w "%{http_code}" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "Content-Type: text/xml" \
-            --data-binary @reports/junit.xml \
-            "$URL" \
-            -o reports/xray_import_response.json)
-          echo "HTTP Status : $HTTP_STATUS"
-          cat reports/xray_import_response.json || true
-          if [ "$HTTP_STATUS" != "200" ]; then
-            echo "ERROR: Xray import failed with HTTP $HTTP_STATUS"
+
+          # ── Import helper with retry (max 3 attempts) ─────────────
+          import_xml() {
+            local xml_file="$1"
+            local label="$2"
+            local resp_file="reports/xray_response_${label}.json"
+
+            if [ ! -f "$xml_file" ]; then
+              echo "SKIP: $xml_file not found"
+              return 0
+            fi
+
+            echo ""
+            echo "=== Importing $xml_file ($(wc -c < "$xml_file") bytes) ==="
+
+            local attempt=0
+            local max_attempts=3
+            local status=""
+
+            while [ $attempt -lt $max_attempts ]; do
+              attempt=$((attempt + 1))
+              echo "  Attempt $attempt/$max_attempts..."
+
+              status=$(curl -sS \
+                --max-time 120 \
+                -w "%{http_code}" \
+                -H "Authorization: Bearer $TOKEN" \
+                -H "Content-Type: text/xml" \
+                --data-binary "@$xml_file" \
+                "$URL" \
+                -o "$resp_file" 2>/dev/null || echo "000")
+
+              echo "  HTTP Status: $status"
+              cat "$resp_file" 2>/dev/null || true
+
+              if [ "$status" = "200" ]; then
+                echo "  ✅ Import successful: $label"
+                return 0
+              fi
+
+              if [ "$status" = "504" ] || [ "$status" = "502" ] || [ "$status" = "000" ]; then
+                echo "  ⚠️  Transient error ($status), retrying in 10s..."
+                sleep 10
+              else
+                echo "  ❌ Non-retryable error: HTTP $status"
+                return 1
+              fi
+            done
+
+            echo "  ❌ All $max_attempts attempts failed for $label"
+            return 1
+          }
+
+          # ── Import each file separately (smaller payload) ─────────
+          OVERALL=0
+
+          import_xml "reports/junit_pp2vspp5.xml"              "pp2vspp5"              || OVERALL=1
+          import_xml "reports/junit_pp2vspp5_changeid.xml"     "pp2vspp5_changeid"     || OVERALL=1
+          import_xml "reports/junit_pp2vspp5_changeid_run.xml" "pp2vspp5_changeid_run" || OVERALL=1
+
+          if [ "$OVERALL" != "0" ]; then
+            echo ""
+            echo "ERROR: One or more Xray imports failed"
             exit 1
           fi
-          echo "Import successful"
+
+          echo ""
+          echo "All imports successful ✅"
 
       - name: Upload reports as artifact
         if: always()
