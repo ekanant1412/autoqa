@@ -7,27 +7,74 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python
         run: |
           python3 --version
           python3 -m pip install --upgrade pip
+
       - name: Install dependencies
         run: |
           set -e
           python3 -m pip install requests pytest
+
       - name: Show workspace
         run: |
           pwd
           ls -la
           mkdir -p reports
-      - name: Run Search API tests
+
+      - name: Run check_pp2vspp5.py
+        run: |
+          set -e
+          python3 -m pytest check_pp2vspp5.py \
+            --junitxml=reports/junit_pp2vspp5.xml \
+            -v -s
+
+      - name: Run check_pp2vspp5_changeid.py
+        run: |
+          set -e
+          python3 -m pytest check_pp2vspp5_changeid.py \
+            --junitxml=reports/junit_pp2vspp5_changeid.xml \
+            -v -s
+
+      - name: Run check_pp2vspp5_changeid_run.py
         run: |
           set -e
           python3 -m pytest check_pp2vspp5_changeid_run.py \
-                             check_pp2vspp5_changeid.py \
-                             check_pp2vspp5.py \
-            --junitxml=reports/junit.xml \
-            -v
+            --junitxml=reports/junit_pp2vspp5_changeid_run.xml \
+            -v -s
+
+      - name: Merge JUnit XMLs
+        if: always()
+        run: |
+          python3 - <<'EOF'
+          import glob, xml.etree.ElementTree as ET
+
+          out = ET.Element("testsuites")
+          total = {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
+
+          for path in sorted(glob.glob("reports/junit_*.xml")):
+              root = ET.parse(path).getroot()
+              suites = root.findall("testsuite") if root.tag == "testsuites" else [root]
+              for ts in suites:
+                  out.append(ts)
+                  for k in total:
+                      total[k] += int(ts.get(k, 0))
+
+          out.set("tests",    str(total["tests"]))
+          out.set("failures", str(total["failures"]))
+          out.set("errors",   str(total["errors"]))
+          out.set("skipped",  str(total["skipped"]))
+
+          ET.ElementTree(out).write(
+              "reports/junit.xml", encoding="utf-8", xml_declaration=True
+          )
+          print(f"Merged → reports/junit.xml  "
+                f"tests={total['tests']} failures={total['failures']} "
+                f"errors={total['errors']} skipped={total['skipped']}")
+          EOF
+
       - name: Import JUnit to Xray
         if: always()
         env:
@@ -82,6 +129,7 @@ jobs:
             exit 1
           fi
           echo "Import successful"
+
       - name: Upload reports as artifact
         if: always()
         uses: actions/upload-artifact@v4
