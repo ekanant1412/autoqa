@@ -23,6 +23,7 @@ Optional overrides:
 """
 
 import os
+from typing import Optional, Dict, List
 import time
 import concurrent.futures
 
@@ -536,7 +537,7 @@ def test_tc16_concurrent_requests():
 # HELPER — Metadata service
 # ─────────────────────────────────────────────────────────────
 
-def get_content_type(item_id: str) -> str | None:
+def get_content_type(item_id: str) -> Optional[str]:
     """Call metadata service and return content_type for a single item ID.
     Returns None if the item is not found or the field is missing.
 
@@ -580,7 +581,7 @@ def test_tc22_all_items_are_gameitem(empty_torch_response):
     ids = extract_torch_ids(empty_torch_response)
     assert ids, "TC22 FAIL: torch returned no items — cannot validate content_type"
 
-    def check(item_id: str) -> dict | None:
+    def check(item_id: str) -> Optional[Dict]:
         """Return a failure dict if content_type != 'gameitem', else None."""
         ct = get_content_type(item_id)
         if ct != "gameitem":
