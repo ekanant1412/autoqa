@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import pytest
 from datetime import datetime, timezone
 
@@ -26,6 +27,12 @@ def evidence_collector():
 # Auto evidence capture per test case
 # ============================================================
 _test_results: list = []
+
+
+def _safe_filename(name: str) -> str:
+    """แปลง test name ให้เป็น filename ที่ใช้งานได้"""
+    name = re.sub(r"[^\w\-.]", "_", name)
+    return name[:120]  # จำกัดความยาว
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -62,6 +69,13 @@ def pytest_runtest_makereport(item, call):
     }
     _test_results.append(entry)
 
+    # ── save ไฟล์แยกทันทีหลัง test จบ ──────────────────────────
+    os.makedirs("reports/evidence", exist_ok=True)
+    fname = _safe_filename(item.name) + ".json"
+    fpath = os.path.join("reports", "evidence", fname)
+    with open(fpath, "w", encoding="utf-8") as f:
+        json.dump(entry, f, ensure_ascii=False, indent=2)
+
 
 @pytest.hookimpl(trylast=True)
 def pytest_sessionfinish(session, exitstatus):
@@ -77,7 +91,7 @@ def pytest_sessionfinish(session, exitstatus):
             json.dump(report, f, ensure_ascii=False, indent=2)
         print(f"\n📄 Evidence report saved → {path}")
 
-    # ── per-test evidence JSON ──────────────────────────────────
+    # ── per-test summary JSON ───────────────────────────────────
     if not _test_results:
         return
 
@@ -101,3 +115,4 @@ def pytest_sessionfinish(session, exitstatus):
         json.dump(summary, f, ensure_ascii=False, indent=2)
     print(f"\n📄 Test evidence saved → {out}  "
           f"(passed={len(passed)}, failed={len(failed)}, skipped={len(skipped)})")
+    print(f"📁 Per-test files → reports/evidence/ ({len(_test_results)} files)")
