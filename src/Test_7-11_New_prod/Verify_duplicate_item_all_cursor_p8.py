@@ -12,7 +12,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p8"
-            "?shelfId=Kaw6MLVzPWmo"
+            "?shelfId=bxAwRPp85gmL"
             "&total_candidates=200"
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"

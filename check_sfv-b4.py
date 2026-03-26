@@ -21,7 +21,7 @@ SHELF_IDS = [
 
 CANDIDATE_SELECTIONS = ["mix", "tophit", "feedRandom"]
 
-SSO_ID = "685312253"
+SSO_ID = "681112259"
 
 # ============================================================
 # Fetch node responses from SFV API (verbose=debug)

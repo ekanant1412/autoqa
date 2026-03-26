@@ -81,23 +81,23 @@ class TestKeywordRelevance:
 
     def test_tc05_keyword_thai_returns_results(self):
         """TC-05: keyword ภาษาไทยต้องได้ผลลัพธ์ > 0"""
-        res = get({**DEFAULT_PARAMS, "search_keyword": "หมา"})
+        res = get({**DEFAULT_PARAMS, "search_keyword": "โคล่า"})
         data = res.json()
         items = get_items(data)
-        assert len(items) > 0, "ค้นหา 'หมา' แล้วไม่มีผลลัพธ์"
+        assert len(items) > 0, "ค้นหา 'โคล่า' แล้วไม่มีผลลัพธ์"
 
     def test_tc06_keyword_english_returns_results(self):
         """TC-06: keyword ภาษาอังกฤษต้องได้ผลลัพธ์"""
-        res = get({**DEFAULT_PARAMS, "search_keyword": "dog"})
+        res = get({**DEFAULT_PARAMS, "search_keyword": "coke"})
         data = res.json()
         items = get_items(data)
-        assert len(items) > 0, "ค้นหา 'dog' แล้วไม่มีผลลัพธ์"
+        assert len(items) > 0, "ค้นหา 'coke' แล้วไม่มีผลลัพธ์"
 
 
     def test_tc08_different_keywords_return_different_results(self):
         """TC-08: keyword ต่างกันต้องได้ผลลัพธ์ต่างกัน"""
-        res1 = get({**DEFAULT_PARAMS, "search_keyword": "หมา"})
-        res2 = get({**DEFAULT_PARAMS, "search_keyword": "แมว"})
+        res1 = get({**DEFAULT_PARAMS, "search_keyword": "coke"})
+        res2 = get({**DEFAULT_PARAMS, "search_keyword": "น้ำ"})
 
         items1 = get_items(res1.json())
         items2 = get_items(res2.json())
@@ -162,7 +162,7 @@ class TestUserContext:
         """TC-13: userId=null (anonymous) ต้องได้ผลลัพธ์"""
         res = get({
             **DEFAULT_PARAMS,
-            "search_keyword": "หมา",
+            "search_keyword": "โคล่า",
             "userId": "null",
             "pseudoId": "null",
         })

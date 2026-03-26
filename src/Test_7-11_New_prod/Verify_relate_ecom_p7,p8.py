@@ -11,7 +11,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p7"
-            "?shelfId=Kaw6MLVzPWmo"
+            "?shelfId=bxAwRPp85gmL"
             "&total_candidates=200"
             "&pool_limit_category_items=60"
             "&language=th"
@@ -32,7 +32,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p8"
-            "?shelfId=Kaw6MLVzPWmo"
+            "?shelfId=bxAwRPp85gmL"
             "&total_candidates=200"
             "&pool_limit_category_items=60"
             "&language=th"
@@ -123,9 +123,11 @@ def run_check(placement: dict) -> dict:
     # ----------------------------------------------------------
     print("\n[Step 3] Building item lookup map from final_ids only...")
     item_map = {}
+
     for node_name in METADATA_NODES:
         node_data = results.get(node_name, {})
         node_result = node_data.get("result", {})
+
         candidates = (
             node_result.get("items", [])
             if isinstance(node_result, dict)
@@ -133,36 +135,50 @@ def run_check(placement: dict) -> dict:
             if isinstance(node_result, list)
             else []
         )
+
         for item in candidates:
-            if isinstance(item, dict) and item.get("id") in final_ids:
-                if item["id"] not in item_map:
-                    item_map[item["id"]] = {**item, "_found_in_node": node_name}
+            if isinstance(item, dict):
+                item_id = item.get("id")
+                if item_id in final_ids and item_id not in item_map:
+                    item_map[item_id] = {**item, "_found_in_node": node_name}
 
     print(f"  final_ids        : {len(final_ids)}")
     print(f"  Mapped from nodes: {len(item_map)}")
 
     missing_in_nodes = [fid for fid in final_ids if fid not in item_map]
     if missing_in_nodes:
-        print(f"  ⚠️  IDs not found in any metadata node: {len(missing_in_nodes)}")
+        print(f"  ⚠️ IDs not found in any metadata node: {len(missing_in_nodes)}")
 
     # ----------------------------------------------------------
     # Step 4: Collect relate_content IDs
     # ----------------------------------------------------------
     print("\n[Step 4] Collecting relate_content IDs from final_ids...")
     final_id_to_relate = {}
+
     for fid in final_ids:
         relate = item_map.get(fid, {}).get("relate_content", [])
         final_id_to_relate[fid] = relate if isinstance(relate, list) else []
 
-    all_relate_ids = [rid for ids in final_id_to_relate.values() for rid in ids]
-    print(f"  Total relate_content IDs to check: {len(all_relate_ids)}")
+    all_relate_ids = []
+    for ids in final_id_to_relate.values():
+        all_relate_ids.extend(ids)
+
+    # dedupe while preserving order
+    all_relate_ids = list(
+        dict.fromkeys(
+            [rid for rid in all_relate_ids if isinstance(rid, str) and rid.strip()]
+        )
+    )
+
+    print(f"  Total unique relate_content IDs to check: {len(all_relate_ids)}")
 
     # ----------------------------------------------------------
     # Step 5: Fetch metadata for relate_content IDs
     # ----------------------------------------------------------
     print("\n[Step 5] Fetching metadata for relate_content IDs...")
     relate_meta_map = fetch_metadata_all(
-        all_relate_ids, fields=["id", "content_type", "publish_date"]
+        all_relate_ids,
+        fields=["id", "content_type", "publish_date", "partner_related"]
     )
     print(f"  Metadata returned: {len(relate_meta_map)} items")
 
@@ -173,73 +189,137 @@ def run_check(placement: dict) -> dict:
     # Step 6: Validate
     # ----------------------------------------------------------
     print("\n[Step 6] Validating logic...")
+
+    EXPECTED_PARTNER = "AN9PjZR1wEol"
+
     pass_items = []
     fail_no_relate = []
     fail_no_ecommerce = []
+    fail_no_partner_related = []
 
     for fid in final_ids:
-        relate_ids = final_id_to_relate[fid]
+        relate_ids = final_id_to_relate.get(fid, [])
+        item_title = item_map.get(fid, {}).get("title", "")
+        found_node = item_map.get(fid, {}).get("_found_in_node", "")
 
         if not relate_ids:
             fail_no_relate.append({
                 "id": fid,
                 "reason": "relate_content is empty or missing",
-                "title": item_map.get(fid, {}).get("title", ""),
+                "title": item_title,
+                "found_in_node": found_node,
             })
             continue
 
-        ecommerce_found = [
-            rid for rid in relate_ids
-            if relate_meta_map.get(rid, {}).get("content_type") == "ecommerce"
-        ]
+        ecommerce_ids = []
+        ecommerce_partner_match_ids = []
 
-        if ecommerce_found:
-            pass_items.append({
-                "id": fid,
-                "relate_content": relate_ids,
-                "ecommerce_ids": ecommerce_found,
-            })
-        else:
+        for rid in relate_ids:
+            meta = relate_meta_map.get(rid, {})
+            content_type = meta.get("content_type")
+            partner_related = meta.get("partner_related")
+
+            if content_type == "ecommerce":
+                ecommerce_ids.append(rid)
+
+                if partner_related == EXPECTED_PARTNER:
+                    ecommerce_partner_match_ids.append(rid)
+
+        if not ecommerce_ids:
             fail_no_ecommerce.append({
                 "id": fid,
                 "reason": "no relate_content with content_type=ecommerce",
+                "title": item_title,
+                "found_in_node": found_node,
                 "relate_content": relate_ids,
                 "relate_content_types": {
                     rid: relate_meta_map.get(rid, {}).get("content_type", "NOT_FOUND")
                     for rid in relate_ids
                 },
-                "title": item_map.get(fid, {}).get("title", ""),
+                "partner_related_values": {
+                    rid: relate_meta_map.get(rid, {}).get("partner_related", "NOT_FOUND")
+                    for rid in relate_ids
+                },
             })
+            continue
+
+        if not ecommerce_partner_match_ids:
+            fail_no_partner_related.append({
+                "id": fid,
+                "reason": f"found ecommerce relate_content but none with partner_related={EXPECTED_PARTNER}",
+                "title": item_title,
+                "found_in_node": found_node,
+                "relate_content": relate_ids,
+                "ecommerce_ids": ecommerce_ids,
+                "partner_related_values": {
+                    rid: relate_meta_map.get(rid, {}).get("partner_related", "NOT_FOUND")
+                    for rid in ecommerce_ids
+                },
+            })
+            continue
+
+        pass_items.append({
+            "id": fid,
+            "title": item_title,
+            "found_in_node": found_node,
+            "relate_content": relate_ids,
+            "ecommerce_ids": ecommerce_ids,
+            "matched_partner_related_ids": ecommerce_partner_match_ids,
+        })
 
     # ----------------------------------------------------------
-    # Step 7: Save & return summary
+    # Step 7: Save summary/report
     # ----------------------------------------------------------
-    total_fail = len(fail_no_relate) + len(fail_no_ecommerce)
+    total_fail = (
+        len(fail_no_relate)
+        + len(fail_no_ecommerce)
+        + len(fail_no_partner_related)
+    )
+
     summary = {
         "placement": name,
+        "url": url,
         "total_final_ids": len(final_ids),
+        "mapped_items": len(item_map),
+        "missing_in_nodes_count": len(missing_in_nodes),
         "pass_count": len(pass_items),
         "fail_empty_relate_count": len(fail_no_relate),
         "fail_no_ecommerce_count": len(fail_no_ecommerce),
+        "fail_no_partner_related_count": len(fail_no_partner_related),
         "pass": total_fail == 0,
-        "fail_empty_relate": fail_no_relate,
-        "fail_no_ecommerce": fail_no_ecommerce,
     }
+
+    report = {
+        "summary": summary,
+        "missing_in_nodes": missing_in_nodes,
+        "pass_items": pass_items,
+        "fail_no_relate": fail_no_relate,
+        "fail_no_ecommerce": fail_no_ecommerce,
+        "fail_no_partner_related": fail_no_partner_related,
+    }
+
+    with open(f"{art_dir}/validation_report.json", "w", encoding="utf-8") as f:
+        json.dump(report, f, ensure_ascii=False, indent=2)
 
     with open(f"{art_dir}/validation_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
+
     with open(f"{art_dir}/pass_items.json", "w", encoding="utf-8") as f:
         json.dump(pass_items, f, ensure_ascii=False, indent=2)
 
     print("\n" + "=" * 60)
-    print(f"  placement                : {name}")
-    print(f"  final_ids total          : {len(final_ids)}")
-    print(f"  ✅ PASS (has ecommerce)  : {len(pass_items)}")
-    print(f"  ❌ FAIL (empty relate)   : {len(fail_no_relate)}")
-    print(f"  ❌ FAIL (no ecommerce)   : {len(fail_no_ecommerce)}")
+    print(f"  placement                         : {name}")
+    print(f"  final_ids total                   : {len(final_ids)}")
+    print(f"  mapped from metadata nodes        : {len(item_map)}")
+    print(f"  missing in metadata nodes         : {len(missing_in_nodes)}")
+    print(f"  ✅ PASS                           : {len(pass_items)}")
+    print(f"  ❌ FAIL (empty relate)            : {len(fail_no_relate)}")
+    print(f"  ❌ FAIL (no ecommerce)            : {len(fail_no_ecommerce)}")
+    print(f"  ❌ FAIL (partner_related mismatch): {len(fail_no_partner_related)}")
+    print(f"  OVERALL PASS                      : {total_fail == 0}")
     print("=" * 60)
 
-    return summary
+    return report
 
 
 # =============================================================

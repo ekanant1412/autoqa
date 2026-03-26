@@ -12,16 +12,15 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p8"
-            "?shelfId=Kaw6MLVzPWmo"
-            "&total_candidates=200"
-            "&pool_limit_category_items=100"
-            "&language=th&pool_tophit_date=365"
-            "&userId=null&pseudoId=null"
-            "&cursor=1&ga_id=999999999.999999999"
-            "&is_use_live=true&verbose=debug&pool_latest_date=365"
-            "&partner_id=AN9PjZR1wEol"
-            "&limit=3"
-            "&limit_seen_item=20"
+            "?id=lrR51P10yayK"
+            "&isOnlyId=true"
+            "&language=th"
+            "&limit=10"
+            "&pseudoId=null"
+            "&returnItemMetadata=false"
+            "&ssoId=nologin"
+            "&userId=null"
+            "&verbose=debug"
         ),
     },
 ]
@@ -35,14 +34,9 @@ SLEEP_SEC = 0.05
 
 FAIL_FAST_ON_INTRA_DUP = True
 ENABLE_CROSS_CURSOR_CHECK = True
-
-# ✅ อนุโลมให้ pinned/global ids ซ้ำได้
 IGNORE_PINNED_FOR_DEDUP = True
 
-LOG_JSON = "cursor_compare_logs.json"
-DUP_JSON = "cursor_duplicates.json"
 LOG_TXT = "cursor_run.log"
-
 REPORT_DIR = "reports"
 os.makedirs(REPORT_DIR, exist_ok=True)
 # =================================================
@@ -58,6 +52,9 @@ def tlog(msg: str):
 
 # ===================== HELPERS =====================
 def build_url(base_url: str, cursor: int) -> str:
+    if "cursor=" in base_url:
+        import re
+        return re.sub(r"([?&])cursor=\d+", rf"\1cursor={cursor}", base_url)
     joiner = "&" if "?" in base_url else "?"
     return f"{base_url}{joiner}cursor={cursor}"
 
@@ -68,7 +65,6 @@ def dump_json(path: str, obj):
 
 
 def find_node(obj, key: str):
-    """Deep search node by key (robust for wrapped responses)"""
     stack = [obj]
     while stack:
         cur = stack.pop()
@@ -86,7 +82,6 @@ def find_node(obj, key: str):
 
 
 def extract_merge_page_ids(j: dict):
-    """Extract IDs ONLY from merge_page.result.items[].id"""
     merge_page = find_node(j, "merge_page")
     if not isinstance(merge_page, dict):
         return []
@@ -109,10 +104,6 @@ def extract_merge_page_ids(j: dict):
 
 
 def extract_candidate_pin_global_ids(j: dict):
-    """
-    Extract pinned IDs from candidate_pin_global.result.ids
-    ถ้าไม่มี node นี้ จะคืน []
-    """
     node = find_node(j, "candidate_pin_global")
     if not isinstance(node, dict):
         return []
@@ -125,11 +116,7 @@ def extract_candidate_pin_global_ids(j: dict):
     if not isinstance(ids, list):
         return []
 
-    out = []
-    for _id in ids:
-        if isinstance(_id, str) and _id:
-            out.append(_id)
-    return out
+    return [x for x in ids if isinstance(x, str) and x]
 
 
 def fetch_json(base_url: str, cursor: int):
@@ -148,82 +135,148 @@ def tc01_intra_cursor_no_duplicate(ids):
     return len(dups) == 0, dups
 
 
-# ===================== PYTEST ENTRY =====================
+# ===================== MAIN =====================
 def run_check(placement: dict, max_cursors: int = 10) -> dict:
-    """รัน dedup check สำหรับ placement เดียว และ return summary dict"""
     name = placement["name"]
     base_url = placement["url"]
 
-    art_dir = f"{REPORT_DIR}/{name}"
+    art_dir = os.path.join(REPORT_DIR, name)
     os.makedirs(art_dir, exist_ok=True)
 
-    seen: dict = {}
+    seen = {}
     cross_duplicates = []
     logs = []
+
     cursor = START_CURSOR
     first_error = None
 
+    tlog(f"START run_check placement={name} max_cursors={max_cursors}")
+
     for i in range(max_cursors):
         status, j, url = fetch_json(base_url, cursor)
+        tlog(f"FETCH cursor={cursor} status={status} url={url}")
+
+        cursor_entry = {
+            "cursor": cursor,
+            "url": url,
+            "http_status": status,
+            "merge_ids_all": [],
+            "pinned_ids": [],
+            "ids": [],
+            "unique_in_page": 0,
+            "dup_with_previous": [],
+            "tc01_intra_pass": True,
+            "tc01_intra_dup_count": 0,
+            "tc01_intra_dup_sample": [],
+            "error": None,
+        }
 
         if status != 200:
-            first_error = f"HTTP {status} at cursor={cursor}, url={url}"
-            # บันทึก response ไว้ดู
-            dump_json(f"{art_dir}/debug_error_cursor_{cursor}.json", j)
+            first_error = f"HTTP {status} at cursor={cursor}"
+            cursor_entry["error"] = first_error
+            logs.append(cursor_entry)
+            dump_json(os.path.join(art_dir, f"debug_error_cursor_{cursor}.json"), j)
+            tlog(first_error)
             break
 
         merge_ids_all = extract_merge_page_ids(j)
+        cursor_entry["merge_ids_all"] = merge_ids_all
+
         if not merge_ids_all:
             if i == 0:
-                first_error = f"merge_page items empty at cursor={cursor}"
-                dump_json(f"{art_dir}/debug_empty_cursor_{cursor}.json", j)
+                first_error = f"merge_page empty at cursor={cursor}"
+                cursor_entry["error"] = first_error
+                logs.append(cursor_entry)
+                dump_json(os.path.join(art_dir, f"debug_empty_cursor_{cursor}.json"), j)
+                tlog(first_error)
+            else:
+                tlog(f"STOP no merge_page items at cursor={cursor}")
             break
 
         pinned_ids = extract_candidate_pin_global_ids(j) if IGNORE_PINNED_FOR_DEDUP else []
         pinned_set = set(pinned_ids)
         check_ids = [x for x in merge_ids_all if x not in pinned_set] if IGNORE_PINNED_FOR_DEDUP else merge_ids_all
 
+        cursor_entry["pinned_ids"] = pinned_ids
+        cursor_entry["ids"] = check_ids
+        cursor_entry["unique_in_page"] = len(set(check_ids))
+
+        print(f"\n=== Cursor {cursor} ===")
+        print(f"URL: {url}")
+        print(f"merge_ids_all ({len(merge_ids_all)}): {merge_ids_all}")
+        if IGNORE_PINNED_FOR_DEDUP:
+            print(f"pinned_ids ({len(pinned_ids)}): {pinned_ids}")
+        print(f"check_ids ({len(check_ids)}):")
+        for idx, _id in enumerate(check_ids, 1):
+            print(f"{idx}. {_id}")
+
         if not check_ids:
+            tlog(f"cursor={cursor} all items were pinned or empty after filter")
+            logs.append(cursor_entry)
             cursor += CURSOR_STEP
             time.sleep(SLEEP_SEC)
             continue
 
         tc01_pass, intra_dups = tc01_intra_cursor_no_duplicate(check_ids)
-        unique_in_page = len(set(check_ids))
+        cursor_entry["tc01_intra_pass"] = tc01_pass
+        cursor_entry["tc01_intra_dup_count"] = len(intra_dups)
+        cursor_entry["tc01_intra_dup_sample"] = intra_dups[:20]
 
         dup_hits = []
-        new_count = 0
-        if ENABLE_CROSS_CURSOR_CHECK:
-            for _id in set(check_ids):
-                if _id in seen:
-                    dup_hits.append(_id)
-                    cross_duplicates.append({"id": _id, "first_cursor": seen[_id], "now_cursor": cursor})
-                else:
-                    seen[_id] = cursor
-                    new_count += 1
+        for _id in check_ids:
+            if _id in seen:
+                hit = {
+                    "id": _id,
+                    "first_cursor": seen[_id],
+                    "now_cursor": cursor,
+                }
+                dup_hits.append(hit)
+                cross_duplicates.append(hit)
+            else:
+                seen[_id] = cursor
 
-        logs.append({
-            "cursor": cursor,
-            "merge_ids_count": len(merge_ids_all),
-            "check_ids_count": len(check_ids),
-            "unique_in_page": unique_in_page,
-            "tc01_intra_pass": tc01_pass,
-            "tc01_intra_dup_count": len(intra_dups),
-            "tc01_intra_dup_sample": intra_dups[:20],
-            "tc02_dup_with_previous_count": len(dup_hits) if ENABLE_CROSS_CURSOR_CHECK else None,
-            "tc02_dup_with_previous_sample": dup_hits[:20] if ENABLE_CROSS_CURSOR_CHECK else None,
-        })
+        cursor_entry["dup_with_previous"] = dup_hits
+
+        if intra_dups:
+            print(f"⚠️ INTRA DUP at cursor {cursor}: {intra_dups}")
+
+        if dup_hits:
+            print(f"⚠️ CROSS DUP at cursor {cursor}: {dup_hits}")
+
+        logs.append(cursor_entry)
 
         if FAIL_FAST_ON_INTRA_DUP and not tc01_pass:
+            tlog(f"FAIL_FAST_ON_INTRA_DUP break at cursor={cursor}")
             break
 
         cursor += CURSOR_STEP
         time.sleep(SLEEP_SEC)
 
-    dump_json(f"{art_dir}/dedup_logs.json", logs)
-    dump_json(f"{art_dir}/dedup_cross_dups.json", cross_duplicates)
+    # ✅ ไฟล์เดียวรวมทุก cursor
+    combined_output = {
+        "placement": name,
+        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "config": {
+            "start_cursor": START_CURSOR,
+            "cursor_step": CURSOR_STEP,
+            "max_cursors": max_cursors,
+            "ignore_pinned_for_dedup": IGNORE_PINNED_FOR_DEDUP,
+            "enable_cross_cursor_check": ENABLE_CROSS_CURSOR_CHECK,
+            "fail_fast_on_intra_dup": FAIL_FAST_ON_INTRA_DUP,
+        },
+        "summary": {
+            "cursors_scanned": len(logs),
+            "cross_duplicates_count": len(cross_duplicates),
+            "cross_duplicates_sample": cross_duplicates[:20],
+            "first_error": first_error,
+        },
+        "cursor_results": logs,
+    }
+
+    dump_json(os.path.join(art_dir, "cursor_results_all.json"), combined_output)
 
     tc01_failed = [x["cursor"] for x in logs if x.get("tc01_intra_pass") is False]
+
     status = "PASS"
     if tc01_failed:
         status = "FAIL"
@@ -232,9 +285,13 @@ def run_check(placement: dict, max_cursors: int = 10) -> dict:
     elif not logs:
         status = "ERROR"
 
-    print(f"[{name}] {status}: cursors={len(logs)} intra_fail={len(tc01_failed)} cross_dups={len(cross_duplicates)}")
+    print(f"\n[{name}] {status}: cursors={len(logs)} intra_fail={len(tc01_failed)} cross_dups={len(cross_duplicates)}")
     if first_error:
-        print(f"  ↳ first_error: {first_error}")
+        print(f"first_error: {first_error}")
+    print(f"combined results saved to: {os.path.join(art_dir, 'cursor_results_all.json')}")
+
+    tlog(f"END placement={name} status={status} cursors={len(logs)} cross_dups={len(cross_duplicates)}")
+
     return {
         "placement": name,
         "status": status,
@@ -242,6 +299,7 @@ def run_check(placement: dict, max_cursors: int = 10) -> dict:
         "tc01_failed_cursors": tc01_failed,
         "cross_duplicates_count": len(cross_duplicates),
         "cross_duplicates_sample": cross_duplicates[:5],
+        "cross_duplicates": cross_duplicates,
         "first_error": first_error,
     }
 
@@ -249,7 +307,7 @@ def run_check(placement: dict, max_cursors: int = 10) -> dict:
 def _assert_result(summary: dict):
     assert summary.get("status") != "ERROR", (
         f"[{summary['placement']}] no data returned — {summary.get('first_error', 'unknown reason')}. "
-        f"ดู debug_*.json ใน reports/{summary['placement']}/ เพื่อ inspect response"
+        f"ดู cursor_results_all.json ใน reports/{summary['placement']}/"
     )
     assert summary["tc01_failed_cursors"] == [], (
         f"[{summary['placement']}] intra-cursor duplicates at cursors: {summary['tc01_failed_cursors']}"
@@ -260,11 +318,13 @@ def _assert_result(summary: dict):
     )
 
 
+# ===================== PYTEST TEST =====================
 def test_verify_no_duplicate_item_ids_sfv_p8():
-    """Verify sfv-p8: ไม่มี duplicate IDs ใน merge_page (intra + cross, 10 cursors)"""
-    _assert_result(run_check(PLACEMENTS[0], max_cursors=10))
+    result = run_check(PLACEMENTS[0], max_cursors=10)
+    _assert_result(result)
 
 
+# ===================== DIRECT RUN =====================
 if __name__ == "__main__":
     overall = 0
     for p in PLACEMENTS:
