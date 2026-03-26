@@ -1,9 +1,12 @@
-name: 7-11 Regression Tests
+name: 7-11 Regression Tests Preprod
+
 on:
   workflow_dispatch:
+
 jobs:
   regression-test:
     runs-on: [self-hosted, macOS, preprod]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,24 +21,27 @@ jobs:
         run: |
           pwd
           ls -la
+          echo "===== target folder ====="
+          ls -la src/Test_7-11_New_preprod || true
           echo "===== python files ====="
-          ls -la Verify_*.py test_all.py conftest.py || true
+          find src/Test_7-11_New_preprod -maxdepth 1 -name "*.py" | sort || true
 
       - name: Install dependencies
         run: |
           set -e
           python3 -m pip install --upgrade pip
           python3 -m pip install -r requirements.txt || true
-          python3 -m pip install requests openpyxl pytest
+          python3 -m pip install requests openpyxl pytest pytest-html
 
-      - name: Run all Verify tests
+      - name: Run all tests in preprod folder
         run: |
           set -e
           mkdir -p reports
-          python3 -m pytest src/Test_7-11_New/ test_search_api.py \
-            --override-ini="python_files=Verify_*.py test_*.py" \
+          python3 -m pytest src/Test_7-11_New_preprod/ \
             --junitxml=reports/junit.xml \
-            -v
+            --html=reports/report.html \
+            --self-contained-html \
+            -v -s
 
       - name: Verify reports
         if: always()
@@ -78,42 +84,48 @@ jobs:
           XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
         run: |
           set -euo pipefail
-          # ── 1. ตรวจ junit.xml ──────────────────────────────────────────
+
           if [ ! -f reports/junit.xml ]; then
             echo "ERROR: reports/junit.xml not found"
             ls -la reports || true
             exit 1
           fi
+
           echo "=== junit.xml preview (first 30 lines) ==="
           head -30 reports/junit.xml
-          # ── 2. ตรวจ secrets ────────────────────────────────────────────
+
           if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
             echo "ERROR: Missing required XRAY secrets (XRAY_CLIENT_ID / XRAY_CLIENT_SECRET / XRAY_PROJECT_KEY)"
             exit 1
           fi
-          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY"   | tr -d '\r\n' | xargs)"
+
+          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
           XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
+
           echo "Project key : $XRAY_PROJECT_KEY"
           echo "Test plan   : ${XRAY_TEST_PLAN_KEY:-(not set)}"
-          # ── 3. Authenticate ────────────────────────────────────────────
+
           echo "Authenticating with Xray..."
           TOKEN=$(curl -sS \
             -H "Content-Type: application/json" \
             -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
             -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" \
             | tr -d '"')
+
           if [ -z "$TOKEN" ]; then
             echo "ERROR: Xray authentication failed — token is empty"
             exit 1
           fi
+
           echo "Authentication successful"
-          # ── 4. Build URL (ใส่ testPlanKey เฉพาะเมื่อมีค่า) ────────────
+
           URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
           if [ -n "$XRAY_TEST_PLAN_KEY" ]; then
             URL="${URL}&testPlanKey=$XRAY_TEST_PLAN_KEY"
           fi
+
           echo "Import URL: $URL"
-          # ── 5. Import — แยก HTTP status กับ body ──────────────────────
+
           HTTP_STATUS=$(curl -sS \
             -w "%{http_code}" \
             -H "Authorization: Bearer $TOKEN" \
@@ -121,14 +133,16 @@ jobs:
             --data-binary @reports/junit.xml \
             "$URL" \
             -o reports/xray_import_response.json)
+
           echo "HTTP Status : $HTTP_STATUS"
           echo "Xray response:"
           cat reports/xray_import_response.json
-          # ── 6. ตรวจ status ─────────────────────────────────────────────
+
           if [ "$HTTP_STATUS" != "200" ]; then
             echo "ERROR: Xray import failed with HTTP $HTTP_STATUS"
             exit 1
           fi
+
           echo "Import successful"
 
       - name: Attach evidence to Jira Test Execution
@@ -139,35 +153,44 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
         run: |
           set -euo pipefail
+
           JIRA_BASE_URL="$(echo "${JIRA_BASE_URL:-}" | tr -d '\r\n' | xargs)"
           JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+
           if [ -z "$JIRA_BASE_URL" ]; then
             echo "ERROR: JIRA_BASE_URL is empty"
             exit 1
           fi
+
           if [ ! -f "reports/xray_import_response.json" ]; then
             echo "ERROR: reports/xray_import_response.json not found"
             ls -la reports || true
             exit 1
           fi
+
           TEST_EXEC_KEY="$(python3 -c "import json; print(json.load(open('reports/xray_import_response.json','r',encoding='utf-8')).get('key',''))" | tr -d '\r\n' | xargs)"
+
           if [ -z "$TEST_EXEC_KEY" ]; then
             echo "ERROR: Cannot find Test Execution KEY in xray_import_response.json"
             cat reports/xray_import_response.json || true
             exit 1
           fi
+
           echo "Test Execution key: $TEST_EXEC_KEY"
+
           curl -sS --fail-with-body \
             -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
             -H "Accept: application/json" \
             "$JIRA_BASE_URL/rest/api/3/myself" >/dev/null
+
           ATTACH_URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
           echo "Attach URL: $ATTACH_URL"
+
           for f in \
-            reports/Baseline_vs_Candidate_Report.xlsx \
-            reports/Baseline_vs_Candidate_Results.json \
+            reports/report.html \
             reports/evidence.zip \
-            reports/junit.xml
+            reports/junit.xml \
+            reports/xray_import_response.json
           do
             if [ -f "$f" ]; then
               echo "Uploading $f ..."
@@ -180,12 +203,13 @@ jobs:
               echo "WARN: missing file $f"
             fi
           done
+
           echo "DONE attach files to $TEST_EXEC_KEY"
 
       - name: Upload reports as artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: baseline-vs-candidate-reports
+          name: 7-11-preprod-reports
           path: reports
           if-no-files-found: warn
