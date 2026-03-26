@@ -1,0 +1,91 @@
+name: Coldstart Tests
+on:
+  workflow_dispatch:
+jobs:
+  coldstart-test:
+    runs-on: [self-hosted, macOS, preprod]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          set -e
+          python3 -m pip install --upgrade pip
+          python3 -m pip install requests pytest
+
+      - name: Run Coldstart tests
+        env:
+          GP4_BEARER_TOKEN: ${{ secrets.GP4_BEARER_TOKEN }}
+          GP4_ACCESS_TOKEN: ${{ secrets.GP4_ACCESS_TOKEN }}
+          GP4_REFRESH_TOKEN: ${{ secrets.GP4_REFRESH_TOKEN }}
+          RICH_SSOID: ${{ secrets.RICH_SSOID }}
+          NEW_SSOID: ${{ secrets.NEW_SSOID }}
+        run: |
+          set -e
+          mkdir -p reports
+          python3 -m pytest test_coldstart.py \
+            --junitxml=reports/junit.xml \
+            -v
+
+      - name: Import JUnit to Xray
+        if: always()
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
+          XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
+        run: |
+          set -euo pipefail
+          if [ ! -f reports/junit.xml ]; then
+            echo "ERROR: reports/junit.xml not found"
+            exit 1
+          fi
+          echo "=== junit.xml preview (first 30 lines) ==="
+          head -30 reports/junit.xml
+          if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
+            echo "ERROR: Missing required XRAY secrets"
+            exit 1
+          fi
+          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
+          XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
+          echo "Project key : $XRAY_PROJECT_KEY"
+          echo "Test plan   : ${XRAY_TEST_PLAN_KEY:-(not set)}"
+          echo "Authenticating with Xray..."
+          TOKEN=$(curl -sS \
+            -H "Content-Type: application/json" \
+            -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
+            -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" \
+            | tr -d '"')
+          if [ -z "$TOKEN" ]; then
+            echo "ERROR: Xray authentication failed"
+            exit 1
+          fi
+          echo "Authentication successful"
+          URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
+          if [ -n "$XRAY_TEST_PLAN_KEY" ]; then
+            URL="${URL}&testPlanKey=$XRAY_TEST_PLAN_KEY"
+          fi
+          echo "Import URL: $URL"
+          HTTP_STATUS=$(curl -sS \
+            -w "%{http_code}" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: text/xml" \
+            --data-binary @reports/junit.xml \
+            "$URL" \
+            -o reports/xray_import_response.json)
+          echo "HTTP Status : $HTTP_STATUS"
+          cat reports/xray_import_response.json
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Xray import failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
+          echo "Import successful"
+
+      - name: Upload reports as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coldstart-reports
+          path: reports
+          if-no-files-found: warn
