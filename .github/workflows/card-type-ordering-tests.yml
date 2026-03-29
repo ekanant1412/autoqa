@@ -110,9 +110,15 @@ jobs:
             exit 1
           fi
           if [ ! -f "reports/xray_import_response.json" ]; then
-            echo "ERROR: xray_import_response.json not found"
-            exit 1
+            echo "WARN: xray_import_response.json not found — skipping attachment"
+            exit 0
           fi
+          if [ ! -s "reports/xray_import_response.json" ]; then
+            echo "WARN: xray_import_response.json is empty (Xray import likely failed) — skipping attachment"
+            exit 0
+          fi
+          echo "=== xray_import_response.json ==="
+          cat reports/xray_import_response.json
           TEST_EXEC_KEY="$(python3 -c "import json; print(json.load(open('reports/xray_import_response.json','r',encoding='utf-8')).get('key',''))" | tr -d '\r\n' | xargs)"
           if [ -z "$TEST_EXEC_KEY" ]; then
             echo "ERROR: Cannot find Test Execution KEY"
