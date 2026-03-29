@@ -14,6 +14,7 @@ import csv
 import pathlib
 import pytest
 import requests
+from typing import Optional
 from urllib.parse import urlencode
 
 REPORT_DIR = pathlib.Path(__file__).parent / "card_type_reports"
@@ -203,7 +204,7 @@ def find_node(data: dict, node_name: str):
     return result
 
 
-def extract_user_card_type(response: dict, user_card_type_node: str = "feature_segments") -> str | None:
+def extract_user_card_type(response: dict, user_card_type_node: str = "feature_segments") -> Optional[str]:
     """
     ดึง card_type ของ user โดยลองตามลำดับ:
 
@@ -284,7 +285,7 @@ def build_card_type_lookup(response: dict) -> dict[str, list[str]]:
     return lookup
 
 
-def build_package_type_lookup(response: dict) -> dict[str, str | None]:
+def build_package_type_lookup(response: dict) -> dict:
     """
     สร้าง dict: {item_id → package_type}
     จาก order_object_card_type node
@@ -299,7 +300,7 @@ def build_package_type_lookup(response: dict) -> dict[str, str | None]:
     return lookup
 
 
-def extract_user_subs_type(response: dict) -> str | None:
+def extract_user_subs_type(response: dict) -> Optional[str]:
     """
     ดึง dgi_subs_type ของ user จาก feature_segments node
     คืนค่า "post", "pre", "all" หรือ None
@@ -314,7 +315,7 @@ def extract_user_subs_type(response: dict) -> str | None:
     return None
 
 
-def is_package_type_allowed(package_type: str | None, subs_type: str) -> bool:
+def is_package_type_allowed(package_type: Optional[str], subs_type: str) -> bool:
     """
     ตรวจว่า package_type ของ item อนุญาตสำหรับ subs_type นี้ไหม
 
@@ -336,7 +337,7 @@ def is_package_type_allowed(package_type: str | None, subs_type: str) -> bool:
     return True
 
 
-def build_redeem_point_lookup(response: dict) -> dict[str, int | None]:
+def build_redeem_point_lookup(response: dict) -> dict:
     """
     สร้าง dict: {item_id → redeem_point}
     จาก order_object_card_type node
@@ -352,7 +353,7 @@ def build_redeem_point_lookup(response: dict) -> dict[str, int | None]:
     return lookup
 
 
-def is_redeem_point_allowed(redeem_point: int | None, trueyou_point_remain: int) -> bool:
+def is_redeem_point_allowed(redeem_point: Optional[int], trueyou_point_remain: int) -> bool:
     """
     ตรวจว่า redeem_point ของ item อนุญาตสำหรับ point ที่ user มีไหม
 
@@ -399,7 +400,7 @@ def extract_result_ids(response: dict, result_node: str) -> list[str]:
     return ids
 
 
-def categorize_item(card_types: list[str], user_card_type: str | None) -> str:
+def categorize_item(card_types: list, user_card_type: Optional[str]) -> str:
     """
     จัดหมวดหมู่ item:
       "primary"   - มี card_type ตรงกับ user
