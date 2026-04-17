@@ -74,6 +74,15 @@ jobs:
           fi
           echo "Import successful"
 
+      - name: Attach evidence to Xray test runs
+        if: always()
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_TEST_EXEC_KEY: DMPREC-15999
+        run: |
+          python3 Search_All_Type/attach_evidence.py
+
       - name: Upload reports as artifact
         if: always()
         uses: actions/upload-artifact@v4
