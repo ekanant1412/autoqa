@@ -1,6 +1,8 @@
 name: Search_All_Type
 on:
   workflow_dispatch:
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   search-api-test:
     runs-on: [self-hosted, macOS, preprod]
