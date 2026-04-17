@@ -17,7 +17,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p7"
-            "?shelfId=bxAwRPp85gmL"
+            "?shelfId=zmEXe3EQnXDk"
             "&total_candidates=200"
             "&pool_limit_category_items=60"
             "&language=th"
@@ -33,11 +33,11 @@ PLACEMENTS = [
         ),
     },
     {
-        "name": "sfv-p8",
+        "name": "sfv-p6",
         "url": (
-            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-            "/api/v1/universal/sfv-p8"
-            "?shelfId=bxAwRPp85gmL"
+            "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=zmEXe3EQnXDk"
             "&total_candidates=200"
             "&pool_limit_category_items=60"
             "&language=th"
@@ -67,7 +67,7 @@ TARGET_NODES = [
 ]
 
 BANNED_IDS: Set[str] = {
-    "wj5GOky1mkYx", "yVb5Mwjx55yK", "09pGq8RbEv1K", "5GMzjgY2VO8A",
+    "yVb5Mwjx55yK", "09pGq8RbEv1K", "5GMzjgY2VO8A",
     "xo4XD2gbaJpo", "2OramNWW42mM", "lk1xWMlyB3pq", "rGRzA9EdZRLG",
     "QXzdvLe5y5yq", "nY4NvWQvwyZ5", "8GYgr8R94B5l",
     "npXJYPV0LPWb", "G5pjqMJekWyP", "YoQPY686MqbN", "a13LzAMLLVNg",

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "1. limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และทุก IDs match Spanner ✓"
+  },
+  {
+    "name": "2. language = th",
+    "passed": true,
+    "msg": "language=th → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "3. language = en",
+    "passed": true,
+    "msg": "language=en → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "4. fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 20 items มีครบ 4 fields และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "5. sort_order=desc — เรียงจาก publish_date มากไปน้อย",
+    "passed": true,
+    "msg": "sort_order=desc เรียงถูกต้องทุก 50 items ✓ และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "6. sort_order=asc  — เรียงจาก publish_date น้อยไปมาก",
+    "passed": false,
+    "msg": "sort_order=asc ผิดลำดับ 10 จุด (จาก 50 items) → ตัวอย่าง: {'pos': 0, 'id': 'Gw9jNqJ80gpM', 'val': '2024-02-20T21:00:00.000Z', 'next_id': '31YM9G73wBd1', 'next_val': '2023-07-31T17:00:00.000Z'}"
+  },
+  {
+    "name": "7. sort desc vs asc — ลำดับตรงกันข้าม",
+    "passed": true,
+    "msg": "desc first=2024-02-20T21:00:00.000Z >= asc first=2024-02-20T21:00:00.000Z ✓ (ลำดับตรงกันข้ามถูกต้อง)"
+  }
+]

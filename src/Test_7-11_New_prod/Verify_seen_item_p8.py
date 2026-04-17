@@ -9,8 +9,8 @@ TEST_KEY = "DMPREC-9700"
 
 URL = (
     "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
-    "/api/v1/universal/sfv-p8"
-    "?shelfId=bxAwRPp85gmL"
+    "/api/v1/universal/sfv-p6"
+    "?shelfId=zmEXe3EQnXDk"
     "&total_candidates=200"
     "&pool_limit_category_items=100"
     "&language=th&pool_tophit_date=365"

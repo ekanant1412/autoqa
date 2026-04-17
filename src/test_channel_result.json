@@ -1,0 +1,27 @@
+[
+  {
+    "name": "1. limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และทุก IDs match Spanner ✓"
+  },
+  {
+    "name": "2. language = th",
+    "passed": true,
+    "msg": "language=th → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "3. language = en",
+    "passed": true,
+    "msg": "language=en → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "4. id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 2 ตัวอยู่ใน id list และ Spanner: ทุก 2 IDs match ✓"
+  },
+  {
+    "name": "5. fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 20 items มีครบ 4 fields และ Spanner: ทุก 20 IDs match ✓"
+  }
+]

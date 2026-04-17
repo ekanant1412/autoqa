@@ -1,0 +1,52 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": false,
+    "msg": "limit=50 — Spanner: 2 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['3eYOmwazO3yB', 'znb2KOGRzLYn']"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": true,
+    "msg": "language=th → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": true,
+    "msg": "language=en → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "4.  id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 3 ตัวอยู่ใน id list และ Spanner: ทุก 3 IDs match ✓"
+  },
+  {
+    "name": "5.  fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 20 items มีครบ 4 fields และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "6.  article_category — ทุก items มี category ใน list",
+    "passed": false,
+    "msg": "ERROR: curl error: "
+  },
+  {
+    "name": "7.  exclude_ids — ID ไม่ปรากฏใน response",
+    "passed": false,
+    "msg": "exclude_ids OK แต่ Spanner: 6 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['3eYOmwazO3yB', '3vZMRPGdGZKD', '8zOgwv8ZobEz', 'Zkn8v1lVqVq4', 'xJepx73vNbbY']"
+  },
+  {
+    "name": "8.  is_trailer=yes — ทุก items มี is_trailer='yes'",
+    "passed": false,
+    "msg": "is_trailer=yes แต่ 50 items ไม่มี is_trailer='yes': ['NDz6odWxyyVD', 'em0ZwOBxbva7', 'vPQeor9496OP', '9QgEbgvo6m6G', 'w120na5Mvab6']"
+  },
+  {
+    "name": "9.  is_promo=yes — ทุก items มี is_promo='yes'",
+    "passed": false,
+    "msg": "is_promo=yes แต่ 50 items ไม่มี is_promo='yes': ['NDz6odWxyyVD', 'em0ZwOBxbva7', 'vPQeor9496OP', '9QgEbgvo6m6G', 'w120na5Mvab6']"
+  },
+  {
+    "name": "10. predictions — เรียงตาม score มากไปน้อย",
+    "passed": true,
+    "msg": "predictions เรียงถูกต้อง (score desc) ทุก 3 items ✓ และ Spanner: ทุก 3 IDs match ✓"
+  }
+]

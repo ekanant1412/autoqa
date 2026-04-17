@@ -1,0 +1,12 @@
+[
+  {
+    "name": "1. id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 3 ตัวอยู่ใน id list และ Spanner: ทุก 3 IDs match ✓"
+  },
+  {
+    "name": "2. fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 3 items มีครบ 4 fields และ Spanner: ทุก 3 IDs match ✓"
+  }
+]

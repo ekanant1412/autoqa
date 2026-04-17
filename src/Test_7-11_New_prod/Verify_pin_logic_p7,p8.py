@@ -12,7 +12,7 @@ PLACEMENTS = [
         "url": (
             "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
             "/api/v1/universal/sfv-p7"
-            "?shelfId=bxAwRPp85gmL"
+            "?shelfId=zmEXe3EQnXDk"
             "&total_candidates=200"
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
@@ -23,24 +23,24 @@ PLACEMENTS = [
         ),
     },
     {
-        "name": "sfv-p8",
+        "name": "sfv-p6",
         "url": (
-            "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
-            "/api/v1/universal/sfv-p8"
-            "?shelfId=bxAwRPp85gmL"
+            "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
+            "/api/v1/universal/sfv-p6"
+            "?shelfId=zmEXe3EQnXDk"
             "&total_candidates=200"
             "&pool_limit_category_items=100"
             "&language=th&pool_tophit_date=365"
             "&limit=100&userId=null&pseudoId=null"
             "&cursor=1&ga_id=999999999.999999999"
             "&is_use_live=true&verbose=debug&pool_latest_date=365"
-            "&partner_id=AN9PjZR1wEol"
+            # "&partner_id=AN9PjZR1wEol"
         ),
     },
 ]
 
 TIMEOUT_SEC = 20
-BLOCK_SIZE = 5
+BLOCK_SIZE = 4
 
 REPORT_DIR = "reports"
 ART_DIR = f"{REPORT_DIR}/{TEST_KEY}"

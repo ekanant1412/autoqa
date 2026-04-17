@@ -1,0 +1,17 @@
+[
+  {
+    "name": "1. id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 28 ตัวอยู่ใน id list และ Spanner: ทุก 28 IDs match ✓"
+  },
+  {
+    "name": "2. fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 28 items มีครบ 4 fields และ Spanner: ทุก 28 IDs match ✓"
+  },
+  {
+    "name": "3. keymap_order — items เรียงตาม keymap_order (น้อย→มาก)",
+    "passed": true,
+    "msg": "keymap_order เรียงถูกต้องทุก 19 items ✓ และ Spanner: ทุก 19 IDs match ✓"
+  }
+]

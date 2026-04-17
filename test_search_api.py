@@ -37,7 +37,6 @@ METADATA_URL = (
     "/metadata/all-view-data"
 )
 DEFAULT_TYPE = [
-    "711-ecommerce",
     "top_results",
     "sfvseries",
     "watch",
@@ -153,12 +152,12 @@ def fetch_metadata(ids: list, fields: list = None, timeout: int = 30) -> dict:
 def test_tc01_thai_numeric_input(type_val):
     resp = call_search("๒", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC01][{type_val}] Expected HTTP 200, got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC01][{type_val}] Expected HTTP 200, got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     data = resp.json()
-    assert isinstance(data, dict), f"[TC01][{type_val}] Response body should be a JSON object"
-    assert "items" in data, f"[TC01][{type_val}] Missing 'items' key in response: {list(data.keys())}"
-    assert isinstance(data["items"], list), f"[TC01][{type_val}] 'items' should be a list"
+    assert isinstance(data, dict), f"[TC01][{type_val}] Response body should be a JSON object\nURL: {resp.url}"
+    assert "items" in data, f"[TC01][{type_val}] Missing 'items' key in response: {list(data.keys())}\nURL: {resp.url}"
+    assert isinstance(data["items"], list), f"[TC01][{type_val}] 'items' should be a list\nURL: {resp.url}"
 
 
 # ===================================================================
@@ -173,13 +172,13 @@ def test_tc02_special_characters(type_val):
     keyword = "! @ # % ^ & * ( ) _ + - / ? , ."
     resp = call_search(keyword, type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC02][{type_val}] Server crashed with 5xx: {resp.status_code}\n{resp.text[:300]}"
+        f"[TC02][{type_val}] Server crashed with 5xx: {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         data = resp.json()
     except Exception as e:
-        pytest.fail(f"[TC02][{type_val}] Response is not valid JSON: {e}\nRaw: {resp.text[:300]}")
-    assert isinstance(data, dict), f"[TC02][{type_val}] Response should be a JSON object"
+        pytest.fail(f"[TC02][{type_val}] Response is not valid JSON: {e}\nURL: {resp.url}\nRaw: {resp.text[:300]}")
+    assert isinstance(data, dict), f"[TC02][{type_val}] Response should be a JSON object\nURL: {resp.url}"
 
 
 # ===================================================================
@@ -193,11 +192,11 @@ def test_tc02_special_characters(type_val):
 def test_tc03_numeric_input(type_val):
     resp = call_search("1", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC03][{type_val}] Expected HTTP 200, got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC03][{type_val}] Expected HTTP 200, got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     data = resp.json()
-    assert "items" in data, f"[TC03][{type_val}] Missing 'items' in response: {list(data.keys())}"
-    assert isinstance(data["items"], list), f"[TC03][{type_val}] 'items' should be a list"
+    assert "items" in data, f"[TC03][{type_val}] Missing 'items' in response: {list(data.keys())}\nURL: {resp.url}"
+    assert isinstance(data["items"], list), f"[TC03][{type_val}] 'items' should be a list\nURL: {resp.url}"
 
 
 # ===================================================================
@@ -211,11 +210,11 @@ def test_tc03_numeric_input(type_val):
 def test_tc04_lowercase_input(type_val):
     resp = call_search("fisherman", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC04][{type_val}] Expected HTTP 200, got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC04][{type_val}] Expected HTTP 200, got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     ids = item_ids(resp)
     assert len(ids) > 0, (
-        f"[TC04][{type_val}] Expected results for keyword 'fisherman' but got 0 items"
+        f"[TC04][{type_val}] Expected results for keyword 'fisherman' but got 0 items\nURL: {resp.url}"
     )
 
 
@@ -230,11 +229,11 @@ def test_tc04_lowercase_input(type_val):
 def test_tc05_mixed_case_input(type_val):
     resp_mixed = call_search("Fisherman", type_val=type_val)
     assert resp_mixed.status_code == 200, (
-        f"[TC05][{type_val}] Expected HTTP 200 for 'Fisherman', got {resp_mixed.status_code}"
+        f"[TC05][{type_val}] Expected HTTP 200 for 'Fisherman', got {resp_mixed.status_code}\nURL: {resp_mixed.url}"
     )
     ids_mixed = item_ids(resp_mixed)
     assert len(ids_mixed) > 0, (
-        f"[TC05][{type_val}] 'Fisherman' returned 0 items — case handling issue"
+        f"[TC05][{type_val}] 'Fisherman' returned 0 items — case handling issue\nURL: {resp_mixed.url}"
     )
 
 
@@ -249,10 +248,10 @@ def test_tc05_mixed_case_input(type_val):
 def test_tc06_uppercase_input(type_val):
     resp = call_search("FISHERMAN", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC06][{type_val}] Expected HTTP 200 for 'FISHERMAN', got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC06][{type_val}] Expected HTTP 200 for 'FISHERMAN', got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     data = resp.json()
-    assert "items" in data, f"[TC06][{type_val}] Missing 'items' in response: {list(data.keys())}"
+    assert "items" in data, f"[TC06][{type_val}] Missing 'items' in response: {list(data.keys())}\nURL: {resp.url}"
 
 
 # ===================================================================
@@ -266,12 +265,12 @@ def test_tc06_uppercase_input(type_val):
 def test_tc07_whitespace_input(type_val):
     resp = call_search(" ", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC07][{type_val}] Server crashed with 5xx on whitespace input: {resp.status_code}\n{resp.text[:300]}"
+        f"[TC07][{type_val}] Server crashed with 5xx on whitespace input: {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         resp.json()
     except Exception as e:
-        pytest.fail(f"[TC07][{type_val}] Response is not valid JSON for whitespace input: {e}")
+        pytest.fail(f"[TC07][{type_val}] Response is not valid JSON for whitespace input: {e}\nURL: {resp.url}")
 
 
 # ===================================================================
@@ -288,19 +287,21 @@ def test_tc08_empty_keyword_consistent(type_val):
     resp2 = call_search("", type_val=type_val)
 
     assert resp1.status_code == 200, (
-        f"[TC08][{type_val}] First call crashed with 5xx: {resp1.status_code}"
+        f"[TC08][{type_val}] First call crashed with 5xx: {resp1.status_code}\nURL: {resp1.url}"
     )
     assert resp2.status_code == 200, (
-        f"[TC08][{type_val}] Second call crashed with 5xx: {resp2.status_code}"
+        f"[TC08][{type_val}] Second call crashed with 5xx: {resp2.status_code}\nURL: {resp2.url}"
     )
     assert resp1.status_code == resp2.status_code, (
-        f"[TC08][{type_val}] Inconsistent status code: call1={resp1.status_code}, call2={resp2.status_code}"
+        f"[TC08][{type_val}] Inconsistent status code: call1={resp1.status_code}, call2={resp2.status_code}\n"
+        f"URL1: {resp1.url}\nURL2: {resp2.url}"
     )
     if resp1.status_code == 200 and resp2.status_code == 200:
         ids1, ids2 = item_ids(resp1), item_ids(resp2)
         assert ids1 == ids2, (
             f"[TC08][{type_val}] Inconsistent results for empty keyword:\n"
-            f"  call1 top5={ids1[:5]}\n  call2 top5={ids2[:5]}"
+            f"  call1 top5={ids1[:5]}\n  call2 top5={ids2[:5]}\n"
+            f"  URL1: {resp1.url}\n  URL2: {resp2.url}"
         )
 
 # ===================================================================
@@ -315,14 +316,14 @@ def test_tc09_thai_english_mixed(type_val):
     keyword = "น้ำมะพร้าวmale100"
     resp = call_search(keyword, type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC09][{type_val}] Expected HTTP 200 for Thai+English keyword, got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC09][{type_val}] Expected HTTP 200 for Thai+English keyword, got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         data = resp.json()
     except Exception as e:
-        pytest.fail(f"[TC09][{type_val}] Response JSON parse failed (encoding issue?): {e}")
-    assert isinstance(data, dict), f"[TC09][{type_val}] Response should be a JSON object"
-    assert "items" in data, f"[TC09][{type_val}] Missing 'items' in response: {list(data.keys())}"
+        pytest.fail(f"[TC09][{type_val}] Response JSON parse failed (encoding issue?): {e}\nURL: {resp.url}")
+    assert isinstance(data, dict), f"[TC09][{type_val}] Response should be a JSON object\nURL: {resp.url}"
+    assert "items" in data, f"[TC09][{type_val}] Missing 'items' in response: {list(data.keys())}\nURL: {resp.url}"
 
 
 # ===================================================================
@@ -337,11 +338,11 @@ def test_tc10_spell_correction(type_val):
     keyword = "ตอกปกกี"
     resp = call_search(keyword, type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC10][{type_val}] Expected HTTP 200, got {resp.status_code}\n{resp.text[:300]}"
+        f"[TC10][{type_val}] Expected HTTP 200, got {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     ids = item_ids(resp)
     assert len(ids) > 0, (
-        f"[TC10][{type_val}] Spell correction expected to return results for '{keyword}' but got 0 items"
+        f"[TC10][{type_val}] Spell correction expected to return results for '{keyword}' but got 0 items\nURL: {resp.url}"
     )
 
 
@@ -361,12 +362,12 @@ def test_tc11_ordering_stability(type_val):
     cd_resp = call_search(keyword, type_val=type_val)
 
     assert cd_resp.status_code == 200, (
-        f"[TC11][{type_val}] Candidate expected HTTP 200, got {cd_resp.status_code}"
+        f"[TC11][{type_val}] Candidate expected HTTP 200, got {cd_resp.status_code}\nURL: {cd_resp.url}"
     )
     cd_ids = item_ids(cd_resp)
 
     assert len(bl_ids) > 0, f"[TC11][{type_val}] Baseline returned 0 items"
-    assert len(cd_ids) > 0, f"[TC11][{type_val}] Candidate returned 0 items"
+    assert len(cd_ids) > 0, f"[TC11][{type_val}] Candidate returned 0 items\nURL: {cd_resp.url}"
 
     top_n = 100
     bl_top = bl_ids[:top_n]
@@ -376,7 +377,8 @@ def test_tc11_ordering_stability(type_val):
         f"[TC12][{type_val}] Ordering mismatch between Baseline and Candidate:\n"
         f"  baseline  top{top_n}={bl_top}\n"
         f"  candidate top{top_n}={cd_top}\n"
-        f"  matched positions: {sum(1 for a, b in zip(bl_top, cd_top) if a == b)}/{top_n}"
+        f"  matched positions: {sum(1 for a, b in zip(bl_top, cd_top) if a == b)}/{top_n}\n"
+        f"  URL: {cd_resp.url}"
     )
 
 
@@ -391,12 +393,12 @@ def test_tc11_ordering_stability(type_val):
 def test_tc12_null_query_parameter(type_val):
     resp = call_search(keyword="", type_val=type_val)
     assert resp.status_code == 200, (
-        f"[TC12][{type_val}] Server crashed with 5xx on null/empty query: {resp.status_code}\n{resp.text[:300]}"
+        f"[TC12][{type_val}] Server crashed with 5xx on null/empty query: {resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         resp.json()
     except Exception as e:
-        pytest.fail(f"[TC12][{type_val}] Response is not valid JSON: {e}\nRaw: {resp.text[:300]}")
+        pytest.fail(f"[TC12][{type_val}] Response is not valid JSON: {e}\nURL: {resp.url}\nRaw: {resp.text[:300]}")
 
 
 # ===================================================================
@@ -411,13 +413,13 @@ def test_tc13_missing_mandatory_parameter(type_val):
     resp = call_search(omit_keyword=True, type_val=type_val)
     assert resp.status_code == 200, (
         f"[TC13][{type_val}] Server crashed with 5xx when search_keyword is missing: "
-        f"{resp.status_code}\n{resp.text[:300]}"
+        f"{resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         resp.json()
     except Exception as e:
         pytest.fail(
-            f"[TC13][{type_val}] Response is not valid JSON when param is missing: {e}\nRaw: {resp.text[:300]}"
+            f"[TC13][{type_val}] Response is not valid JSON when param is missing: {e}\nURL: {resp.url}\nRaw: {resp.text[:300]}"
         )
 
 
@@ -433,13 +435,13 @@ def test_tc14_invalid_type_parameter():
     resp = call_search("1", type_val="7111")
     assert resp.status_code < 500, (
         f"[TC14] Server crashed with 5xx on invalid type '7111': "
-        f"{resp.status_code}\n{resp.text[:300]}"
+        f"{resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         resp.json()
     except Exception as e:
         pytest.fail(
-            f"[TC14] Response is not valid JSON for invalid type: {e}\nRaw: {resp.text[:300]}"
+            f"[TC14] Response is not valid JSON for invalid type: {e}\nURL: {resp.url}\nRaw: {resp.text[:300]}"
         )
 
 
@@ -456,11 +458,11 @@ def test_tc15_very_long_input(type_val):
     resp = call_search(keyword, type_val=type_val)
     assert resp.status_code == 200, (
         f"[TC15][{type_val}] Server crashed with 5xx on very long input: "
-        f"{resp.status_code}\n{resp.text[:300]}"
+        f"{resp.status_code}\nURL: {resp.url}\n{resp.text[:300]}"
     )
     try:
         resp.json()
     except Exception as e:
         pytest.fail(
-            f"[TC15][{type_val}] Response is not valid JSON for long input: {e}\nRaw: {resp.text[:300]}"
+            f"[TC15][{type_val}] Response is not valid JSON for long input: {e}\nURL: {resp.url}\nRaw: {resp.text[:300]}"
         )

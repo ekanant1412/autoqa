@@ -13,7 +13,7 @@ import requests
 TEST_KEY = "DMPREC-autocomplete"
 
 BASE_URL = (
-    "http://ai-universal-service-711.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th"
+    "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th"
     "/api/v1/universal/ext_711_mlp_autocomplete"
 )
 

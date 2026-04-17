@@ -1,0 +1,77 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และ Spanner match ✓"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": true,
+    "msg": "ได้ 20 items และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": true,
+    "msg": "ได้ 20 items และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "4.  sort_field = HIT_COUNT_DAY_14",
+    "passed": true,
+    "msg": "ได้ 50 items และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "5.  article_category — items อยู่ใน category ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 50 items มี article_category ใน ['dining'] และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "6.  fields — ครบ 4 fields ตามที่กำหนด",
+    "passed": true,
+    "msg": "ครบ 4 fields: ['id', 'create_date', 'card_type', 'article_category'] และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "7.  exclude_ids — ID ไม่ปรากฏเมื่อกำหนด",
+    "passed": true,
+    "msg": "'EB09a3mJQ91y' ไม่มีใน response และ Spanner: ทุก 9 IDs match ✓"
+  },
+  {
+    "name": "8.  exclude_ids — ID ปรากฏเมื่อไม่กำหนด",
+    "passed": true,
+    "msg": "'EB09a3mJQ91y' ปรากฏใน response และ Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "P1. predictions+id paired — items ปรากฏ + เรียง score desc",
+    "passed": true,
+    "msg": "ปรากฏ 3 items, เรียง score desc ✓ และ Spanner: ทุก 3 IDs match ✓"
+  },
+  {
+    "name": "P2. id ไม่มีใน predictions — item ไม่ปรากฏ",
+    "passed": true,
+    "msg": "'GPvZxpewLNGP' ไม่ปรากฏ (ไม่มีใน predictions) และ Spanner: ทุก 1 IDs match ✓"
+  },
+  {
+    "name": "P3. predictions ไม่มีใน id list — item ไม่ปรากฏ",
+    "passed": true,
+    "msg": "'GPvZxpewLNGP' ไม่ปรากฏ (ไม่มีใน id list) และ Spanner: ทุก 1 IDs match ✓"
+  },
+  {
+    "name": "C1. card_type=['black'] + full params — items มี card_type=black",
+    "passed": true,
+    "msg": "ทุก 2 items มี card_type='black' และ Spanner: ทุก 2 IDs match ✓"
+  },
+  {
+    "name": "C2. card_type (red/blue/green/white/no_card) — items ตรงกับ card_type",
+    "passed": true,
+    "msg": "card_type (red/blue/green/white/no_card) — items มี card_type ตรงกันทุก case ✓"
+  },
+  {
+    "name": "M1. max_point=200 (>10) — redeem_point <= 200",
+    "passed": true,
+    "msg": "ทุก 50 items มี redeem_point <= 200 และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "M2. max_point=5 (0-10 bracket) — redeem_point in [0, 10]",
+    "passed": true,
+    "msg": "ทุก 50 items มี redeem_point <= 10 (bracket 0-10) และ Spanner: ทุก 50 IDs match ✓"
+  }
+]

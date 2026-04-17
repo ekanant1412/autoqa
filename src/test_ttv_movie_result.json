@@ -1,0 +1,57 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และทุก IDs match Spanner ✓"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": true,
+    "msg": "language=th → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": true,
+    "msg": "language=en → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "4.  id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 2 ตัวอยู่ใน id list และ Spanner: ทุก 2 IDs match ✓"
+  },
+  {
+    "name": "5.  fields — _source ครบตาม fields ที่กำหนด",
+    "passed": true,
+    "msg": "ทุก 20 items มีครบ 4 fields และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "6.  article_category — ทุก items มีอย่างน้อย 1 category ใน list",
+    "passed": false,
+    "msg": "article_category OK แต่ Spanner: 5 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['28qOyYPJxpQG', 'WPEOjOLZgJy6', 'a2G6EyQpq4ev', 'aVPrarzvRmWw', 'gowyxyy45RwX']"
+  },
+  {
+    "name": "7.  exclude_ids — ID ไม่ปรากฏใน response",
+    "passed": false,
+    "msg": "exclude_ids OK แต่ Spanner: 5 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['28qOyYPJxpQG', 'WPEOjOLZgJy6', 'a2G6EyQpq4ev', 'aVPrarzvRmWw', 'gowyxyy45RwX']"
+  },
+  {
+    "name": "8.  is_trailer=yes — ทุก items มี is_trailer='yes'",
+    "passed": false,
+    "msg": "is_trailer=yes แต่ 50 items ไม่มี is_trailer='yes': ['1D5y1QKPq4wD', '5ZDwe5wBKWnQ', 'j1X0aXRmPpl1', 'dLMEGlbO28PL', 'BlzqxAOLLwnW']"
+  },
+  {
+    "name": "9.  is_promo=yes — ทุก items มี is_promo='yes'",
+    "passed": false,
+    "msg": "is_promo=yes แต่ 50 items ไม่มี is_promo='yes': ['1D5y1QKPq4wD', '5ZDwe5wBKWnQ', 'j1X0aXRmPpl1', 'dLMEGlbO28PL', 'BlzqxAOLLwnW']"
+  },
+  {
+    "name": "10. movie_type=movie — ทุก items มี movie_type='movie'",
+    "passed": true,
+    "msg": "ทุก 50 items มี movie_type='movie' และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "11. predictions — เรียงตาม score มากไปน้อย",
+    "passed": true,
+    "msg": "predictions เรียงถูกต้อง (score desc) ทุก 2 items ✓ และ Spanner: ทุก 2 IDs match ✓"
+  }
+]
