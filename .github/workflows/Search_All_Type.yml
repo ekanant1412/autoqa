@@ -1,4 +1,4 @@
-name: Search API Tests
+name: Search_All_Type
 on:
   workflow_dispatch:
 jobs:
