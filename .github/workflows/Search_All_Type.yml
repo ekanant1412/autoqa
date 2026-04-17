@@ -7,25 +7,30 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Install dependencies
         run: |
           set -e
           python3 -m pip install --upgrade pip
-          python3 -m pip install requests pytest
+          python3 -m pip install requests pytest pytest-html
+
       - name: Run Search API tests
         run: |
           set -e
-          mkdir -p reports
+          mkdir -p reports/evidence
           python3 -m pytest Search_All_Type/Verify_search_711.py Search_All_Type/test_search_api_common.py \
             --junitxml=reports/junit.xml \
+            --html=reports/report.html \
+            --self-contained-html \
             -v
-      - name: Import JUnit to Xray
+
+      - name: Import JUnit to Xray (existing execution DMPREC-15999)
         if: always()
         env:
           XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
           XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
           XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
-          XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
+          XRAY_TEST_EXEC_KEY: DMPREC-15999
         run: |
           set -euo pipefail
           if [ ! -f reports/junit.xml ]; then
@@ -39,9 +44,8 @@ jobs:
             exit 1
           fi
           XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY" | tr -d '\r\n' | xargs)"
-          XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
-          echo "Project key : $XRAY_PROJECT_KEY"
-          echo "Test plan   : ${XRAY_TEST_PLAN_KEY:-(not set)}"
+          echo "Project key  : $XRAY_PROJECT_KEY"
+          echo "Test exec key: $XRAY_TEST_EXEC_KEY"
           echo "Authenticating with Xray..."
           TOKEN=$(curl -sS \
             -H "Content-Type: application/json" \
@@ -53,10 +57,7 @@ jobs:
             exit 1
           fi
           echo "Authentication successful"
-          URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
-          if [ -n "$XRAY_TEST_PLAN_KEY" ]; then
-            URL="${URL}&testPlanKey=$XRAY_TEST_PLAN_KEY"
-          fi
+          URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY&testExecKey=$XRAY_TEST_EXEC_KEY"
           echo "Import URL: $URL"
           HTTP_STATUS=$(curl -sS \
             -w "%{http_code}" \
@@ -72,6 +73,7 @@ jobs:
             exit 1
           fi
           echo "Import successful"
+
       - name: Upload reports as artifact
         if: always()
         uses: actions/upload-artifact@v4
