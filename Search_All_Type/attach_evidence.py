@@ -19,7 +19,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from datetime import datetime
 
-JIRA_BASE_URL  = os.environ["JIRA_BASE_URL"].rstrip("/")
+JIRA_BASE_URL  = os.environ["JIRA_BASE_URL"].strip().rstrip("/")
 JIRA_EMAIL     = os.environ["JIRA_USER_EMAIL"]
 JIRA_API_TOKEN = os.environ["JIRA_API_TOKEN"]
 ISSUE_KEY      = os.environ.get("XRAY_TEST_EXEC_KEY", "DMPREC-15999")
