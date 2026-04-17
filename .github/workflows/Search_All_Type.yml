@@ -1,8 +1,6 @@
 name: Search_All_Type
 on:
   workflow_dispatch:
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 jobs:
   search-api-test:
     runs-on: [self-hosted, macOS, preprod]
@@ -76,11 +74,12 @@ jobs:
           fi
           echo "Import successful"
 
-      - name: Attach evidence to Xray test runs
+      - name: Attach evidence bundle to Jira issue
         if: always()
         env:
-          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
-          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           XRAY_TEST_EXEC_KEY: DMPREC-15999
         run: |
           python3 Search_All_Type/attach_evidence.py
