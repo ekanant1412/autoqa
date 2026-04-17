@@ -1,177 +1,89 @@
 #!/usr/bin/env python3
 """
 attach_evidence.py
-Attach per-test evidence JSON files to the corresponding Xray test runs.
-Handles both plain and parametrized tests.
+Bundle all evidence JSON files + HTML report into a zip,
+then attach the zip to the Jira issue (DMPREC-15999) via Jira REST API.
+
+Required env vars:
+  JIRA_BASE_URL      e.g. https://yourcompany.atlassian.net
+  JIRA_USER_EMAIL    e.g. your.email@company.com
+  JIRA_API_TOKEN     Jira API token
+  XRAY_TEST_EXEC_KEY e.g. DMPREC-15999
 """
 
 import os
 import sys
-import re
-import json
 import glob
+import zipfile
 import requests
+from requests.auth import HTTPBasicAuth
+from datetime import datetime
 
-XRAY_BASE     = "https://xray.cloud.getxray.app/api/v2"
-CLIENT_ID     = os.environ["XRAY_CLIENT_ID"]
-CLIENT_SECRET = os.environ["XRAY_CLIENT_SECRET"]
-TEST_EXEC_KEY = os.environ.get("XRAY_TEST_EXEC_KEY", "DMPREC-15999")
-EVIDENCE_DIR  = "reports/evidence"
+JIRA_BASE_URL  = os.environ["JIRA_BASE_URL"].rstrip("/")
+JIRA_EMAIL     = os.environ["JIRA_USER_EMAIL"]
+JIRA_API_TOKEN = os.environ["JIRA_API_TOKEN"]
+ISSUE_KEY      = os.environ.get("XRAY_TEST_EXEC_KEY", "DMPREC-15999")
 
-
-# ─── Auth ────────────────────────────────────────────────────────────────────
-
-def get_token() -> str:
-    r = requests.post(
-        f"{XRAY_BASE}/authenticate",
-        json={"client_id": CLIENT_ID, "client_secret": CLIENT_SECRET},
-        timeout=15,
-    )
-    r.raise_for_status()
-    return r.json()
+EVIDENCE_DIR   = "reports/evidence"
+HTML_REPORT    = "reports/report.html"
+ZIP_OUTPUT     = "reports/evidence_bundle.zip"
 
 
-# ─── Xray ────────────────────────────────────────────────────────────────────
-
-def get_test_runs(token: str) -> list:
-    hdrs = {"Authorization": f"Bearer {token}"}
-    runs, page = [], 1
-    while True:
-        r = requests.get(
-            f"{XRAY_BASE}/testexec/{TEST_EXEC_KEY}/test",
-            headers=hdrs,
-            params={"limit": 100, "page": page},
-            timeout=15,
-        )
-        r.raise_for_status()
-        batch = r.json()
-        if not batch:
-            break
-        runs.extend(batch)
-        if len(batch) < 100:
-            break
-        page += 1
-    return runs
-
-
-def attach_file(token: str, run_id: str, filepath: str) -> tuple:
-    url  = f"{XRAY_BASE}/testrun/{run_id}/evidence"
-    hdrs = {"Authorization": f"Bearer {token}"}
-    with open(filepath, "rb") as f:
-        r = requests.post(
-            url, headers=hdrs,
-            files={"file": (os.path.basename(filepath), f, "application/json")},
-            timeout=15,
-        )
-    return r.status_code, r.text
-
-
-# ─── Matching helpers ─────────────────────────────────────────────────────────
-
-def normalize(s: str) -> str:
-    """Lowercase + strip non-alphanumeric"""
-    return re.sub(r"[^a-z0-9]", "", s.lower())
-
-
-def extract_func_and_param(nodeid_or_summary: str) -> tuple[str, str]:
-    """
-    Returns (func_name, param)  e.g.
-      "test_tc01[top_results]" → ("test_tc01", "top_results")
-      "test_tc01"              → ("test_tc01", "")
-    """
-    # take last segment after "::"
-    part = nodeid_or_summary.split("::")[-1].strip()
-    m = re.match(r"^([^\[]+)\[(.+)\]$", part)
-    if m:
-        return m.group(1), m.group(2)
-    return part, ""
-
-
-def build_evidence_map(ev_dir: str) -> dict:
-    """
-    Build {normalize(full_name): filepath}
-    full_name = func_name[param]  or  func_name  (no param)
-    Keeps ALL parametrized variants (no overwriting).
-    """
-    ev_map: dict[str, str] = {}
-    for fp in glob.glob(f"{ev_dir}/*.json"):
-        try:
-            with open(fp, encoding="utf-8") as f:
-                data = json.load(f)
-            nodeid = data.get("test_nodeid", "") or os.path.basename(fp)
-        except Exception:
-            nodeid = os.path.basename(fp)
-
-        func, param = extract_func_and_param(nodeid)
-
-        # key 1: full name with param  e.g. "test_tc01[top_results]"
-        full = f"{func}[{param}]" if param else func
-        ev_map[normalize(full)] = fp
-
-        # key 2: func name only (fallback for tests without param)
-        ev_map.setdefault(normalize(func), fp)
-
-    return ev_map
-
-
-# ─── Main ─────────────────────────────────────────────────────────────────────
-
-def main():
+def build_zip():
+    """Pack all evidence JSON + HTML report into one zip file."""
     ev_files = glob.glob(f"{EVIDENCE_DIR}/*.json")
     if not ev_files:
-        print("No evidence files found in reports/evidence/ — skipping attach step")
+        print("No evidence files found — skipping")
         sys.exit(0)
 
-    ev_map = build_evidence_map(EVIDENCE_DIR)
-    print(f"Evidence files loaded : {len(ev_files)} files, {len(ev_map)} keys")
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    zip_path  = f"reports/evidence_bundle_{timestamp}.zip"
 
-    print("Authenticating with Xray...")
-    token = get_token()
-    print("Authentication successful")
+    with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for fp in sorted(ev_files):
+            zf.write(fp, arcname=os.path.join("evidence", os.path.basename(fp)))
+            print(f"  + {os.path.basename(fp)}")
+        if os.path.exists(HTML_REPORT):
+            zf.write(HTML_REPORT, arcname="report.html")
+            print(f"  + report.html")
 
-    runs = get_test_runs(token)
-    print(f"Test runs in {TEST_EXEC_KEY} : {len(runs)}")
+    print(f"Bundle created : {zip_path}  ({len(ev_files)} evidence files)")
+    return zip_path
 
-    if runs:
-        sample = runs[0]
-        print(f"[DEBUG] sample run keys : {list(sample.keys())}")
-        print(f"[DEBUG] sample run      : {json.dumps(sample, ensure_ascii=False)[:400]}")
 
-    attached = skipped = failed = 0
+def attach_to_jira(zip_path: str):
+    """POST zip file as attachment to the Jira issue."""
+    url  = f"{JIRA_BASE_URL}/rest/api/3/issue/{ISSUE_KEY}/attachments"
+    auth = HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
+    hdrs = {
+        "X-Atlassian-Token": "no-check",
+        "Accept": "application/json",
+    }
 
-    for run in runs:
-        run_id   = str(run.get("id", ""))
-        test_obj = run.get("test") or {}
-        summary  = (
-            test_obj.get("summary")
-            or test_obj.get("name")
-            or run.get("summary")
-            or run.get("name")
-            or ""
+    print(f"Attaching to {ISSUE_KEY} ...")
+    with open(zip_path, "rb") as f:
+        resp = requests.post(
+            url,
+            headers=hdrs,
+            auth=auth,
+            files={"file": (os.path.basename(zip_path), f, "application/zip")},
+            timeout=60,
         )
 
-        func, param = extract_func_and_param(summary)
-        full = f"{func}[{param}]" if param else func
-
-        # try full name first, then func only
-        ev_file = ev_map.get(normalize(full)) or ev_map.get(normalize(func))
-
-        if not ev_file:
-            print(f"  – no match : '{summary}'")
-            skipped += 1
-            continue
-
-        status, body = attach_file(token, run_id, ev_file)
-        if status in (200, 201):
-            print(f"  ✓ {summary} → {os.path.basename(ev_file)}")
-            attached += 1
-        else:
-            print(f"  ✗ {summary} | HTTP {status} | {body[:200]}")
-            failed += 1
-
-    print(f"\nResult — attached: {attached} | skipped: {skipped} | failed: {failed}")
-    if failed:
+    print(f"HTTP Status : {resp.status_code}")
+    if resp.status_code in (200, 201):
+        attachments = resp.json()
+        for att in attachments:
+            print(f"  ✓ Attached : {att.get('filename')} (id={att.get('id')})")
+        print("Done")
+    else:
+        print(f"ERROR: {resp.text[:500]}")
         sys.exit(1)
+
+
+def main():
+    zip_path = build_zip()
+    attach_to_jira(zip_path)
 
 
 if __name__ == "__main__":
