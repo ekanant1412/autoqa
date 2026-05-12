@@ -21,6 +21,8 @@ jobs:
           set -e
           mkdir -p reports
           python3 -m pytest tests/ugclfv/tests/test_ugclfv_content_type.py \
+            --override-ini="addopts=" \
+            --override-ini="testpaths=" \
             --junitxml=reports/junit.xml \
             --html=reports/ugclfv_content_type_report.html \
             --self-contained-html \
