@@ -16,6 +16,13 @@ jobs:
           python3 -m pip install --upgrade pip
           python3 -m pip install requests pytest pytest-html
 
+      - name: Debug - verify file structure
+        run: |
+          echo "=== CWD ===" && pwd
+          echo "=== tests/ ===" && ls tests/ 2>/dev/null || echo "MISSING tests/"
+          echo "=== tests/ugclfv/ ===" && ls tests/ugclfv/ 2>/dev/null || echo "MISSING tests/ugclfv/"
+          echo "=== tests/ugclfv/tests/ ===" && ls tests/ugclfv/tests/ 2>/dev/null || echo "MISSING tests/ugclfv/tests/"
+          find . -name "test_ugclfv_content_type.py" 2>/dev/null || echo "FILE NOT FOUND ANYWHERE"
       - name: Run UGCLFV Content Type tests
         run: |
           set -e
