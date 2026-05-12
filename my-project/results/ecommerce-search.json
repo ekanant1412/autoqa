@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-02-27T09:06:59.525Z",
+  "name": "ecommerce-search",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=ecommerce&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=8E5jey9KkD3n&content_type_filtering=ecommerce&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fecommerce&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fecommerce",
+  "total_items": 30,
+  "items": [
+    {
+      "id": "5Pb4JLp5jKL7",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "E4QbAVKXDe51",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "avW4OKnJZp4V",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "bad3pmb3y4Yz",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "5DoWYzLj9XGD",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "o6ZLgk1vDv5n",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "VXk7Kj28995X",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "2a63JdA1LGbg",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "eX53ZAKypezx",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "jz8ek4G6o82K",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "rOay9qa705BO",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "EJ1kqNEy9x2K",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "xGaLrY5bJpOe",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "BRj7LgbyKePJ",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "Y0n72OEmdO23",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "y5rekKO0ePQl",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "q8gnwJampD1P",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "1GdlkRN4jV6G",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "OLDnylYp63b1",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "Jybz5Pq6zV6y",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "Z8Qg5PPGZVwK",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "YmWDYJEn7gG8",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "RXwbm17j6A7g",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "0jWwNBB4Yyqj",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "r0Z1nMM9RQRX",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "kJ2w7XXxKvPO",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "olkoZKpVGn4l",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "QP8VKaLpO471",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "aGDkX1qYL6v8",
+      "content_type": "ecommerce"
+    },
+    {
+      "id": "nZObp1zeOeED",
+      "content_type": "ecommerce"
+    }
+  ]
+}

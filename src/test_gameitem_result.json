@@ -1,0 +1,57 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และ Spanner match ✓"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": true,
+    "msg": "ได้ 20 items และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": true,
+    "msg": "ได้ 20 items และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "4.  tophit_date_filter 30 → 50",
+    "passed": true,
+    "msg": "filter=30→100 items, filter=50→100 items และ Spanner: ทุก 100 IDs match ✓"
+  },
+  {
+    "name": "5.  id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 11 ตัวอยู่ใน id list และ Spanner: ทุก 11 IDs match ✓"
+  },
+  {
+    "name": "6.  filter_out_category — ไม่มี category ต้องห้าม",
+    "passed": true,
+    "msg": "ทุก 100 items ไม่มี article_category ใน ['cloud'] และ Spanner: ทุก 100 IDs match ✓"
+  },
+  {
+    "name": "7.  exclude_ids — ID ไม่ปรากฏเมื่อกำหนด",
+    "passed": true,
+    "msg": "'0G0xZ5P8ZBeG' ไม่มีใน response และ Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "8.  exclude_ids — ID ปรากฏเมื่อไม่กำหนด",
+    "passed": true,
+    "msg": "'0G0xZ5P8ZBeG' ปรากฏใน response และ Spanner: ทุก 11 IDs match ✓"
+  },
+  {
+    "name": "L1. agg_latest_group_field — required, แบ่งกลุ่มตาม article_category",
+    "passed": true,
+    "msg": "ใส่ → 3 buckets / ไม่ใส่ → 0 buckets (required ✓) และ Spanner: ทุก 110 IDs match ✓"
+  },
+  {
+    "name": "L2. agg_latest_limit 50 / 100 — hits ต่อ bucket ไม่เกิน limit",
+    "passed": true,
+    "msg": "limit=50→110 hits, limit=100→173 hits, ทุก bucket ไม่เกิน limit และ Spanner match ✓"
+  },
+  {
+    "name": "L3. agg_latest_output_fields — _source ครบตาม fields ที่กำหนด",
+    "passed": false,
+    "msg": "ID=zmMEadzYJ1xm — output_fields ไม่ตรง: missing={'tags'}, extra=∅"
+  }
+]

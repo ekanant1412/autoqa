@@ -1,0 +1,305 @@
+{
+  "timestamp": "2026-02-27T09:10:14.444Z",
+  "name": "channel-search",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=channel&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=23Pmn7w4xlQG&content_type_filtering=channel&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fchannel&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fchannel",
+  "total_items": 74,
+  "items": [
+    {
+      "id": "7P69RXLj27E3",
+      "content_type": "channel"
+    },
+    {
+      "id": "6kXd6qLowj3k",
+      "content_type": "channel"
+    },
+    {
+      "id": "Pp8m6lJXQnLw",
+      "content_type": "channel"
+    },
+    {
+      "id": "WEb3VBlkvemZ",
+      "content_type": "channel"
+    },
+    {
+      "id": "kbyE7M4X3Rlb",
+      "content_type": "channel"
+    },
+    {
+      "id": "L5DlJbWOOp15",
+      "content_type": "channel"
+    },
+    {
+      "id": "jzxemAEe4jkJ",
+      "content_type": "channel"
+    },
+    {
+      "id": "r1VRLAwNrGp1",
+      "content_type": "channel"
+    },
+    {
+      "id": "XZEbl1EPDlYv",
+      "content_type": "channel"
+    },
+    {
+      "id": "J6z35e0nej97",
+      "content_type": "channel"
+    },
+    {
+      "id": "yg4dwxDazPdg",
+      "content_type": "channel"
+    },
+    {
+      "id": "27kVyPDR1DkJ",
+      "content_type": "channel"
+    },
+    {
+      "id": "6l2KdGdqJWaQ",
+      "content_type": "channel"
+    },
+    {
+      "id": "3J4wp3BmdNbM",
+      "content_type": "channel"
+    },
+    {
+      "id": "VMlwLoLE4Wg1",
+      "content_type": "channel"
+    },
+    {
+      "id": "o5qdmzyJ2eXG",
+      "content_type": "channel"
+    },
+    {
+      "id": "V0EeZXaVV3K0",
+      "content_type": "channel"
+    },
+    {
+      "id": "PkAmEbE1XARk",
+      "content_type": "channel"
+    },
+    {
+      "id": "2GLk4W4oPojb",
+      "content_type": "channel"
+    },
+    {
+      "id": "VjOPQeQDAeo7",
+      "content_type": "channel"
+    },
+    {
+      "id": "3Md3yoLb3R92",
+      "content_type": "channel"
+    },
+    {
+      "id": "71rKGgNxjepA",
+      "content_type": "channel"
+    },
+    {
+      "id": "pgWG8OmMW9xg",
+      "content_type": "channel"
+    },
+    {
+      "id": "j5lWA901Rvra",
+      "content_type": "channel"
+    },
+    {
+      "id": "74mwQ9QnGAZa",
+      "content_type": "channel"
+    },
+    {
+      "id": "ZALEGJXllXdx",
+      "content_type": "channel"
+    },
+    {
+      "id": "X5ERrmwXVPnD",
+      "content_type": "channel"
+    },
+    {
+      "id": "YJXYmNDO1GZw",
+      "content_type": "channel"
+    },
+    {
+      "id": "xlVgw0m4XdbP",
+      "content_type": "channel"
+    },
+    {
+      "id": "wyXxwKDNN5by",
+      "content_type": "channel"
+    },
+    {
+      "id": "lLRaxQkdNZJv",
+      "content_type": "channel"
+    },
+    {
+      "id": "o5q3B4LYWZWr",
+      "content_type": "channel"
+    },
+    {
+      "id": "q8aqXGXGdMn8",
+      "content_type": "channel"
+    },
+    {
+      "id": "pmLBMbWaZZXR",
+      "content_type": "channel"
+    },
+    {
+      "id": "VxlnRG2Gp7yL",
+      "content_type": "channel"
+    },
+    {
+      "id": "A46zAP08EnN4",
+      "content_type": "channel"
+    },
+    {
+      "id": "LWvp4rXZaoYK",
+      "content_type": "channel"
+    },
+    {
+      "id": "3Q3Aw8G0OoYn",
+      "content_type": "channel"
+    },
+    {
+      "id": "galEQgpVwVKo",
+      "content_type": "channel"
+    },
+    {
+      "id": "DBwGEN4mkvxB",
+      "content_type": "channel"
+    },
+    {
+      "id": "dmE6bEVDlKlg",
+      "content_type": "channel"
+    },
+    {
+      "id": "A69rZYZXY8Yj",
+      "content_type": "channel"
+    },
+    {
+      "id": "WM7ElrXnrDo3",
+      "content_type": "channel"
+    },
+    {
+      "id": "O3YXAJraJnqx",
+      "content_type": "channel"
+    },
+    {
+      "id": "DKl91y1OkpoB",
+      "content_type": "channel"
+    },
+    {
+      "id": "4GKjJlpK2VyA",
+      "content_type": "channel"
+    },
+    {
+      "id": "k3E1nz4wVyw3",
+      "content_type": "channel"
+    },
+    {
+      "id": "BvMREay42Y19",
+      "content_type": "channel"
+    },
+    {
+      "id": "KrpzxJEkGew2",
+      "content_type": "channel"
+    },
+    {
+      "id": "EMN8LNgOm2lZ",
+      "content_type": "channel"
+    },
+    {
+      "id": "2wkLoDoW4pLR",
+      "content_type": "channel"
+    },
+    {
+      "id": "grQo9g2KMoR4",
+      "content_type": "channel"
+    },
+    {
+      "id": "k5LVa2a0x8rb",
+      "content_type": "channel"
+    },
+    {
+      "id": "wbzBOKwqknYb",
+      "content_type": "channel"
+    },
+    {
+      "id": "zLpMqyQDaZD7",
+      "content_type": "channel"
+    },
+    {
+      "id": "VLEkxYdYzyqZ",
+      "content_type": "channel"
+    },
+    {
+      "id": "2M9GBXz8v5m7",
+      "content_type": "channel"
+    },
+    {
+      "id": "6r5GM9YXpKkW",
+      "content_type": "channel"
+    },
+    {
+      "id": "kmBgR8LW7a3v",
+      "content_type": "channel"
+    },
+    {
+      "id": "O3Lj42VZY8GD",
+      "content_type": "channel"
+    },
+    {
+      "id": "QDke4opazM98",
+      "content_type": "channel"
+    },
+    {
+      "id": "ZPLr72b8erZY",
+      "content_type": "channel"
+    },
+    {
+      "id": "px9El0bJaOkx",
+      "content_type": "channel"
+    },
+    {
+      "id": "ra7n8RGlqnDd",
+      "content_type": "channel"
+    },
+    {
+      "id": "mQ4L3EJbmVjQ",
+      "content_type": "channel"
+    },
+    {
+      "id": "2RBn0gdxYoaR",
+      "content_type": "channel"
+    },
+    {
+      "id": "GLrwKvW2k465",
+      "content_type": "channel"
+    },
+    {
+      "id": "kyGow7XY99ry",
+      "content_type": "channel"
+    },
+    {
+      "id": "ke6Evwl1P6q3",
+      "content_type": "channel"
+    },
+    {
+      "id": "A4QbK2l6Gb07",
+      "content_type": "channel"
+    },
+    {
+      "id": "wXD1B8R7vvkq",
+      "content_type": "channel"
+    },
+    {
+      "id": "5QK0DXqK2rvL",
+      "content_type": "channel"
+    },
+    {
+      "id": "KVObzEP3bgLm",
+      "content_type": "channel"
+    },
+    {
+      "id": "M2qq9ePWzap2",
+      "content_type": "channel"
+    }
+  ]
+}

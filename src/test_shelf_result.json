@@ -1,0 +1,7 @@
+[
+  {
+    "name": "1. id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 2 ตัวอยู่ใน id list และ Spanner: ทุก 2 IDs match ✓"
+  }
+]

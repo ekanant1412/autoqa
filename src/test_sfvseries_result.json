@@ -1,0 +1,87 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.1.1.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.2.2.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.3.3.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "4.  tophit_date_filter 30 → 50",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.4.4.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "5.  title — ทุก items มีคำว่า 'รัก'",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.5.5.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "6.  id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.6.6.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "7.  fields — ครบ 4 fields ตามที่กำหนด",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.7.7.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "8.  filter_out_category — ไม่มี category ต้องห้าม",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.8.8.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "9.  exclude_ids — ID ไม่ปรากฏเมื่อกำหนด",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.9.9.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "10. exclude_ids — ID ปรากฏเมื่อไม่กำหนด",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.10.10.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "T1. agg_tophit_group_field — required, แบ่งกลุ่มตาม article_category",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.11.11.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "T2. agg_tophit_limit 50 / 100 — hits ต่อ bucket ไม่เกิน limit",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.12.12.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "T3. agg_tophit_output_fields — _source ครบตาม fields ที่กำหนด",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.13.13.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "T4. agg_tophit_sort_by — required (PLAY_COUNT_DAY_14), ไม่ใส่ → ไม่มี buckets",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.14.14.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "L1. agg_latest_group_field — required, แบ่งกลุ่มตาม article_category",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.15.15.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "L2. agg_latest_limit 50 / 100 — hits ต่อ bucket ไม่เกิน limit",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.16.16.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  },
+  {
+    "name": "L3. agg_latest_output_fields — _source ครบตาม fields ที่กำหนด",
+    "passed": false,
+    "msg": "ERROR: 404 Database not found: projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod, request_id = 1.15210066450594691552.17.17.1.1 [resource_type: \"type.googleapis.com/google.spanner.admin.database.v1.Database\"\nresource_name: \"projects/tdg-ai-platform-nonprod02-bxev/instances/g1d-ai-spannerb01/databases/ai_raas_nonprod\"\ndescription: \"Database does not exist.\"\n]"
+  }
+]
