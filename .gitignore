@@ -1,0 +1,11 @@
+# Evidence directories (auto-generated test run logs)
+evidence_*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# OS
+.DS_Store
