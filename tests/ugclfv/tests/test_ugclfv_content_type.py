@@ -5,13 +5,14 @@ Pytest wrapper สำหรับ check_ugclfv_content_type.py
 เพื่อให้ collect ได้ด้วย pytest และส่ง JUnit XML เข้า Xray ได้
 """
 
-import sys
 import os
+import importlib.util
 
-# เพิ่ม path ให้ import check_ugclfv_content_type ได้
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
-import check_ugclfv_content_type as checker
+# โหลดไฟล์ด้วย path ตรงๆ เพื่อหลีกเลี่ยงปัญหา --import-mode=importlib
+_checker_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "check_ugclfv_content_type.py")
+_spec = importlib.util.spec_from_file_location("check_ugclfv_content_type", _checker_path)
+checker = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(checker)
 
 # ── เลือก profile ที่ต้องการทดสอบ ──────────────────────────────────────────────
 PROFILES = checker.PROFILES
