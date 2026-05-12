@@ -16,6 +16,7 @@ import sys
 import json
 from datetime import datetime
 from collections import defaultdict
+from typing import Optional
 import requests
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -65,7 +66,7 @@ _current_profile: str = ""
 
 
 def _save_evidence(filename: str, method: str, url: str,
-                   res: requests.Response, payload: dict | None = None) -> None:
+                   res: requests.Response, payload: Optional[dict] = None) -> None:
     path = os.path.join(_EVIDENCE_DIR, filename)
     with open(path, "w", encoding="utf-8") as f:
         f.write(f"Timestamp : {datetime.now().isoformat()}\n")

@@ -26,7 +26,7 @@ def _run(profile_name: str):
 # ── sfv-p4 ─────────────────────────────────────────────────────────────────────
 
 class TestUgclfvSfvP4:
-    _results: dict | None = None
+    _results = None
 
     @classmethod
     def setup_class(cls):
@@ -61,7 +61,7 @@ class TestUgclfvSfvP4:
 # ── sfv-p5 ─────────────────────────────────────────────────────────────────────
 
 class TestUgclfvSfvP5:
-    _results: dict | None = None
+    _results = None
 
     @classmethod
     def setup_class(cls):
