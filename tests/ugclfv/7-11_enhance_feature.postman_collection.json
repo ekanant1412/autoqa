@@ -1,0 +1,568 @@
+{
+  "info": {
+    "_postman_id": "d94340f7-cff3-4bef-8639-06a0856dea5a",
+    "name": "7-11_enhance_feature",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50622847",
+    "_collection_link": "https://go.postman.co/collection/50622847-d94340f7-cff3-4bef-8639-06a0856dea5a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Check not in seen item",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "/**",
+              " * Check that target id is NOT in get_seen_item_redis",
+              " * Node shape (your real response):",
+              " * - get_seen_item_redis.result.ids: [ ... ]",
+              " * - get_seen_item_redis.result.items: [{id}, ...]",
+              " */",
+              "",
+              "pm.test(\"Response status is 200\", () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const res = pm.response.json();",
+              "",
+              "// =============================",
+              "// HELPERS",
+              "// =============================",
+              "function deepFindNode(obj, nodeName) {",
+              "  if (!obj || typeof obj !== \"object\") return null;",
+              "  if (Object.prototype.hasOwnProperty.call(obj, nodeName)) return obj[nodeName];",
+              "  for (const k of Object.keys(obj)) {",
+              "    const found = deepFindNode(obj[k], nodeName);",
+              "    if (found) return found;",
+              "  }",
+              "  return null;",
+              "}",
+              "",
+              "function uniq(arr) {",
+              "  return [...new Set((arr || []).filter(Boolean))];",
+              "}",
+              "",
+              "function getTargetIdFromRequest() {",
+              "  const q = pm.request.url.query;",
+              "  // prefer id, but fallback to common keys",
+              "  const preferred = q.get(\"id\");",
+              "  if (preferred) return preferred;",
+              "",
+              "  const candidates = [\"itemId\", \"contentId\", \"targetId\", \"videoId\", \"pid\"];",
+              "  for (const key of candidates) {",
+              "    const v = q.get(key);",
+              "    if (v) return v;",
+              "  }",
+              "",
+              "  const all = q.all();",
+              "  if (Array.isArray(all) && all.length > 0) return all[0]?.value;",
+              "",
+              "  return null;",
+              "}",
+              "",
+              "function extractSeenIds(seenNode) {",
+              "  if (!seenNode || typeof seenNode !== \"object\") return [];",
+              "",
+              "  // 1) MAIN (your node): result.ids",
+              "  const r1 = seenNode?.result?.ids;",
+              "  if (Array.isArray(r1)) return uniq(r1);",
+              "",
+              "  // 2) fallback: result.items[].id",
+              "  const r2 = seenNode?.result?.items;",
+              "  if (Array.isArray(r2)) return uniq(r2.map(x => x?.id));",
+              "",
+              "  // 3) fallback: main_function.args.default_response.ids",
+              "  const r3 = seenNode?.main_function?.args?.default_response?.ids;",
+              "  if (Array.isArray(r3)) return uniq(r3);",
+              "",
+              "  // 4) fallback: main_function.args.default_response.items[].id",
+              "  const r4 = seenNode?.main_function?.args?.default_response?.items;",
+              "  if (Array.isArray(r4)) return uniq(r4.map(x => x?.id));",
+              "",
+              "  return [];",
+              "}",
+              "",
+              "// =============================",
+              "// 1) target id",
+              "// =============================",
+              "const targetId = getTargetIdFromRequest();",
+              "",
+              "pm.test(\"Target id exists in request\", () => {",
+              "  pm.expect(targetId, \"Missing query param: id (or itemId/contentId/targetId/...)\").to.be.ok;",
+              "});",
+              "",
+              "// =============================",
+              "// 2) find seen node",
+              "// =============================",
+              "const SEEN_NODE_NAME = \"get_seen_item_redis\";",
+              "",
+              "// try direct first, then deep search",
+              "const seenNode = res?.[SEEN_NODE_NAME] ?? deepFindNode(res, SEEN_NODE_NAME);",
+              "",
+              "pm.test(`${SEEN_NODE_NAME} node exists`, () => {",
+              "  pm.expect(seenNode, `${SEEN_NODE_NAME} node not found`).to.be.ok;",
+              "});",
+              "",
+              "// =============================",
+              "// 3) extract ids",
+              "// =============================",
+              "const seenIds = extractSeenIds(seenNode);",
+              "",
+              "pm.test(\"seenIds is array\", () => {",
+              "  pm.expect(seenIds).to.be.an(\"array\");",
+              "});",
+              "",
+              "// =============================",
+              "// 4) check",
+              "// =============================",
+              "const inSeen = seenIds.includes(targetId);",
+              "",
+              "// LOG หลักฐาน",
+              "console.log(\"===== SEEN ITEM CHECK =====\");",
+              "console.log(\"Target ID:\", targetId);",
+              "console.log(\"Seen IDs count:\", seenIds.length);",
+              "console.log(\"Is target in seenIds:\", inSeen);",
+              "console.log(\"Seen IDs sample (first 50):\", JSON.stringify(seenIds.slice(0, 50), null, 2));",
+              "",
+              "// เก็บ evidence สำหรับเอาไป push เข้า Xray ต่อ",
+              "pm.environment.set(\"seen_item_evidence\", JSON.stringify({",
+              "  node: SEEN_NODE_NAME,",
+              "  targetId,",
+              "  seenIdsCount: seenIds.length,",
+              "  isTargetInSeenIds: inSeen,",
+              "  seenIdsSample: seenIds.slice(0, 50)",
+              "}, null, 2));",
+              "",
+              "// Assertion",
+              "pm.test(\"Target ID should NOT exist in get_seen_item_redis.result.ids\", () => {",
+              "  pm.expect(",
+              "    inSeen,",
+              "    `❌ Found targetId=${targetId} in seenIds (count=${seenIds.length})`",
+              "  ).to.eql(false);",
+              "});",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p6?shelfId=Kaw6MLVzPWmo&total_candidates=200&pool_limit_category_items=50&language=th&pool_tophit_date=30&limit=100&userId=null&pseudoId=null&verbose=debug&cursor=2&GA_ID=12345678.12345678&id=DZreDb76MBmX",
+          "protocol": "http",
+          "host": [
+            "ai-universal-service-711",
+            "preprod-gcp-ai-bn",
+            "int-ai-platform",
+            "gcp",
+            "dmp",
+            "true",
+            "th"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "universal",
+            "sfv-p6"
+          ],
+          "query": [
+            {
+              "key": "shelfId",
+              "value": "Kaw6MLVzPWmo"
+            },
+            {
+              "key": "total_candidates",
+              "value": "200"
+            },
+            {
+              "key": "pool_limit_category_items",
+              "value": "50"
+            },
+            {
+              "key": "language",
+              "value": "th"
+            },
+            {
+              "key": "pool_tophit_date",
+              "value": "30"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "userId",
+              "value": "null"
+            },
+            {
+              "key": "pseudoId",
+              "value": "null"
+            },
+            {
+              "key": "verbose",
+              "value": "debug"
+            },
+            {
+              "key": "cursor",
+              "value": "2"
+            },
+            {
+              "key": "GA_ID",
+              "value": "12345678.12345678"
+            },
+            {
+              "key": "id",
+              "value": "DZreDb76MBmX"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Check ID first order",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "",
+              "const res = pm.response.json();",
+              "const targetId = pm.request.url.query.get(\"id\");",
+              "",
+              "pm.test(\"Query param id must exist\", () => {",
+              "  pm.expect(targetId, \"Missing query param: id\").to.be.ok;",
+              "});",
+              "",
+              "// --- Deep search helper: find object by key anywhere ---",
+              "function findNodeByKey(obj, key) {",
+              "  const stack = [{ path: \"$\", value: obj }];",
+              "  while (stack.length) {",
+              "    const { path, value } = stack.pop();",
+              "    if (!value || typeof value !== \"object\") continue;",
+              "",
+              "    if (Object.prototype.hasOwnProperty.call(value, key)) {",
+              "      return { path: `${path}.${key}`, node: value[key] };",
+              "    }",
+              "",
+              "    for (const k of Object.keys(value)) {",
+              "      const v = value[k];",
+              "      if (v && typeof v === \"object\") {",
+              "        stack.push({ path: `${path}.${k}`, value: v });",
+              "      }",
+              "    }",
+              "  }",
+              "  return null;",
+              "}",
+              "",
+              "const found = findNodeByKey(res, \"merge_page\");",
+              "",
+              "pm.test(\"merge_page node found (deep)\", () => {",
+              "  pm.expect(found, \"merge_page not found anywhere in response\").to.be.ok;",
+              "});",
+              "",
+              "const mergePage = found?.node;",
+              "",
+              "// ดึง items จาก path ที่ถูกต้อง: merge_page.result.items",
+              "const items = mergePage?.result?.items;",
+              "",
+              "pm.test(\"merge_page.result.items must be array and not empty\", () => {",
+              "  pm.expect(items, \"merge_page.result.items is missing\").to.be.an(\"array\");",
+              "  pm.expect(items.length, \"merge_page.result.items is empty\").to.be.above(0);",
+              "});",
+              "",
+              "const firstId = items[0]?.id ?? items[0]?.item_id;",
+              "",
+              "// ===== EVIDENCE LOG =====",
+              "console.log(\"===== MERGE_PAGE FIRST ORDER CHECK =====\");",
+              "console.log(\"merge_page found at:\", found?.path);",
+              "console.log(\"Target ID (input):\", targetId);",
+              "console.log(\"First item ID:\", firstId);",
+              "console.log(\"First 10 IDs:\", items.slice(0, 10).map(x => x?.id ?? x?.item_id));",
+              "",
+              "pm.test(\"Input ID must be at position #1 in merge_page.result.items\", () => {",
+              "  pm.expect(",
+              "    firstId,",
+              "    `❌ Expected first item to be \"${targetId}\" but got \"${firstId}\"`",
+              "  ).to.eql(targetId);",
+              "});",
+              "",
+              "if (firstId === targetId) {",
+              "  console.log(`✅ PASS: \"${targetId}\" is at position #1`);",
+              "}",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p6?shelfId=Kaw6MLVzPWmo&total_candidates=200&pool_limit_category_items=50&language=th&pool_tophit_date=30&limit=100&userId=null&pseudoId=null&verbose=debug&cursor=1&GA_ID=12345678.12345678&id=DZreDb76MBmX",
+          "protocol": "http",
+          "host": [
+            "ai-universal-service-711",
+            "preprod-gcp-ai-bn",
+            "int-ai-platform",
+            "gcp",
+            "dmp",
+            "true",
+            "th"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "universal",
+            "sfv-p6"
+          ],
+          "query": [
+            {
+              "key": "shelfId",
+              "value": "Kaw6MLVzPWmo"
+            },
+            {
+              "key": "total_candidates",
+              "value": "200"
+            },
+            {
+              "key": "pool_limit_category_items",
+              "value": "50"
+            },
+            {
+              "key": "language",
+              "value": "th"
+            },
+            {
+              "key": "pool_tophit_date",
+              "value": "30"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "userId",
+              "value": "null"
+            },
+            {
+              "key": "pseudoId",
+              "value": "null"
+            },
+            {
+              "key": "verbose",
+              "value": "debug"
+            },
+            {
+              "key": "cursor",
+              "value": "1"
+            },
+            {
+              "key": "GA_ID",
+              "value": "12345678.12345678"
+            },
+            {
+              "key": "id",
+              "value": "DZreDb76MBmX"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Check ID null random item 001",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// =============================",
+              "// BASIC CHECK",
+              "// =============================",
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const res = pm.response.json();",
+              "",
+              "// =============================",
+              "// helper: deep find merge_page",
+              "// =============================",
+              "function findNodeByKey(obj, key) {",
+              "  const stack = [obj];",
+              "  while (stack.length) {",
+              "    const v = stack.pop();",
+              "    if (!v || typeof v !== \"object\") continue;",
+              "    if (Object.prototype.hasOwnProperty.call(v, key)) return v[key];",
+              "    Object.values(v).forEach(x => typeof x === \"object\" && stack.push(x));",
+              "  }",
+              "  return null;",
+              "}",
+              "",
+              "// =============================",
+              "// extract items",
+              "// =============================",
+              "const mergePage = findNodeByKey(res, \"merge_page\");",
+              "pm.test(\"merge_page node found\", () => {",
+              "  pm.expect(mergePage, \"merge_page not found\").to.be.ok;",
+              "});",
+              "",
+              "const items = mergePage?.result?.items ?? [];",
+              "pm.test(\"merge_page.result.items not empty\", () => {",
+              "  pm.expect(items.length).to.be.greaterThan(0);",
+              "});",
+              "",
+              "// =============================",
+              "// RANDOM SIGNATURE (first 10 ids)",
+              "// =============================",
+              "const cursor = pm.request.url.query.get(\"cursor\") || \"unknown\";",
+              "const signature = items",
+              "  .slice(0, 10)",
+              "  .map(i => i?.id ?? i?.item_id)",
+              "  .filter(Boolean)",
+              "  .join(\"|\");",
+              "",
+              "// =============================",
+              "// LOOP CONFIG (เฉพาะ request นี้)",
+              "// =============================",
+              "const MAX_RUN = 5;",
+              "const REQ = pm.info.requestName.replace(/\\s+/g, \"_\");",
+              "const ITER_KEY = `iter_${REQ}_cursor_${cursor}`;",
+              "const SIGS_KEY = `sigs_${REQ}_cursor_${cursor}`;",
+              "",
+              "let iter = Number(pm.globals.get(ITER_KEY) || 1);",
+              "const sigs = JSON.parse(pm.globals.get(SIGS_KEY) || \"[]\");",
+              "",
+              "// เก็บ signature รอบนี้",
+              "sigs.push(signature);",
+              "pm.globals.set(SIGS_KEY, JSON.stringify(sigs));",
+              "",
+              "// =============================",
+              "// LOG",
+              "// =============================",
+              "console.log(\"===== MERGE_PAGE RANDOM CHECK =====\");",
+              "console.log(\"Request:\", pm.info.requestName);",
+              "console.log(\"Cursor:\", cursor);",
+              "console.log(`Run ${iter}/${MAX_RUN}`);",
+              "console.log(\"Signature:\", signature);",
+              "",
+              "// sanity per-run",
+              "pm.test(`[Random] captured signature ${iter}/${MAX_RUN}`, () => {",
+              "  pm.expect(signature).to.be.a(\"string\").and.not.empty;",
+              "});",
+              "",
+              "// =============================",
+              "// LOOP CONTROL (สำคัญ)",
+              "// =============================",
+              "if (iter < MAX_RUN) {",
+              "  pm.globals.set(ITER_KEY, String(iter + 1));",
+              "  postman.setNextRequest(pm.info.requestName); // 🔁 วน request เดิม",
+              "} else {",
+              "  // final assertion: ต้องแตกต่างอย่างน้อย 1 ครั้ง",
+              "  pm.test(`merge_page should be random (vary at least once) cursor=${cursor}`, () => {",
+              "    const unique = new Set(sigs);",
+              "    pm.expect(",
+              "      unique.size,",
+              "      `❌ deterministic order: all ${MAX_RUN} runs same`",
+              "    ).to.be.greaterThan(1);",
+              "  });",
+              "",
+              "  // cleanup",
+              "  pm.globals.unset(ITER_KEY);",
+              "  pm.globals.unset(SIGS_KEY);",
+              "",
+              "  postman.setNextRequest(null); // ➡️ ไป request ถัดไป",
+              "}",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p6?shelfId=Kaw6MLVzPWmo&total_candidates=200&pool_limit_category_items=50&language=th&pool_tophit_date=30&limit=100&userId=null&pseudoId=null&verbose=debug&cursor=1&GA_ID=12345678.12345678&id=",
+          "protocol": "http",
+          "host": [
+            "ai-universal-service-711",
+            "preprod-gcp-ai-bn",
+            "int-ai-platform",
+            "gcp",
+            "dmp",
+            "true",
+            "th"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "universal",
+            "sfv-p6"
+          ],
+          "query": [
+            {
+              "key": "shelfId",
+              "value": "Kaw6MLVzPWmo"
+            },
+            {
+              "key": "total_candidates",
+              "value": "200"
+            },
+            {
+              "key": "pool_limit_category_items",
+              "value": "50"
+            },
+            {
+              "key": "language",
+              "value": "th"
+            },
+            {
+              "key": "pool_tophit_date",
+              "value": "30"
+            },
+            {
+              "key": "limit",
+              "value": "100"
+            },
+            {
+              "key": "userId",
+              "value": "null"
+            },
+            {
+              "key": "pseudoId",
+              "value": "null"
+            },
+            {
+              "key": "verbose",
+              "value": "debug"
+            },
+            {
+              "key": "cursor",
+              "value": "1"
+            },
+            {
+              "key": "GA_ID",
+              "value": "12345678.12345678"
+            },
+            {
+              "key": "id",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+# Evidence directories (auto-generated test run logs)
+evidence_*/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# Reports
+reports/
+*.xml
+*.html
+
+# OS
+.DS_Store
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

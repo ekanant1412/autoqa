@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-02-27T09:09:15.661Z",
+  "name": "gamearticle-search-v1",
+  "environment": "Pre-Production",
+  "api_url": "http://ai-universal-service-new.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/search-basic?language=th&cursor=1&search_type=read&search_time_out=5s&option_rerank_by_time_off=false&ssoId=22092422&search_url=https%3A%2F%2Fai-raas-api.trueid-preprod.net%2Fpersonalize-rcom%2Fv2%2Fsearch-api%2Fapi%2Fv5%2Ftext_search&limit=100&id=2gr1X4XWvmxq&content_type_filtering=game_article&validate_metadata_similar_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_article&metadata_item_url=http%3A%2F%2Fai-metadata-service.prod-gcp-ai-bn.ai-platform.gcp.dmp.true.th%2Fmetadata%2Fgame_article",
+  "total_items": 3,
+  "items": [
+    {
+      "id": "Jvn7l407ly72",
+      "content_type": "gamearticle"
+    },
+    {
+      "id": "K75O3W6LZr1v",
+      "content_type": "gamearticle"
+    },
+    {
+      "id": "nRnYlknzJgjy",
+      "content_type": "gamearticle"
+    }
+  ]
+}

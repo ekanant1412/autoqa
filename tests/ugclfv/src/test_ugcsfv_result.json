@@ -1,0 +1,102 @@
+[
+  {
+    "name": "1.  limit (5 / 20 / 50)",
+    "passed": true,
+    "msg": "limit 5/20/50 — จำนวน items ไม่เกิน limit และทุก IDs match Spanner ✓"
+  },
+  {
+    "name": "2.  language = th",
+    "passed": true,
+    "msg": "language=th → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "3.  language = en",
+    "passed": true,
+    "msg": "language=en → 10 items, Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "4.  tophit_date_filter 30 → 50",
+    "passed": true,
+    "msg": "filter=50 (200) >= filter=30 (200) และทุก IDs match Spanner ✓"
+  },
+  {
+    "name": "5.  title — ทุก items มีคำว่า 'รัก'",
+    "passed": true,
+    "msg": "ทุก 50 items มี 'รัก' ใน title และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "6.  is_related_ecommerce=False → ไม่มี related",
+    "passed": false,
+    "msg": "is_related_ecommerce=False แต่ 23 items ยังมี related_ecommerce_id: ['01bODjZAkKD7', '01bWwG9ewmjq', '01drEjGv64DN', '01jgvwL8jpR9', '01mWR73ggeRA']"
+  },
+  {
+    "name": "7.  is_related_ecommerce=True  → มี related ทุก item",
+    "passed": true,
+    "msg": "ทุก 50 items มี related_ecommerce_id และ Spanner: ทุก 50 IDs match ✓"
+  },
+  {
+    "name": "8.  id filter — IDs อยู่ใน id list เท่านั้น",
+    "passed": true,
+    "msg": "IDs ทั้ง 10 ตัวอยู่ใน id list และ Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "9a. fields — is_related_ecommerce=True  → ครบ 5 fields",
+    "passed": true,
+    "msg": "ครบ 5 fields: ['id', 'create_date', 'title', 'article_category', 'related_ecommerce_id'] และ Spanner: ทุก 20 IDs match ✓"
+  },
+  {
+    "name": "9b. fields — is_related_ecommerce=False → ได้ 4 fields",
+    "passed": false,
+    "msg": "ID=01EKAqoEwJMv — is_related_ecommerce=False แต่ยังมี related_ecommerce_id ใน _source"
+  },
+  {
+    "name": "10. filter_out_category — ไม่มี category ต้องห้าม",
+    "passed": true,
+    "msg": "ทุก 100 items ไม่มี article_category ใน ['travel'] และ Spanner: ทุก 100 IDs match ✓"
+  },
+  {
+    "name": "11. exclude_ids — ID ไม่ปรากฏเมื่อกำหนด",
+    "passed": true,
+    "msg": "'8AjN0gQELBeA' ไม่มีใน response และ Spanner: ทุก 9 IDs match ✓"
+  },
+  {
+    "name": "12. exclude_ids — ID ปรากฏเมื่อไม่กำหนด",
+    "passed": true,
+    "msg": "'8AjN0gQELBeA' ปรากฏใน response และ Spanner: ทุก 10 IDs match ✓"
+  },
+  {
+    "name": "T1. agg_tophit_group_field — required, แบ่งกลุ่มตาม article_category",
+    "passed": false,
+    "msg": "required field OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "T2. agg_tophit_limit 50 / 100 — hits ต่อ bucket ไม่เกิน limit",
+    "passed": false,
+    "msg": "limit=50 parameter OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "T3. agg_tophit_output_fields — _source ครบตาม fields ที่กำหนด",
+    "passed": false,
+    "msg": "output_fields OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "T4. agg_tophit_sort_by — required (PLAY_COUNT_DAY_14), ไม่ใส่ → ไม่มี buckets",
+    "passed": false,
+    "msg": "required field OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "L1. agg_latest_group_field — required, แบ่งกลุ่มตาม article_category",
+    "passed": false,
+    "msg": "required field OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "L2. agg_latest_limit 50 / 100 — hits ต่อ bucket ไม่เกิน limit",
+    "passed": false,
+    "msg": "limit=50 parameter OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  },
+  {
+    "name": "L3. agg_latest_output_fields — _source ครบตาม fields ที่กำหนด",
+    "passed": false,
+    "msg": "output_fields OK แต่ Spanner: 1 IDs อยู่ใน API แต่ไม่มีใน Spanner → ['jLyx6Ppne6PQ']"
+  }
+]

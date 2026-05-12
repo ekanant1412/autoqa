@@ -1,0 +1,191 @@
+name: Baseline vs Candidate Ordering
+on:
+  workflow_dispatch:
+jobs:
+  regression-test:
+    runs-on: [self-hosted, macOS, preprod]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show Python
+        run: |
+          which python3 || true
+          python3 --version
+          python3 -m pip --version || true
+
+      - name: Show workspace files
+        run: |
+          pwd
+          ls -la
+          echo "===== python files ====="
+          ls -la Verify_*.py test_all.py conftest.py || true
+
+      - name: Install dependencies
+        run: |
+          set -e
+          python3 -m pip install --upgrade pip
+          python3 -m pip install -r requirements.txt || true
+          python3 -m pip install requests openpyxl pytest
+
+      - name: Run all Verify tests
+        run: |
+          set -e
+          mkdir -p reports
+          python3 -m pytest . \
+            --override-ini="python_files=Verify_*.py test_*.py" \
+            --junitxml=reports/junit.xml \
+            -v
+
+      - name: Verify reports
+        if: always()
+        run: |
+          echo "===== workspace ====="
+          pwd
+          ls -la
+          echo "===== reports dir ====="
+          ls -la reports || true
+          echo "===== reports files ====="
+          find reports -maxdepth 3 -type f | sort || true
+          echo "===== check junit ====="
+          test -f reports/junit.xml
+
+      - name: Zip evidence (reports)
+        if: always()
+        run: |
+          set -e
+          if [ ! -d reports ]; then
+            echo "ERROR: reports directory not found"
+            exit 1
+          fi
+          if [ -z "$(find reports -maxdepth 1 -type f ! -name 'evidence.zip' | head -n 1)" ]; then
+            echo "WARN: reports directory is empty, skip zipping"
+            exit 0
+          fi
+          rm -f reports/evidence.zip || true
+          (
+            cd reports
+            zip -r evidence.zip . -x evidence.zip
+          )
+          ls -la reports/evidence.zip
+
+      - name: Import JUnit to Xray
+        if: always()
+        env:
+          XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+          XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+          XRAY_PROJECT_KEY: ${{ secrets.XRAY_PROJECT_KEY }}
+          XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
+        run: |
+          set -euo pipefail
+          # ── 1. ตรวจ junit.xml ──────────────────────────────────────────
+          if [ ! -f reports/junit.xml ]; then
+            echo "ERROR: reports/junit.xml not found"
+            ls -la reports || true
+            exit 1
+          fi
+          echo "=== junit.xml preview (first 30 lines) ==="
+          head -30 reports/junit.xml
+          # ── 2. ตรวจ secrets ────────────────────────────────────────────
+          if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
+            echo "ERROR: Missing required XRAY secrets (XRAY_CLIENT_ID / XRAY_CLIENT_SECRET / XRAY_PROJECT_KEY)"
+            exit 1
+          fi
+          XRAY_PROJECT_KEY="$(echo "$XRAY_PROJECT_KEY"   | tr -d '\r\n' | xargs)"
+          XRAY_TEST_PLAN_KEY="$(echo "${XRAY_TEST_PLAN_KEY:-}" | tr -d '\r\n' | xargs)"
+          echo "Project key : $XRAY_PROJECT_KEY"
+          echo "Test plan   : ${XRAY_TEST_PLAN_KEY:-(not set)}"
+          # ── 3. Authenticate ────────────────────────────────────────────
+          echo "Authenticating with Xray..."
+          TOKEN=$(curl -sS \
+            -H "Content-Type: application/json" \
+            -X POST https://xray.cloud.getxray.app/api/v2/authenticate \
+            -d "{\"client_id\":\"$XRAY_CLIENT_ID\",\"client_secret\":\"$XRAY_CLIENT_SECRET\"}" \
+            | tr -d '"')
+          if [ -z "$TOKEN" ]; then
+            echo "ERROR: Xray authentication failed — token is empty"
+            exit 1
+          fi
+          echo "Authentication successful"
+          # ── 4. Build URL (ใส่ testPlanKey เฉพาะเมื่อมีค่า) ────────────
+          URL="https://xray.cloud.getxray.app/api/v2/import/execution/junit?projectKey=$XRAY_PROJECT_KEY"
+          if [ -n "$XRAY_TEST_PLAN_KEY" ]; then
+            URL="${URL}&testPlanKey=$XRAY_TEST_PLAN_KEY"
+          fi
+          echo "Import URL: $URL"
+          # ── 5. Import — แยก HTTP status กับ body ──────────────────────
+          HTTP_STATUS=$(curl -sS \
+            -w "%{http_code}" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: text/xml" \
+            --data-binary @reports/junit.xml \
+            "$URL" \
+            -o reports/xray_import_response.json)
+          echo "HTTP Status : $HTTP_STATUS"
+          echo "Xray response:"
+          cat reports/xray_import_response.json
+          # ── 6. ตรวจ status ─────────────────────────────────────────────
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "ERROR: Xray import failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi
+          echo "Import successful"
+
+      - name: Attach evidence to Jira Test Execution
+        if: always()
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          JIRA_BASE_URL="$(echo "${JIRA_BASE_URL:-}" | tr -d '\r\n' | xargs)"
+          JIRA_BASE_URL="${JIRA_BASE_URL%/}"
+          if [ -z "$JIRA_BASE_URL" ]; then
+            echo "ERROR: JIRA_BASE_URL is empty"
+            exit 1
+          fi
+          if [ ! -f "reports/xray_import_response.json" ]; then
+            echo "ERROR: reports/xray_import_response.json not found"
+            ls -la reports || true
+            exit 1
+          fi
+          TEST_EXEC_KEY="$(python3 -c "import json; print(json.load(open('reports/xray_import_response.json','r',encoding='utf-8')).get('key',''))" | tr -d '\r\n' | xargs)"
+          if [ -z "$TEST_EXEC_KEY" ]; then
+            echo "ERROR: Cannot find Test Execution KEY in xray_import_response.json"
+            cat reports/xray_import_response.json || true
+            exit 1
+          fi
+          echo "Test Execution key: $TEST_EXEC_KEY"
+          curl -sS --fail-with-body \
+            -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+            -H "Accept: application/json" \
+            "$JIRA_BASE_URL/rest/api/3/myself" >/dev/null
+          ATTACH_URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
+          echo "Attach URL: $ATTACH_URL"
+          for f in \
+            reports/Baseline_vs_Candidate_Report.xlsx \
+            reports/Baseline_vs_Candidate_Results.json \
+            reports/evidence.zip \
+            reports/junit.xml
+          do
+            if [ -f "$f" ]; then
+              echo "Uploading $f ..."
+              curl -sS --fail-with-body \
+                -u "$JIRA_EMAIL:$JIRA_API_TOKEN" \
+                -H "X-Atlassian-Token: no-check" \
+                -F "file=@$f" \
+                "$ATTACH_URL" >/dev/null
+            else
+              echo "WARN: missing file $f"
+            fi
+          done
+          echo "DONE attach files to $TEST_EXEC_KEY"
+
+      - name: Upload reports as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: baseline-vs-candidate-reports
+          path: reports
+          if-no-files-found: warn

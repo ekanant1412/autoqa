@@ -1,0 +1,4 @@
+2026-04-10 12:05:38 | START run_check placement=sfv-p8 max_cursors=10
+2026-04-10 12:05:38 | FETCH cursor=1 status=403 url=http://ai-universal-service-711.preprod-gcp-ai-bn.int-ai-platform.gcp.dmp.true.th/api/v1/universal/sfv-p6?id=lrR51P10yayK&isOnlyId=true&language=th&limit=10&pseudoId=null&returnItemMetadata=false&ga_id=9999992299.999999999&userId=null&verbose=debug&cursor=1
+2026-04-10 12:05:38 | HTTP 403 at cursor=1
+2026-04-10 12:05:38 | END placement=sfv-p8 status=PASS cursors=1 cross_dups=0
