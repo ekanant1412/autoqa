@@ -34,8 +34,9 @@ jobs:
       - name: Run SFV Seen Items tests
         run: |
           set -e
+          cd tests
           mkdir -p reports
-          python3 -m pytest tests/test_sfv_seen_items.py \
+          python3 -m pytest test_sfv_seen_items.py \
             --ssoId "${{ github.event.inputs.ssoId }}" \
             --dag "${{ github.event.inputs.dag }}" \
             --max-cursors "${{ github.event.inputs.max_cursors }}" \
