@@ -32,15 +32,15 @@ jobs:
           python3 -m pip install requests pytest pytest-html
 
       - name: Run SFV Seen Items tests
+        env:
+          SFV_SSO_ID: ${{ github.event.inputs.ssoId }}
+          SFV_DAG: ${{ github.event.inputs.dag }}
+          SFV_MAX_CURSORS: ${{ github.event.inputs.max_cursors }}
         run: |
           set -e
           cd tests
           mkdir -p reports
           python3 -m pytest test_sfv_seen_items.py \
-            --rootdir=. \
-            --ssoId "${{ github.event.inputs.ssoId }}" \
-            --dag "${{ github.event.inputs.dag }}" \
-            --max-cursors "${{ github.event.inputs.max_cursors }}" \
             --junitxml=reports/junit.xml \
             --html=reports/sfv_seen_items_report.html \
             --self-contained-html \
