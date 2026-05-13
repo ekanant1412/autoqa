@@ -37,10 +37,10 @@ jobs:
           cd tests
           mkdir -p reports
           python3 -m pytest test_sfv_seen_items.py \
+            --rootdir=. \
             --ssoId "${{ github.event.inputs.ssoId }}" \
             --dag "${{ github.event.inputs.dag }}" \
             --max-cursors "${{ github.event.inputs.max_cursors }}" \
-            --override-ini="python_files=test_*.py" \
             --junitxml=reports/junit.xml \
             --html=reports/sfv_seen_items_report.html \
             --self-contained-html \
