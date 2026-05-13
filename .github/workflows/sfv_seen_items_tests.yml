@@ -41,8 +41,8 @@ jobs:
           cd tests
           mkdir -p reports
           python3 -m pytest test_sfv_seen_items.py \
-            --junitxml=reports/junit.xml \
-            --html=reports/sfv_seen_items_report.html \
+            --junitxml=tests/reports/junit.xml \
+            --html=tests/reports/sfv_seen_items_report.html \
             --self-contained-html \
             -v
 
@@ -50,8 +50,8 @@ jobs:
         if: always()
         run: |
           set -e
-          mkdir -p reports/evidence
-          cd reports
+          mkdir -p tests/reports/evidence
+          cd tests/reports
           zip -r evidence.zip . -x evidence.zip || true
 
       - name: Import JUnit to Xray
@@ -63,12 +63,12 @@ jobs:
           XRAY_TEST_PLAN_KEY: ${{ secrets.XRAY_TEST_PLAN_KEY }}
         run: |
           set -euo pipefail
-          if [ ! -f reports/junit.xml ]; then
-            echo "ERROR: reports/junit.xml not found"
+          if [ ! -f tests/reports/junit.xml ]; then
+            echo "ERROR: tests/reports/junit.xml not found"
             exit 1
           fi
           echo "=== junit.xml preview (first 30 lines) ==="
-          head -30 reports/junit.xml
+          head -30 tests/reports/junit.xml
           if [ -z "${XRAY_CLIENT_ID:-}" ] || [ -z "${XRAY_CLIENT_SECRET:-}" ] || [ -z "${XRAY_PROJECT_KEY:-}" ]; then
             echo "ERROR: Missing required XRAY secrets"
             exit 1
@@ -97,11 +97,11 @@ jobs:
             -w "%{http_code}" \
             -H "Authorization: Bearer $TOKEN" \
             -H "Content-Type: text/xml" \
-            --data-binary @reports/junit.xml \
+            --data-binary @tests/reports/junit.xml \
             "$URL" \
-            -o reports/xray_import_response.json)
+            -o tests/reports/xray_import_response.json)
           echo "HTTP Status : $HTTP_STATUS"
-          cat reports/xray_import_response.json
+          cat tests/reports/xray_import_response.json
           if [ "$HTTP_STATUS" != "200" ]; then
             echo "ERROR: Xray import failed with HTTP $HTTP_STATUS"
             exit 1
@@ -122,22 +122,22 @@ jobs:
             echo "ERROR: JIRA_BASE_URL is empty"
             exit 1
           fi
-          if [ ! -f "reports/xray_import_response.json" ]; then
+          if [ ! -f "tests/reports/xray_import_response.json" ]; then
             echo "ERROR: xray_import_response.json not found"
             exit 1
           fi
-          TEST_EXEC_KEY="$(python3 -c "import json; print(json.load(open('reports/xray_import_response.json','r',encoding='utf-8')).get('key',''))" | tr -d '\r\n' | xargs)"
+          TEST_EXEC_KEY="$(python3 -c "import json; print(json.load(open('tests/reports/xray_import_response.json','r',encoding='utf-8')).get('key',''))" | tr -d '\r\n' | xargs)"
           if [ -z "$TEST_EXEC_KEY" ]; then
             echo "ERROR: Cannot find Test Execution KEY"
-            cat reports/xray_import_response.json || true
+            cat tests/reports/xray_import_response.json || true
             exit 1
           fi
           echo "Test Execution key: $TEST_EXEC_KEY"
           ATTACH_URL="$JIRA_BASE_URL/rest/api/3/issue/$TEST_EXEC_KEY/attachments"
           for f in \
-            reports/sfv_seen_items_report.html \
-            reports/evidence.zip \
-            reports/junit.xml
+            tests/reports/sfv_seen_items_report.html \
+            tests/reports/evidence.zip \
+            tests/reports/junit.xml
           do
             if [ -f "$f" ]; then
               echo "Uploading $f ..."
@@ -157,5 +157,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: sfv-seen-items-reports
-          path: reports
+          path: tests/reports
           if-no-files-found: warn
