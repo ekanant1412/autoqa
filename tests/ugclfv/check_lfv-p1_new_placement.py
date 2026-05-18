@@ -25,6 +25,7 @@ import json
 import random
 from datetime import datetime
 from collections import defaultdict
+from typing import Optional
 import requests
 
 # ─── Config ───────────────────────────────────────────────────────────────────
@@ -42,7 +43,7 @@ _BASE_URL = (
 PROFILES = [
     {
         "name":        "lfv-p1",
-        "base_url":    f"{_BASE_URL}&ssoId=109302903",
+        "base_url":    f"{_BASE_URL}&ssoId=1709302903",
         "nologin_url": f"{_BASE_URL}&ssoId=nologin",
     },
 ]
@@ -86,7 +87,7 @@ def _record_fail_curl(step_key: str, url: str = "") -> None:
 
 
 def _save_evidence(filename: str, method: str, url: str,
-                   res: requests.Response, payload: dict | None = None) -> None:
+                   res: requests.Response, payload: Optional[dict] = None) -> None:
     path = os.path.join(_EVIDENCE_DIR, filename)
     with open(path, "w", encoding="utf-8") as f:
         f.write(f"Timestamp : {datetime.now().isoformat()}\n")
@@ -727,7 +728,7 @@ class TestLfvP1NewPlacement:
     pytest รัน: pytest check_lfv-p1_new_placement.py -v
     standalone รัน: python3 check_lfv-p1_new_placement.py
     """
-    _results:      dict[str, bool] | None = None
+    _results:      Optional[dict] = None
     _fail_curls:   dict[str, str]         = {}
     _fail_details: dict[str, str]         = {}
 
